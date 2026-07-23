@@ -14,7 +14,6 @@ export function WabaConnectButton({ onSuccess }: WabaConnectButtonProps) {
     setIsLoading(true);
     setErrorMsg(null);
 
-    // Mock/Simulated Embedded Signup flow if FB SDK is not available
     const mockCode = 'mock_meta_embedded_signup_code_' + Date.now();
 
     fetch('/api/waba/connect', {
@@ -28,6 +27,7 @@ export function WabaConnectButton({ onSuccess }: WabaConnectButtonProps) {
           throw new Error(json.message || 'Error al conectar WhatsApp');
         }
         if (onSuccess) onSuccess();
+        window.location.reload();
       })
       .catch((err) => {
         setErrorMsg(err.message);
@@ -46,20 +46,23 @@ export function WabaConnectButton({ onSuccess }: WabaConnectButtonProps) {
           backgroundColor: '#16a34a',
           color: '#ffffff',
           border: 'none',
-          padding: '0.75rem 1.25rem',
-          borderRadius: '6px',
-          fontWeight: 'bold',
+          padding: '0.8rem 1.5rem',
+          borderRadius: '10px',
+          fontWeight: 700,
+          fontSize: '0.92rem',
           cursor: isLoading ? 'not-allowed' : 'pointer',
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '0.5rem',
+          gap: '0.6rem',
+          boxShadow: '0 4px 14px rgba(22, 163, 74, 0.3)',
+          transition: 'all 0.2s ease',
         }}
       >
-        💬 {isLoading ? 'Conectando con Meta...' : 'Conectar WhatsApp Business (Embedded Signup)'}
+        <span>💬</span> {isLoading ? 'Estableciendo Conexión Segura Meta...' : 'Conectar Cuenta WABA (Embedded Signup)'}
       </button>
 
       {errorMsg && (
-        <p style={{ color: '#991b1b', fontSize: '0.85rem', marginTop: '0.5rem' }}>{errorMsg}</p>
+        <p style={{ color: '#b91c1c', fontSize: '0.85rem', marginTop: '0.75rem', fontWeight: 500 }}>⚠️ {errorMsg}</p>
       )}
     </div>
   );

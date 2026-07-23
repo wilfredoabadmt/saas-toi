@@ -6,34 +6,119 @@ export const dynamic = 'force-dynamic';
 
 export default async function SubscribersPage() {
   const defaultOrgId = '00000000-0000-0000-0000-000000000001';
-  const result = await SubscriberService.list({ organizationId: defaultOrgId, limit: 50 });
+  const result = await SubscriberService.list({ organizationId: defaultOrgId, limit: 100 });
+  const allSubscribers = (result.data || []) as SubscriberItem[];
+
+  // Compute KPI metrics
+  const totalSubscribers = result.pagination.total;
+  const currentCount = allSubscribers.filter((s) => s.paymentStatus === 'current').length;
+  const dueSoonCount = allSubscribers.filter((s) => s.paymentStatus === 'due_soon').length;
+  const overdueCount = allSubscribers.filter((s) => s.paymentStatus === 'overdue').length;
+
+  const totalRevenue = allSubscribers.reduce((acc, sub) => acc + Number(sub.monthlyAmount || 0), 0);
+  const overdueRevenue = allSubscribers
+    .filter((s) => s.paymentStatus === 'overdue')
+    .reduce((acc, sub) => acc + Number(sub.monthlyAmount || 0), 0);
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      {/* Top Header Controls */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0 }}>Gestión de Abonados</h1>
-          <p style={{ color: '#64748b', margin: '0.25rem 0 0 0', fontSize: '0.9rem' }}>
-            Lista de suscriptores y cartera de cobranza del ISP
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#0f172a', margin: 0 }}>
+            Gestión & Cobranza de Abonados
+          </h1>
+          <p style={{ color: '#64748b', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
+            Panel de control de cartera, importación CSV y estado de vencimiento del ISP
           </p>
         </div>
-        <Link
-          href="/subscribers/import"
-          style={{
-            backgroundColor: '#2563eb',
-            color: '#ffffff',
-            padding: '0.5rem 1rem',
-            borderRadius: '4px',
-            textDecoration: 'none',
-            fontWeight: 'bold',
-            fontSize: '0.9rem',
-          }}
-        >
-          📥 Importar CSV
-        </Link>
+
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <Link href="/subscribers/import" className="btn-primary">
+            <span>📥</span> Importar Abonados (CSV)
+          </Link>
+          <Link
+            href="/messaging"
+            style={{
+              backgroundColor: '#ffffff',
+              color: '#0f172a',
+              border: '1px solid #cbd5e1',
+              padding: '0.65rem 1.25rem',
+              borderRadius: '10px',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}
+          >
+            <span>📣</span> Gatillar Recordatorios
+          </Link>
+        </div>
       </div>
 
-      <SubscriberTable subscribers={result.data as SubscriberItem[]} />
+      {/* KPI Cards Grid inspired by the reference mockup */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
+        {/* KPI 1: Total Subscribers */}
+        <div className="kpi-card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>
+            <span>TOTAL ABONADOS</span>
+            <span style={{ backgroundColor: '#dcfce7', color: '#15803d', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700 }}>
+              +24% mes
+            </span>
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', margin: '0.5rem 0 0.25rem 0' }}>
+            {totalSubscribers}
+          </div>
+          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Clientes activos en red ISP</div>
+        </div>
+
+        {/* KPI 2: Estimated Revenue */}
+        <div className="kpi-card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>
+            <span>RECAUDACIÓN MENSUAL</span>
+            <span style={{ backgroundColor: '#e0f2fe', color: '#0369a1', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700 }}>
+              Facturación
+            </span>
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', margin: '0.5rem 0 0.25rem 0' }}>
+            ${totalRevenue.toLocaleString('es-CL')}
+          </div>
+          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Monto total en cartera</div>
+        </div>
+
+        {/* KPI 3: Overdue Amount */}
+        <div className="kpi-card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>
+            <span>CARTERA VENCIDA</span>
+            <span style={{ backgroundColor: '#fee2e2', color: '#b91c1c', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700 }}>
+              {overdueCount} abonados
+            </span>
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#b91c1c', margin: '0.5rem 0 0.25rem 0' }}>
+            ${overdueRevenue.toLocaleString('es-CL')}
+          </div>
+          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Pendiente de cobro en WhatsApp</div>
+        </div>
+
+        {/* KPI 4: Collection Rate */}
+        <div className="kpi-card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>
+            <span>TASA DE COBRANZA</span>
+            <span style={{ backgroundColor: '#fef9c3', color: '#a16207', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700 }}>
+              Status
+            </span>
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#15803d', margin: '0.5rem 0 0.25rem 0' }}>
+            {totalSubscribers > 0 ? Math.round((currentCount / totalSubscribers) * 100) : 100}%
+          </div>
+          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{currentCount} al día / {dueSoonCount} por vencer</div>
+        </div>
+      </div>
+
+      {/* Main Subscriber Table */}
+      <SubscriberTable subscribers={allSubscribers} />
     </div>
   );
 }

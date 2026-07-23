@@ -44,55 +44,65 @@ export function CsvImportForm() {
   };
 
   return (
-    <div style={{ backgroundColor: '#ffffff', padding: '1.5rem', borderRadius: '8px', maxWidth: '600px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div className="glass-card" style={{ padding: '2rem', maxWidth: '650px' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.5rem' }}>Seleccionar archivo CSV</label>
-          <input
-            type="file"
-            accept=".csv"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-            style={{ display: 'block', width: '100%', padding: '0.5rem', border: '1px solid #cbd5e1', borderRadius: '4px' }}
-          />
-          <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.25rem' }}>
-            Columnas esperadas: <code>nombre,telefono,plan,monto,fecha_vencimiento</code>
-          </p>
+          <label style={{ display: 'block', fontWeight: 700, fontSize: '0.95rem', marginBottom: '0.5rem', color: '#0f172a' }}>
+            Seleccionar archivo CSV de Abonados
+          </label>
+          <div
+            style={{
+              border: '2px dashed #cbd5e1',
+              borderRadius: '12px',
+              padding: '2rem',
+              textAlign: 'center',
+              backgroundColor: '#f8fafc',
+              cursor: 'pointer',
+              transition: 'border-color 0.2s ease',
+            }}
+          >
+            <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '0.5rem' }}>📄</span>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+              style={{ display: 'block', width: '100%', fontSize: '0.85rem' }}
+            />
+            <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.75rem' }}>
+              Formato de columnas: <code>nombre,telefono,plan,monto,fecha_vencimiento</code>
+            </p>
+          </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={!file || isSubmitting}
-          style={{
-            backgroundColor: '#2563eb',
-            color: '#ffffff',
-            border: 'none',
-            padding: '0.75rem 1rem',
-            borderRadius: '4px',
-            cursor: file && !isSubmitting ? 'pointer' : 'not-allowed',
-            fontWeight: 'bold',
-          }}
-        >
-          {isSubmitting ? 'Procesando e Importando...' : 'Importar Abonados'}
+        <button type="submit" disabled={!file || isSubmitting} className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+          {isSubmitting ? '🔄 Procesando Lote de Abonados...' : '🚀 Ejecutar Importación Masiva'}
         </button>
       </form>
 
       {errorMsg && (
-        <div style={{ marginTop: '1rem', padding: '0.75rem', backgroundColor: '#fee2e2', color: '#991b1b', borderRadius: '4px' }}>
-          {errorMsg}
+        <div style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: '#fee2e2', color: '#991b1b', borderRadius: '10px', fontSize: '0.9rem' }}>
+          ⚠️ {errorMsg}
         </div>
       )}
 
       {result && (
-        <div style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: '#f1f5f9', borderRadius: '4px' }}>
-          <h4 style={{ margin: '0 0 0.5rem 0' }}>Resumen de Importación</h4>
-          <p style={{ margin: '0.25rem 0' }}>✅ Importados con éxito: <strong>{result.imported}</strong></p>
-          <p style={{ margin: '0.25rem 0' }}>⚠️ Duplicados omitidos: <strong>{result.duplicates}</strong></p>
-          <p style={{ margin: '0.25rem 0' }}>Total procesados: <strong>{result.total}</strong></p>
+        <div style={{ marginTop: '1.5rem', padding: '1.25rem', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px' }}>
+          <h4 style={{ margin: '0 0 0.75rem 0', color: '#0f172a', fontWeight: 700 }}>Resumen de Importación</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', fontSize: '0.9rem' }}>
+            <div style={{ backgroundColor: '#ffffff', padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <span style={{ color: '#64748b', fontSize: '0.78rem', display: 'block' }}>NUEVOS IMPORTADOS</span>
+              <strong style={{ fontSize: '1.25rem', color: '#15803d' }}>{result.imported}</strong>
+            </div>
+            <div style={{ backgroundColor: '#ffffff', padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <span style={{ color: '#64748b', fontSize: '0.78rem', display: 'block' }}>DUPLICADOS OMITIDOS</span>
+              <strong style={{ fontSize: '1.25rem', color: '#a16207' }}>{result.duplicates}</strong>
+            </div>
+          </div>
 
           {result.errors.length > 0 && (
-            <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #cbd5e1' }}>
-              <h5 style={{ margin: '0 0 0.25rem 0', color: '#991b1b' }}>Errores en filas ({result.errors.length}):</h5>
-              <ul style={{ fontSize: '0.85rem', color: '#7f1d1d', paddingLeft: '1.25rem', margin: '0.25rem 0' }}>
+            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+              <h5 style={{ margin: '0 0 0.5rem 0', color: '#b91c1c' }}>Registros con errores ({result.errors.length}):</h5>
+              <ul style={{ fontSize: '0.82rem', color: '#b91c1c', paddingLeft: '1.25rem', margin: 0 }}>
                 {result.errors.map((err, idx) => (
                   <li key={idx}>Fila {err.row}: {err.reason}</li>
                 ))}

@@ -1,122 +1,81 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 
 export interface PaymentProofItem {
   id: string;
-  subscriberId: string;
-  fileType: string;
-  mimeType: string;
-  downloadUrl: string;
+  s3Key: string;
+  presignedUrl?: string;
   reviewStatus: 'pending' | 'approved' | 'rejected' | string;
-  createdAt: string;
+  uploadedAt: string;
 }
 
 interface PaymentProofViewerProps {
   proof: PaymentProofItem;
-  onReviewed?: () => void;
 }
 
-export function PaymentProofViewer({ proof, onReviewed }: PaymentProofViewerProps) {
-  const [status, setStatus] = useState(proof.reviewStatus);
-  const [isUpdating, setIsUpdating] = useState(false);
-
-  const handleReview = async (newStatus: 'approved' | 'rejected') => {
-    setIsUpdating(true);
-
-    try {
-      const res = await fetch(`/api/subscribers/${proof.subscriberId}/proofs/${proof.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (res.ok) {
-        setStatus(newStatus);
-        if (onReviewed) onReviewed();
-      }
-    } catch (err) {
-      console.error('[Review Error]:', err);
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  const getBadgeStyle = (st: string) => {
-    switch (st) {
+export function PaymentProofViewer({ proof }: PaymentProofViewerProps) {
+  const getBadge = (status: string) => {
+    switch (status) {
       case 'approved':
-        return { backgroundColor: '#dcfce7', color: '#166534' };
+        return <span className="badge badge-success">✓ Aprobado</span>;
       case 'rejected':
-        return { backgroundColor: '#fee2e2', color: '#991b1b' };
+        return <span className="badge badge-danger">✗ Rechazado</span>;
       default:
-        return { backgroundColor: '#fef9c3', color: '#854d0e' };
+        return <span className="badge badge-warning">⏳ Pendiente Revisión</span>;
     }
   };
 
   return (
-    <div style={{ border: '1px solid #e2e8f0', borderRadius: '6px', padding: '1rem', marginBottom: '1rem', backgroundColor: '#ffffff' }}>
+    <div
+      style={{
+        backgroundColor: '#f8fafc',
+        border: '1px solid #e2e8f0',
+        borderRadius: '12px',
+        padding: '1.25rem',
+        marginBottom: '1rem',
+      }}
+    >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-        <div>
-          <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
-            Recibido: {new Date(proof.createdAt).toLocaleString()} ({proof.fileType})
-          </span>
-        </div>
-        <span style={{ ...getBadgeStyle(status), padding: '2px 8px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 'bold' }}>
-          {status === 'approved' ? 'Aprobado' : status === 'rejected' ? 'Rechazado' : 'Pendiente de Revisión'}
+        <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 500 }}>
+          Recibido: {new Date(proof.uploadedAt).toLocaleString('es-CL')}
         </span>
+        {getBadge(proof.reviewStatus)}
       </div>
 
-      <div style={{ marginBottom: '1rem' }}>
-        {proof.mimeType.includes('pdf') ? (
+      {proof.presignedUrl ? (
+        <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
+          <img
+            src={proof.presignedUrl}
+            alt="Comprobante de pago"
+            style={{ maxWidth: '100%', maxHeight: '240px', borderRadius: '8px', objectFit: 'contain', border: '1px solid #cbd5e1' }}
+          />
+        </div>
+      ) : (
+        <div style={{ padding: '1rem', backgroundColor: '#ffffff', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem', color: '#475569' }}>
+          📄 Archivo adjunto S3: <code>{proof.s3Key}</code>
+        </div>
+      )}
+
+      {proof.presignedUrl && (
+        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
           <a
-            href={proof.downloadUrl}
+            href={proof.presignedUrl}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 'bold' }}
+            style={{
+              backgroundColor: '#ffffff',
+              color: '#2563eb',
+              border: '1px solid #cbd5e1',
+              padding: '0.4rem 0.85rem',
+              borderRadius: '6px',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              textDecoration: 'none',
+            }}
           >
-            📄 Ver Comprobante PDF (abrir en ventana)
+            🔍 Ver Imagen en Tamaño Real (S3 Presigned URL)
           </a>
-        ) : (
-          <img
-            src={proof.downloadUrl}
-            alt="Comprobante de pago"
-            style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-          />
-        )}
-      </div>
-
-      {status === 'pending' && (
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button
-            onClick={() => handleReview('approved')}
-            disabled={isUpdating}
-            style={{
-              backgroundColor: '#16a34a',
-              color: '#ffffff',
-              border: 'none',
-              padding: '0.4rem 0.8rem',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
-            }}
-          >
-            ✅ Aprobar Pago
-          </button>
-          <button
-            onClick={() => handleReview('rejected')}
-            disabled={isUpdating}
-            style={{
-              backgroundColor: '#dc2626',
-              color: '#ffffff',
-              border: 'none',
-              padding: '0.4rem 0.8rem',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
-            }}
-          >
-            ❌ Rechazar
-          </button>
         </div>
       )}
     </div>
