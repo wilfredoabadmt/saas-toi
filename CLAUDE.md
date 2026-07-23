@@ -5,19 +5,15 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 001-tenant-whatsapp-billing
+## Active feature: 002-plans-and-whatsapp-inbox
 
-Plan técnico: [specs/001-tenant-whatsapp-billing/plan.md](specs/001-tenant-whatsapp-billing/plan.md)
-(spec, research, data-model, contracts y quickstart en la misma carpeta).
+Plan técnico: [specs/002-plans-and-whatsapp-inbox/spec.md](specs/002-plans-and-whatsapp-inbox/spec.md)
 
-Gestión multi-tenant de abonados, conexión de WhatsApp Business vía Embedded Signup,
-envío de recordatorios de cobranza con templates Utility, y recepción idempotente de
-comprobantes de pago por webhook con almacenamiento S3 aislado por tenant.
+Gestión de Planes de Internet (CRUD Mbps/Precio por Tenant), CRM / Inbox Multi-Agente de WhatsApp en tiempo real (`/messages`) y Panel Lateral con Ficha del Abonado en ventana de chat.
 
-<!--
-## Feature previa: [NNN-...]
-Plan técnico: [specs/NNN-.../plan.md](...). [Resumen de una línea de qué hizo.]
--->
+## Feature previa: 001-tenant-whatsapp-billing
+Plan técnico: [specs/001-tenant-whatsapp-billing/plan.md](specs/001-tenant-whatsapp-billing/plan.md). Gestión multi-tenant de abonados, conexión de WhatsApp Business vía Embedded Signup, envío de recordatorios de cobranza Utility e ingesta idempotente de comprobantes S3.
+
 
 ## Stack
 
