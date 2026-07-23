@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1784787228234,
+      "tag": "0000_superb_marauders",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784787386168,
+      "tag": "0001_giant_living_tribunal",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784787475540,
+      "tag": "0002_panoramic_revanche",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1784787567708,
+      "tag": "0003_brave_puppet_master",
+      "breakpoints": true
+    }
+  ]
+}
