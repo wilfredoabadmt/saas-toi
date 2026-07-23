@@ -33,7 +33,7 @@ export default async function SubscribersPage() {
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', gap: '0.75rem' }} className="page-header-actions">
           <Link href="/subscribers/import" className="btn-primary">
             <span>📥</span> Importar Abonados (CSV)
           </Link>
@@ -59,7 +59,7 @@ export default async function SubscribersPage() {
       </div>
 
       {/* KPI Cards Grid inspired by the reference mockup */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
+      <div className="kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
         {/* KPI 1: Total Subscribers */}
         <div className="kpi-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>

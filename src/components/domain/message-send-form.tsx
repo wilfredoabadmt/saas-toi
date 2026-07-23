@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useToast } from '@/components/ui/toast-provider';
 
 export function MessageSendForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resultMsg, setResultMsg] = useState<string | null>(null);
+  const { addToast } = useToast();
 
   const handleSendAllOverdue = async () => {
     setIsSubmitting(true);
@@ -35,8 +37,10 @@ export function MessageSendForm() {
       }
 
       setResultMsg(`✅ Proceso ejecutado con éxito: ${sendJson.data.sent} avisos enviados de ${sendJson.data.totalRequested} abonados.`);
+      addToast(`${sendJson.data.sent} avisos enviados exitosamente`, 'success');
     } catch (err) {
       setResultMsg(`⚠️ ${(err as Error).message}`);
+      addToast((err as Error).message, 'error');
     } finally {
       setIsSubmitting(false);
     }

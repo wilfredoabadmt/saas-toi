@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useToast } from '@/components/ui/toast-provider';
 
 export function CsvImportForm() {
   const [file, setFile] = useState<File | null>(null);
@@ -12,6 +13,7 @@ export function CsvImportForm() {
     total: number;
   } | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const { addToast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,8 +38,10 @@ export function CsvImportForm() {
       }
 
       setResult(json.data);
+      addToast(`Importación exitosa: ${json.data.imported} nuevos abonados`, 'success');
     } catch (err) {
       setErrorMsg((err as Error).message);
+      addToast((err as Error).message, 'error');
     } finally {
       setIsSubmitting(false);
     }

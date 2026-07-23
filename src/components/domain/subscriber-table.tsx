@@ -152,7 +152,7 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
           <p style={{ fontWeight: 500 }}>No se encontraron abonados con los filtros seleccionados.</p>
         </div>
       ) : (
-        <div style={{ overflowX: 'auto' }}>
+        <div className="table-responsive" style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
             <thead>
               <tr style={{ borderBottom: '2px solid #f1f5f9', color: '#64748b', fontWeight: 600 }}>

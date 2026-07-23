@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useToast } from '@/components/ui/toast-provider';
 
 interface WabaConnectButtonProps {
   onSuccess?: () => void;
@@ -9,6 +10,7 @@ interface WabaConnectButtonProps {
 export function WabaConnectButton({ onSuccess }: WabaConnectButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const { addToast } = useToast();
 
   const handleConnect = () => {
     setIsLoading(true);
@@ -27,10 +29,12 @@ export function WabaConnectButton({ onSuccess }: WabaConnectButtonProps) {
           throw new Error(json.message || 'Error al conectar WhatsApp');
         }
         if (onSuccess) onSuccess();
+        addToast('WhatsApp Business conectado exitosamente', 'success');
         window.location.reload();
       })
       .catch((err) => {
         setErrorMsg(err.message);
+        addToast(err.message, 'error');
       })
       .finally(() => {
         setIsLoading(false);

@@ -31,7 +31,7 @@ export class PaymentProofService {
       .limit(1);
 
     if (!config) {
-      console.warn(`[Proof Error]: WABA config not found for phone_number_id ${params.phoneNumberId}`);
+      console.warn('[Proof Error]: WABA config not found for incoming phone_number_id');
       return null;
     }
 
@@ -45,7 +45,7 @@ export class PaymentProofService {
       .limit(1);
 
     if (!sub) {
-      console.warn(`[Proof Warning]: Subscriber not found for phone ${params.senderPhone} in org ${orgId}`);
+      console.warn('[Proof Warning]: Subscriber not found for incoming sender phone in tenant');
       return null;
     }
 
@@ -68,8 +68,9 @@ export class PaymentProofService {
         });
         uploadSuccess = true;
         break;
-      } catch (err) {
-        console.warn(`[S3 Upload Attempt ${attempt} failed]:`, err);
+      } catch {
+        // Sanitized: do not log raw err which may contain S3 credentials or request details
+        console.warn(`[S3 Upload Attempt ${attempt} failed]`);
         if (attempt < 3) await new Promise((r) => setTimeout(r, 500 * attempt));
       }
     }

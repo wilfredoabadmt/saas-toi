@@ -60,8 +60,9 @@ export class WabaService {
     // Subscribe WABA to webhook (non-blocking if fails)
     try {
       await WhatsAppClient.subscribeAppToWaba(exchange.wabaId, exchange.accessToken);
-    } catch (err) {
-      console.warn('[WABA Webhook Subscription Warning]:', err);
+    } catch {
+      // Sanitized: do not log raw err which may contain tokens or request details
+      console.warn('[WABA Webhook Subscription Warning]: subscription failed for wabaId', exchange.wabaId);
     }
 
     return {
