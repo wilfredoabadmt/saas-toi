@@ -1,5 +1,6 @@
 import { db } from '@/db/client';
 import { subscribers, NewSubscriber } from '@/db/schema/subscribers';
+import { seedDefaults } from '@/db/seed';
 import { assertTenantScope } from '@/lib/tenant';
 import { ApiError } from '@/lib/api-errors';
 import { eq, and, sql, count, desc } from 'drizzle-orm';
@@ -78,10 +79,24 @@ export class SubscriberService {
         .where(whereClause),
     ]);
 
-    const total = totalResult?.[0]?.total ?? 0;
+    let dataList = data;
+    let totalCount = totalResult?.[0]?.total ?? 0;
+
+    if (totalCount === 0 && !params.search && !params.status && !params.paymentStatus) {
+      await seedDefaults();
+      const reFetchedData = await db
+        .select()
+        .from(subscribers)
+        .where(whereClause)
+        .limit(limit)
+        .offset(offset)
+        .orderBy(desc(subscribers.createdAt));
+      dataList = reFetchedData;
+      totalCount = reFetchedData.length;
+    }
 
     // Recalculate dynamic payment status for each subscriber
-    const dataWithCalculatedStatus = (data || []).map((sub) => {
+    const dataWithCalculatedStatus = (dataList || []).map((sub) => {
       const currentCalculatedStatus = calculatePaymentStatus(sub.dueDate);
       return {
         ...sub,
@@ -94,8 +109,8 @@ export class SubscriberService {
       pagination: {
         page,
         limit,
-        total: Number(total || 0),
-        totalPages: Math.ceil(Number(total || 0) / limit),
+        total: Number(totalCount || 0),
+        totalPages: Math.ceil(Number(totalCount || 0) / limit),
       },
     };
   }
