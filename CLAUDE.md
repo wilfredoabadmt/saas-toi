@@ -30,13 +30,20 @@ migraciones por Pre-Deployment Command).
 
 **Reglas que vienen de la constitución** (gobierna todo — ver
 [.specify/memory/constitution.md](.specify/memory/constitution.md)):
-- Secretos cifrados en reposo; nunca al cliente ni a logs.
-- Si hay multi-tenancy: `organization_id` indexado en toda tabla de dominio; ninguna
-  query sin scope de tenant.
-- Webhooks/eventos externos idempotentes: verificar firma + dedup por id único.
-- Core self-hosted (auth + BD); almacenamiento de objetos solo vía interfaz S3 estándar.
-- "Hecho" = typecheck + lint + build (+ tests donde apliquen); lo no verificable se
-  marca pendiente de verificación humana.
+- **Multi-tenancy absoluto**: `organization_id` / `isp_id` indexado en toda tabla de
+  dominio; ninguna query sin scope de tenant (Principio I).
+- **Seguridad Meta**: tokens WABA y credenciales cifrados AES-256-GCM en reposo; nunca
+  al cliente ni a logs (Principio II).
+- **Webhooks idempotentes**: verificar firma HMAC-SHA256 (`X-Hub-Signature-256`) +
+  dedup por `wamid`; respuesta ≤5 s (Principio III).
+- **WhatsApp UTILITY**: toda cobranza usa templates categoría UTILITY; rate limiting,
+  opt-out inmediato, protección de quality rating (Principio IV).
+- **"Hecho"** = typecheck estricto + lint + build + tests (Principio V) + self-test E2E
+  de comportamiento en vivo con loop de auto-corrección (Principio VI).
+- **S3 estándar**: archivos aislados por tenant en bucket S3-compatible; URLs
+  presignadas, sin vendor lock-in (Principio VII).
+- **Foco ISP**: suscriptores, planes de servicio, cobranza recurrente, cortes y
+  reconexiones — no un bot genérico (Principio VIII).
 
 ## Arquitectura de tres agentes
 
