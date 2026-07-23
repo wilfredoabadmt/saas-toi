@@ -20,14 +20,14 @@
 
 **Purpose**: Initialize the Next.js project, install dependencies, configure TypeScript strict mode, linting, and basic project scaffolding.
 
-- [ ] T001 Initialize Next.js 15 project (App Router) with TypeScript in `./` via `npx create-next-app@latest`
-- [ ] T002 Configure TypeScript strict mode (`strict: true`, `noUncheckedIndexedAccess: true`) in `tsconfig.json`
-- [ ] T003 [P] Install and configure ESLint + Prettier in `.eslintrc.json` and `.prettierrc`
-- [ ] T004 [P] Install core dependencies: `drizzle-orm`, `drizzle-kit`, `pg`, `zod`, `@aws-sdk/client-s3`, `@aws-sdk/s3-request-presigner`, `papaparse`
-- [ ] T005 [P] Install dev dependencies: `vitest`, `@types/pg`, `@types/papaparse`, `dotenv`
-- [ ] T006 [P] Configure Vitest in `vitest.config.ts` with path aliases
-- [ ] T007 Create base project directory structure per plan.md (`src/db/`, `src/lib/`, `src/services/`, `src/components/`, `tests/`)
-- [ ] T008 Configure `.env.example` with all required environment variables documented (per quickstart.md)
+- [x] T001 Initialize Next.js 15 project (App Router) with TypeScript in `./` via `npx create-next-app@latest`
+- [x] T002 Configure TypeScript strict mode (`strict: true`, `noUncheckedIndexedAccess: true`) in `tsconfig.json`
+- [x] T003 [P] Install and configure ESLint + Prettier in `.eslintrc.json` and `.prettierrc`
+- [x] T004 [P] Install core dependencies: `drizzle-orm`, `drizzle-kit`, `pg`, `zod`, `@aws-sdk/client-s3`, `@aws-sdk/s3-request-presigner`, `papaparse`
+- [x] T005 [P] Install dev dependencies: `vitest`, `@types/pg`, `@types/papaparse`, `dotenv`
+- [x] T006 [P] Configure Vitest in `vitest.config.ts` with path aliases
+- [x] T007 Create base project directory structure per plan.md (`src/db/`, `src/lib/`, `src/services/`, `src/components/`, `tests/`)
+- [x] T008 Configure `.env.example` with all required environment variables documented (per quickstart.md)
 
 **Checkpoint**: Project compiles, lint passes, `pnpm dev` starts without errors.
 
@@ -39,22 +39,22 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T009 Create DB connection pool and Drizzle client in `src/db/client.ts` (reads `DATABASE_URL` from env)
-- [ ] T010 [P] Create `organizations` schema in `src/db/schema/organizations.ts` (id, name, slug, status, timestamps) per data-model.md
-- [ ] T011 [P] Create `users` schema in `src/db/schema/users.ts` (id, organization_id FK, email, name, role, password_hash, timestamps) per data-model.md
-- [ ] T012 [P] Create `service_plans` schema in `src/db/schema/service-plans.ts` (id, organization_id FK, name, price, speed_down, speed_up, is_active, timestamps)
-- [ ] T013 Create schema index barrel file `src/db/schema/index.ts` re-exporting all schemas
-- [ ] T014 Configure Drizzle Kit in `drizzle.config.ts` and generate initial migration in `src/db/migrations/`
-- [ ] T015 Run initial migration against local PostgreSQL and verify tables created
-- [ ] T016 [P] Implement AES-256-GCM encrypt/decrypt utility in `src/lib/crypto.ts` (encrypt, decrypt, using `ENCRYPTION_KEY` env, IV-unique per call, format: `iv:authTag:ciphertext` in base64) per research.md DV-003
-- [ ] T017 [P] Implement S3 client + presigned URL helper in `src/lib/s3.ts` (`@aws-sdk/client-s3`, upload, download, generatePresignedUrl with TTL) per research.md DV-007
-- [ ] T018 [P] Implement tenant context helper in `src/lib/tenant.ts` (extract `organization_id` from session, throw if missing)
-- [ ] T019 [P] Create Zod validation schemas shared across API routes in `src/lib/validators.ts` (phone E.164, uuid, pagination params)
-- [ ] T020 Implement basic auth middleware/session check skeleton in `src/lib/auth.ts` (session-based, returns `userId` + `organizationId`)
-- [ ] T021 Create API error handler utility in `src/lib/api-errors.ts` (typed errors: `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `DUPLICATE`, `VALIDATION_ERROR`, `WABA_NOT_CONNECTED`)
-- [ ] T022 Create healthcheck endpoint in `src/app/api/health/route.ts` (returns 200 + DB ping status)
-- [ ] T023 [P] Write unit tests for `src/lib/crypto.ts` in `tests/unit/lib/crypto.test.ts` (encrypt→decrypt roundtrip, wrong key fails, different IVs per call)
-- [ ] T024 [P] Write unit tests for `src/lib/s3.ts` in `tests/unit/lib/s3.test.ts` (presigned URL generation, key format includes org_id)
+- [x] T009 Create DB connection pool and Drizzle client in `src/db/client.ts` (reads `DATABASE_URL` from env)
+- [x] T010 [P] Create `organizations` schema in `src/db/schema/organizations.ts` (id, name, slug, status, timestamps) per data-model.md
+- [x] T011 [P] Create `users` schema in `src/db/schema/users.ts` (id, organization_id FK, email, name, role, password_hash, timestamps) per data-model.md
+- [x] T012 [P] Create `service_plans` schema in `src/db/schema/service-plans.ts` (id, organization_id FK, name, price, speed_down, speed_up, is_active, timestamps)
+- [x] T013 Create schema index barrel file `src/db/schema/index.ts` re-exporting all schemas
+- [x] T014 Configure Drizzle Kit in `drizzle.config.ts` and generate initial migration in `src/db/migrations/`
+- [x] T015 Run initial migration against local PostgreSQL and verify tables created
+- [x] T016 [P] Implement AES-256-GCM encrypt/decrypt utility in `src/lib/crypto.ts` (encrypt, decrypt, using `ENCRYPTION_KEY` env, IV-unique per call, format: `iv:authTag:ciphertext` in base64) per research.md DV-003
+- [x] T017 [P] Implement S3 client + presigned URL helper in `src/lib/s3.ts` (`@aws-sdk/client-s3`, upload, download, generatePresignedUrl with TTL) per research.md DV-007
+- [x] T018 [P] Implement tenant context helper in `src/lib/tenant.ts` (extract `organization_id` from session, throw if missing)
+- [x] T019 [P] Create Zod validation schemas shared across API routes in `src/lib/validators.ts` (phone E.164, uuid, pagination params)
+- [x] T020 Implement basic auth middleware/session check skeleton in `src/lib/auth.ts` (session-based, returns `userId` + `organizationId`)
+- [x] T021 Create API error handler utility in `src/lib/api-errors.ts` (typed errors: `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `DUPLICATE`, `VALIDATION_ERROR`, `WABA_NOT_CONNECTED`)
+- [x] T022 Create healthcheck endpoint in `src/app/api/health/route.ts` (returns 200 + DB ping status)
+- [x] T023 [P] Write unit tests for `src/lib/crypto.ts` in `tests/unit/lib/crypto.test.ts` (encrypt→decrypt roundtrip, wrong key fails, different IVs per call)
+- [x] T024 [P] Write unit tests for `src/lib/s3.ts` in `tests/unit/lib/s3.test.ts` (presigned URL generation, key format includes org_id)
 
 **Checkpoint**: Foundation ready — DB connected, schemas migrated, crypto/S3/tenant/auth utilities working with tests green. `pnpm test` + `pnpm build` pass.
 
@@ -68,22 +68,22 @@
 
 ### Implementation for User Story 1
 
-- [ ] T025 [P] [US1] Create `subscribers` schema in `src/db/schema/subscribers.ts` (all columns per data-model.md, UNIQUE(phone, organization_id), indexes on organization_id, payment_status, due_date)
-- [ ] T026 [US1] Generate and run migration for `subscribers` table
-- [ ] T027 [US1] Implement `SubscriberService` in `src/services/subscriber.service.ts` (create, list with pagination/filters, getById, update, softDelete — ALL methods require `organizationId` param, no method without tenant scope)
-- [ ] T028 [US1] Implement CSV import logic in `src/lib/csv-parser.ts` (parse with `papaparse`, validate each row with Zod schema, batch insert in groups of 100, ON CONFLICT DO NOTHING for dedup, return `{imported, duplicates, errors}`) per research.md DV-008
-- [ ] T029 [US1] Create API route `GET/POST /api/subscribers` in `src/app/api/subscribers/route.ts` (list with pagination/filters, create single subscriber) per contract api-subscribers.md
-- [ ] T030 [US1] Create API route `POST /api/subscribers/import` in `src/app/api/subscribers/import/route.ts` (multipart CSV upload, max 5MB, process with csv-parser) per contract api-subscribers.md
-- [ ] T031 [US1] Create API route `GET/PATCH/DELETE /api/subscribers/[id]` in `src/app/api/subscribers/[id]/route.ts` (detail, update, soft-delete) per contract api-subscribers.md
-- [ ] T032 [P] [US1] Create `SubscriberTable` component in `src/components/domain/subscriber-table.tsx` (list with pagination, status badges, search/filter)
-- [ ] T033 [P] [US1] Create `CsvImportForm` component in `src/components/domain/csv-import-form.tsx` (file upload, progress, results summary with errors)
-- [ ] T034 [US1] Create subscribers list page in `src/app/(dashboard)/subscribers/page.tsx` (uses SubscriberTable, link to import, link to detail)
-- [ ] T035 [US1] Create CSV import page in `src/app/(dashboard)/subscribers/import/page.tsx` (uses CsvImportForm)
-- [ ] T036 [US1] Create subscriber detail page in `src/app/(dashboard)/subscribers/[id]/page.tsx` (edit form, payment proofs list, message history)
-- [ ] T037 [US1] Create dashboard layout in `src/app/(dashboard)/layout.tsx` (sidebar nav: Abonados, WhatsApp, Mensajería)
-- [ ] T038 [P] [US1] Write unit tests for `SubscriberService` in `tests/unit/services/subscriber.service.test.ts` (create, list filtered by org_id, dedup by phone)
-- [ ] T039 [P] [US1] Write unit tests for CSV parser in `tests/unit/lib/csv-parser.test.ts` (valid CSV, invalid rows, duplicates, empty file)
-- [ ] T040 [US1] Write integration test for subscriber API in `tests/integration/api/subscribers.test.ts` (CRUD, import CSV, tenant isolation — ISP-A can't see ISP-B data)
+- [x] T025 [P] [US1] Create `subscribers` schema in `src/db/schema/subscribers.ts` (all columns per data-model.md, UNIQUE(phone, organization_id), indexes on organization_id, payment_status, due_date)
+- [x] T026 [US1] Generate and run migration for `subscribers` table
+- [x] T027 [US1] Implement `SubscriberService` in `src/services/subscriber.service.ts` (create, list with pagination/filters, getById, update, softDelete — ALL methods require `organizationId` param, no method without tenant scope)
+- [x] T028 [US1] Implement CSV import logic in `src/lib/csv-parser.ts` (parse with `papaparse`, validate each row with Zod schema, batch insert in groups of 100, ON CONFLICT DO NOTHING for dedup, return `{imported, duplicates, errors}`) per research.md DV-008
+- [x] T029 [US1] Create API route `GET/POST /api/subscribers` in `src/app/api/subscribers/route.ts` (list with pagination/filters, create single subscriber) per contract api-subscribers.md
+- [x] T030 [US1] Create API route `POST /api/subscribers/import` in `src/app/api/subscribers/import/route.ts` (multipart CSV upload, max 5MB, process with csv-parser) per contract api-subscribers.md
+- [x] T031 [US1] Create API route `GET/PATCH/DELETE /api/subscribers/[id]` in `src/app/api/subscribers/[id]/route.ts` (detail, update, soft-delete) per contract api-subscribers.md
+- [x] T032 [P] [US1] Create `SubscriberTable` component in `src/components/domain/subscriber-table.tsx` (list with pagination, status badges, search/filter)
+- [x] T033 [P] [US1] Create `CsvImportForm` component in `src/components/domain/csv-import-form.tsx` (file upload, progress, results summary with errors)
+- [x] T034 [US1] Create subscribers list page in `src/app/(dashboard)/subscribers/page.tsx` (uses SubscriberTable, link to import, link to detail)
+- [x] T035 [US1] Create CSV import page in `src/app/(dashboard)/subscribers/import/page.tsx` (uses CsvImportForm)
+- [x] T036 [US1] Create subscriber detail page in `src/app/(dashboard)/subscribers/[id]/page.tsx` (edit form, payment proofs list, message history)
+- [x] T037 [US1] Create dashboard layout in `src/app/(dashboard)/layout.tsx` (sidebar nav: Abonados, WhatsApp, Mensajería)
+- [x] T038 [P] [US1] Write unit tests for `SubscriberService` in `tests/unit/services/subscriber.service.test.ts` (create, list filtered by org_id, dedup by phone)
+- [x] T039 [P] [US1] Write unit tests for CSV parser in `tests/unit/lib/csv-parser.test.ts` (valid CSV, invalid rows, duplicates, empty file)
+- [x] T040 [US1] Write integration test for subscriber API in `tests/integration/api/subscribers.test.ts` (CRUD, import CSV, tenant isolation — ISP-A can't see ISP-B data)
 
 **Checkpoint**: A registered ISP can import subscribers from CSV, list/search/filter them, edit details, and delete. Another ISP sees only its own data. `pnpm test` green.
 
@@ -97,18 +97,18 @@
 
 ### Implementation for User Story 2
 
-- [ ] T041 [P] [US2] Create `waba_configs` schema in `src/db/schema/waba-configs.ts` (all columns per data-model.md, UNIQUE(organization_id), UNIQUE(phone_number_id), encrypted_token, key_version)
-- [ ] T042 [US2] Generate and run migration for `waba_configs` table
-- [ ] T043 [US2] Implement WhatsApp Cloud API client in `src/lib/whatsapp/client.ts` (exchange code for token via Graph API, get WABA info, get phone number, subscribe webhook, send template message)
-- [ ] T044 [US2] Implement `WabaService` in `src/services/waba.service.ts` (connect: exchange code → encrypt token → store, getStatus, disconnect, getDecryptedToken — internal only, never exposed)
-- [ ] T045 [US2] Create API route `GET /api/waba/status` in `src/app/api/waba/status/route.ts` per contract api-waba.md (return connection status, displayPhone, NEVER return token)
-- [ ] T046 [US2] Create API route `POST /api/waba/connect` in `src/app/api/waba/connect/route.ts` per contract api-waba.md (receive code from Embedded Signup, call WabaService.connect)
-- [ ] T047 [US2] Create API route `POST /api/waba/disconnect` in `src/app/api/waba/disconnect/route.ts` per contract api-waba.md
-- [ ] T048 [US2] Create `WabaConnectButton` component in `src/components/domain/waba-connect-button.tsx` (Facebook JS SDK `FB.login` for Embedded Signup, send code to backend)
-- [ ] T049 [US2] Create WhatsApp config page in `src/app/(dashboard)/whatsapp/page.tsx` (show connection status, connect/disconnect button)
-- [ ] T050 [US2] Add Meta JS SDK script loader in `src/app/layout.tsx` or dedicated component (load `connect.facebook.net/en_US/sdk.js` with app_id)
-- [ ] T051 [P] [US2] Write unit tests for `WabaService` in `tests/unit/services/waba.service.test.ts` (connect stores encrypted token, getStatus never returns token, disconnect clears token)
-- [ ] T052 [US2] Write integration test for WABA API in `tests/integration/api/waba.test.ts` (connect with mock code, verify token encrypted in DB, verify status response has no token)
+- [x] T041 [P] [US2] Create `waba_configs` schema in `src/db/schema/waba-configs.ts` (all columns per data-model.md, UNIQUE(organization_id), UNIQUE(phone_number_id), encrypted_token, key_version)
+- [x] T042 [US2] Generate and run migration for `waba_configs` table
+- [x] T043 [US2] Implement WhatsApp Cloud API client in `src/lib/whatsapp/client.ts` (exchange code for token via Graph API, get WABA info, get phone number, subscribe webhook, send template message)
+- [x] T044 [US2] Implement `WabaService` in `src/services/waba.service.ts` (connect: exchange code → encrypt token → store, getStatus, disconnect, getDecryptedToken — internal only, never exposed)
+- [x] T045 [US2] Create API route `GET /api/waba/status` in `src/app/api/waba/status/route.ts` per contract api-waba.md (return connection status, displayPhone, NEVER return token)
+- [x] T046 [US2] Create API route `POST /api/waba/connect` in `src/app/api/waba/connect/route.ts` per contract api-waba.md (receive code from Embedded Signup, call WabaService.connect)
+- [x] T047 [US2] Create API route `POST /api/waba/disconnect` in `src/app/api/waba/disconnect/route.ts` per contract api-waba.md
+- [x] T048 [US2] Create `WabaConnectButton` component in `src/components/domain/waba-connect-button.tsx` (Facebook JS SDK `FB.login` for Embedded Signup, send code to backend)
+- [x] T049 [US2] Create WhatsApp config page in `src/app/(dashboard)/whatsapp/page.tsx` (show connection status, connect/disconnect button)
+- [x] T050 [US2] Add Meta JS SDK script loader in `src/app/layout.tsx` or dedicated component (load `connect.facebook.net/en_US/sdk.js` with app_id)
+- [x] T051 [P] [US2] Write unit tests for `WabaService` in `tests/unit/services/waba.service.test.ts` (connect stores encrypted token, getStatus never returns token, disconnect clears token)
+- [x] T052 [US2] Write integration test for WABA API in `tests/integration/api/waba.test.ts` (connect with mock code, verify token encrypted in DB, verify status response has no token)
 
 **Checkpoint**: ISP can connect/disconnect WABA. Token stored encrypted, never in API responses. `pnpm test` green.
 
@@ -124,18 +124,18 @@
 
 ### Implementation for User Story 3
 
-- [ ] T053 [P] [US3] Create `message_logs` schema in `src/db/schema/message-logs.ts` (all columns per data-model.md, indexes on organization_id, wamid, subscriber_id, delivery_status)
-- [ ] T054 [US3] Generate and run migration for `message_logs` table
-- [ ] T055 [US3] Implement rate limiter in `src/lib/rate-limiter.ts` (in-memory sliding window per organization_id, default 80 msg/min, configurable) per research.md DV-010
-- [ ] T056 [US3] Implement `MessagingService` in `src/services/messaging.service.ts` (sendTemplateToSubscribers: verify WABA connected, filter opted-out, build template params per subscriber, call WhatsApp client, register message_logs with wamid, respect rate limits, return summary)
-- [ ] T057 [US3] Add `sendTemplateMessage` method to WhatsApp client in `src/lib/whatsapp/client.ts` (POST to `/v21.0/{phone_number_id}/messages` with template payload, return wamid)
-- [ ] T058 [US3] Create API route `POST /api/messaging/send` in `src/app/api/messaging/send/route.ts` per contract api-messaging.md (validate input, call MessagingService, return summary)
-- [ ] T059 [US3] Create API route `GET /api/messaging/logs` in `src/app/api/messaging/logs/route.ts` per contract api-messaging.md (list with pagination/filters)
-- [ ] T060 [P] [US3] Create `MessageSendForm` component in `src/components/domain/message-send-form.tsx` (select subscribers by status filter, choose template, send button, show results)
-- [ ] T061 [US3] Create messaging page in `src/app/(dashboard)/messaging/page.tsx` (uses MessageSendForm, shows message logs table)
-- [ ] T062 [P] [US3] Write unit tests for rate limiter in `tests/unit/lib/rate-limiter.test.ts` (allows under limit, blocks over limit, resets after window)
-- [ ] T063 [P] [US3] Write unit tests for `MessagingService` in `tests/unit/services/messaging.service.test.ts` (sends to valid subscribers, skips opted-out, handles Meta API errors, respects rate limit)
-- [ ] T064 [US3] Write integration test for messaging API in `tests/integration/api/messaging.test.ts` (send to subscribers, verify message_logs created, verify rate limit 429)
+- [x] T053 [P] [US3] Create `message_logs` schema in `src/db/schema/message-logs.ts` (all columns per data-model.md, indexes on organization_id, wamid, subscriber_id, delivery_status)
+- [x] T054 [US3] Generate and run migration for `message_logs` table
+- [x] T055 [US3] Implement rate limiter in `src/lib/rate-limiter.ts` (in-memory sliding window per organization_id, default 80 msg/min, configurable) per research.md DV-010
+- [x] T056 [US3] Implement `MessagingService` in `src/services/messaging.service.ts` (sendTemplateToSubscribers: verify WABA connected, filter opted-out, build template params per subscriber, call WhatsApp client, register message_logs with wamid, respect rate limits, return summary)
+- [x] T057 [US3] Add `sendTemplateMessage` method to WhatsApp client in `src/lib/whatsapp/client.ts` (POST to `/v21.0/{phone_number_id}/messages` with template payload, return wamid)
+- [x] T058 [US3] Create API route `POST /api/messaging/send` in `src/app/api/messaging/send/route.ts` per contract api-messaging.md (validate input, call MessagingService, return summary)
+- [x] T059 [US3] Create API route `GET /api/messaging/logs` in `src/app/api/messaging/logs/route.ts` per contract api-messaging.md (list with pagination/filters)
+- [x] T060 [P] [US3] Create `MessageSendForm` component in `src/components/domain/message-send-form.tsx` (select subscribers by status filter, choose template, send button, show results)
+- [x] T061 [US3] Create messaging page in `src/app/(dashboard)/messaging/page.tsx` (uses MessageSendForm, shows message logs table)
+- [x] T062 [P] [US3] Write unit tests for rate limiter in `tests/unit/lib/rate-limiter.test.ts` (allows under limit, blocks over limit, resets after window)
+- [x] T063 [P] [US3] Write unit tests for `MessagingService` in `tests/unit/services/messaging.service.test.ts` (sends to valid subscribers, skips opted-out, handles Meta API errors, respects rate limit)
+- [x] T064 [US3] Write integration test for messaging API in `tests/integration/api/messaging.test.ts` (send to subscribers, verify message_logs created, verify rate limit 429)
 
 **Checkpoint**: ISP can send payment reminders to selected subscribers. Rate limiting works. Message logs visible. `pnpm test` green.
 
@@ -151,23 +151,23 @@
 
 ### Implementation for User Story 4
 
-- [ ] T065 [P] [US4] Create `processed_webhook_events` schema in `src/db/schema/processed-events.ts` (event_id UNIQUE, event_type, organization_id nullable FK, received_at, processed_at)
-- [ ] T066 [P] [US4] Create `payment_proofs` schema in `src/db/schema/payment-proofs.ts` (all columns per data-model.md, UNIQUE(wamid), indexes on organization_id, subscriber_id, review_status)
-- [ ] T067 [US4] Generate and run migration for `processed_webhook_events` and `payment_proofs` tables
-- [ ] T068 [US4] Implement webhook signature verification in `src/lib/whatsapp/webhook-verify.ts` (HMAC-SHA256 with `META_APP_SECRET`, `timingSafeEqual`, parse raw body before JSON) per research.md DV-004
-- [ ] T069 [US4] Implement `WebhookService` in `src/services/webhook.service.ts` (processEvent: dedup by event_id INSERT ON CONFLICT, resolve org by phone_number_id, resolve subscriber by phone+org, dispatch by event type: message→handleIncomingMessage, status→handleStatusUpdate)
-- [ ] T070 [US4] Implement `PaymentProofService` in `src/services/payment-proof.service.ts` (handleMediaMessage: download from Meta via Graph API, upload to S3 `/{org_id}/comprobantes/{subscriber_id}/{ts}_{wamid}.{ext}`, create payment_proof record, create message_log record)
-- [ ] T071 [US4] Add `downloadMedia` method to WhatsApp client in `src/lib/whatsapp/client.ts` (GET media URL from Graph API, download binary, return buffer + mime_type)
-- [ ] T072 [US4] Create webhook endpoint `GET /api/webhooks/whatsapp` in `src/app/api/webhooks/whatsapp/route.ts` (verification challenge: validate hub.verify_token, return hub.challenge) per contract webhook-whatsapp.md
-- [ ] T073 [US4] Create webhook endpoint `POST /api/webhooks/whatsapp` in `src/app/api/webhooks/whatsapp/route.ts` (verify signature via raw body, parse entries, dedup, dispatch to WebhookService, always respond 200 within 5s) per contract webhook-whatsapp.md
-- [ ] T074 [US4] Implement status update handler in `WebhookService` (update message_logs delivery_status by wamid for sent/delivered/read/failed)
-- [ ] T075 [P] [US4] Create `PaymentProofViewer` component in `src/components/domain/payment-proof-viewer.tsx` (show presigned URL image/PDF, review status badge, approve/reject buttons)
-- [ ] T076 [US4] Add payment proofs section to subscriber detail page `src/app/(dashboard)/subscribers/[id]/page.tsx` (list proofs with PaymentProofViewer, approve/reject actions)
-- [ ] T077 [US4] Create API route `PATCH /api/subscribers/[id]/proofs/[proofId]` in appropriate route file (update review_status to approved/rejected)
-- [ ] T078 [P] [US4] Write unit tests for webhook signature verification in `tests/unit/lib/webhook-verify.test.ts` (valid sig passes, invalid sig rejects, missing sig rejects, timing-safe comparison)
-- [ ] T079 [P] [US4] Write unit tests for `WebhookService` in `tests/unit/services/webhook.service.test.ts` (dedup skips second call, resolves org by phone_number_id, handles unknown sender, processes image/document/text correctly)
-- [ ] T080 [US4] Write integration test for webhook endpoint in `tests/integration/api/webhook.test.ts` (valid POST with signature → 200 + proof created, duplicate wamid → 200 + no duplicate, invalid signature → 401, GET verification challenge)
-- [ ] T081 [US4] Write integration test for tenant isolation in `tests/integration/db/tenant-isolation.test.ts` (ISP-A data never visible to ISP-B across all entities)
+- [x] T065 [P] [US4] Create `processed_webhook_events` schema in `src/db/schema/processed-events.ts` (event_id UNIQUE, event_type, organization_id nullable FK, received_at, processed_at)
+- [x] T066 [P] [US4] Create `payment_proofs` schema in `src/db/schema/payment-proofs.ts` (all columns per data-model.md, UNIQUE(wamid), indexes on organization_id, subscriber_id, review_status)
+- [x] T067 [US4] Generate and run migration for `processed_webhook_events` and `payment_proofs` tables
+- [x] T068 [US4] Implement webhook signature verification in `src/lib/whatsapp/webhook-verify.ts` (HMAC-SHA256 with `META_APP_SECRET`, `timingSafeEqual`, parse raw body before JSON) per research.md DV-004
+- [x] T069 [US4] Implement `WebhookService` in `src/services/webhook.service.ts` (processEvent: dedup by event_id INSERT ON CONFLICT, resolve org by phone_number_id, resolve subscriber by phone+org, dispatch by event type: message→handleIncomingMessage, status→handleStatusUpdate)
+- [x] T070 [US4] Implement `PaymentProofService` in `src/services/payment-proof.service.ts` (handleMediaMessage: download from Meta via Graph API, upload to S3 `/{org_id}/comprobantes/{subscriber_id}/{ts}_{wamid}.{ext}`, create payment_proof record, create message_log record)
+- [x] T071 [US4] Add `downloadMedia` method to WhatsApp client in `src/lib/whatsapp/client.ts` (GET media URL from Graph API, download binary, return buffer + mime_type)
+- [x] T072 [US4] Create webhook endpoint `GET /api/webhooks/whatsapp` in `src/app/api/webhooks/whatsapp/route.ts` (verification challenge: validate hub.verify_token, return hub.challenge) per contract webhook-whatsapp.md
+- [x] T073 [US4] Create webhook endpoint `POST /api/webhooks/whatsapp` in `src/app/api/webhooks/whatsapp/route.ts` (verify signature via raw body, parse entries, dedup, dispatch to WebhookService, always respond 200 within 5s) per contract webhook-whatsapp.md
+- [x] T074 [US4] Implement status update handler in `WebhookService` (update message_logs delivery_status by wamid for sent/delivered/read/failed)
+- [x] T075 [P] [US4] Create `PaymentProofViewer` component in `src/components/domain/payment-proof-viewer.tsx` (show presigned URL image/PDF, review status badge, approve/reject buttons)
+- [x] T076 [US4] Add payment proofs section to subscriber detail page `src/app/(dashboard)/subscribers/[id]/page.tsx` (list proofs with PaymentProofViewer, approve/reject actions)
+- [x] T077 [US4] Create API route `PATCH /api/subscribers/[id]/proofs/[proofId]` in appropriate route file (update review_status to approved/rejected)
+- [x] T078 [P] [US4] Write unit tests for webhook signature verification in `tests/unit/lib/webhook-verify.test.ts` (valid sig passes, invalid sig rejects, missing sig rejects, timing-safe comparison)
+- [x] T079 [P] [US4] Write unit tests for `WebhookService` in `tests/unit/services/webhook.service.test.ts` (dedup skips second call, resolves org by phone_number_id, handles unknown sender, processes image/document/text correctly)
+- [x] T080 [US4] Write integration test for webhook endpoint in `tests/integration/api/webhook.test.ts` (valid POST with signature → 200 + proof created, duplicate wamid → 200 + no duplicate, invalid signature → 401, GET verification challenge)
+- [x] T081 [US4] Write integration test for tenant isolation in `tests/integration/db/tenant-isolation.test.ts` (ISP-A data never visible to ISP-B across all entities)
 
 **Checkpoint**: Webhook receives and processes Meta events. Signature verified, events deduplicated, media downloaded and stored in S3 by tenant. Proofs visible and reviewable in panel. `pnpm test` green.
 
@@ -177,15 +177,16 @@
 
 **Purpose**: Improvements that affect multiple user stories — hardening, cleanup, documentation.
 
-- [ ] T082 [P] Add `payment_status` recalculation logic (cron job or on-read) for subscribers based on due_date vs today
-- [ ] T083 [P] Add processed_webhook_events TTL cleanup job (purge events older than 7 days)
-- [ ] T084 [P] Sanitize logs to ensure no tokens, secrets, or full webhook bodies are logged (audit `console.log` / logger calls)
-- [ ] T085 [P] Add loading states, error toasts, and empty states to all dashboard pages
-- [ ] T086 [P] Add responsive design and mobile-friendly layout to dashboard
-- [ ] T087 Update `src/db/schema/index.ts` barrel file with all schemas
-- [ ] T088 Run `pnpm typecheck` + `pnpm lint` + `pnpm build` and fix all errors
-- [ ] T089 Run full test suite `pnpm test` and ensure all tests green
-- [ ] T090 Run quickstart.md validation end-to-end (import CSV → connect WABA → send reminder → receive webhook → view proof)
+- [x] T082 [P] Add `payment_status` recalculation logic (cron job or on-read) for subscribers based on due_date vs today
+- [x] T083 [P] Add processed_webhook_events TTL cleanup job (purge events older than 7 days)
+- [x] T084 [P] Sanitize logs to ensure no tokens, secrets, or full webhook bodies are logged (audit `console.log` / logger calls)
+- [x] T085 [P] Add loading states, error toasts, and empty states to all dashboard pages
+- [x] T086 [P] Add responsive design and mobile-friendly layout to dashboard
+- [x] T087 Update `src/db/schema/index.ts` barrel file with all schemas
+- [x] T088 Run `pnpm typecheck` + `pnpm lint` + `pnpm build` and fix all errors
+- [x] T089 Run full test suite `pnpm test` and ensure all tests green
+- [x] T090 Run quickstart.md validation end-to-end (import CSV → connect WABA → send reminder → receive webhook → view proof)
+
 
 ---
 
