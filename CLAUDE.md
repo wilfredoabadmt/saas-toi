@@ -5,13 +5,14 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: [NNN-nombre-feature]
+## Active feature: 001-tenant-whatsapp-billing
 
-Plan técnico: [specs/NNN-nombre-feature/plan.md](specs/NNN-nombre-feature/plan.md)
+Plan técnico: [specs/001-tenant-whatsapp-billing/plan.md](specs/001-tenant-whatsapp-billing/plan.md)
 (spec, research, data-model, contracts y quickstart en la misma carpeta).
 
-[Resumen de 1-2 párrafos de la feature en curso. Cuando termines una feature, mueve su
-resumen a una sección "## Feature previa: ..." debajo, como bitácora.]
+Gestión multi-tenant de abonados, conexión de WhatsApp Business vía Embedded Signup,
+envío de recordatorios de cobranza con templates Utility, y recepción idempotente de
+comprobantes de pago por webhook con almacenamiento S3 aislado por tenant.
 
 <!--
 ## Feature previa: [NNN-...]
