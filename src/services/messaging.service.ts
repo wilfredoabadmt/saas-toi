@@ -1,4 +1,4 @@
-import { db } from '@/db/client';
+import { db, ensureMigrationsRun } from '@/db/client';
 import { messageLogs } from '@/db/schema/message-logs';
 import { subscribers } from '@/db/schema/subscribers';
 import { assertTenantScope } from '@/lib/tenant';
@@ -115,6 +115,7 @@ export class MessagingService {
    * List message logs for tenant.
    */
   static async listLogs(params: { organizationId: string; page?: number; limit?: number; subscriberId?: string }) {
+    await ensureMigrationsRun();
     const orgId = assertTenantScope(params.organizationId);
     const page = params.page || 1;
     const limit = params.limit || 50;

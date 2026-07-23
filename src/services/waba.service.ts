@@ -1,4 +1,4 @@
-import { db } from '@/db/client';
+import { db, ensureMigrationsRun } from '@/db/client';
 import { wabaConfigs, WabaConfig } from '@/db/schema/waba-configs';
 import { assertTenantScope } from '@/lib/tenant';
 import { encrypt, decrypt } from '@/lib/crypto';
@@ -79,6 +79,7 @@ export class WabaService {
    * NEVER returns encryptedToken or decrypted token to caller.
    */
   static async getStatus(organizationId: string) {
+    await ensureMigrationsRun();
     const orgId = assertTenantScope(organizationId);
 
     const [config] = await db

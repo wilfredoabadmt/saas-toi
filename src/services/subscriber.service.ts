@@ -1,4 +1,4 @@
-import { db } from '@/db/client';
+import { db, ensureMigrationsRun } from '@/db/client';
 import { subscribers, NewSubscriber } from '@/db/schema/subscribers';
 import { seedDefaults } from '@/db/seed';
 import { assertTenantScope } from '@/lib/tenant';
@@ -42,6 +42,7 @@ export class SubscriberService {
     status?: string;
     paymentStatus?: string;
   }) {
+    await ensureMigrationsRun();
     const orgId = assertTenantScope(params.organizationId);
     const page = params.page || 1;
     const limit = params.limit || 50;
@@ -154,6 +155,7 @@ export class SubscriberService {
    * Get single subscriber by ID, verified against organizationId.
    */
   static async getById(organizationId: string, id: string) {
+    await ensureMigrationsRun();
     const orgId = assertTenantScope(organizationId);
 
     const [subscriber] = await db
