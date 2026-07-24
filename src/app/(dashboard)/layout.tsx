@@ -113,6 +113,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <Link href="/settings/routers" className="nav-item" onClick={() => setSidebarOpen(false)}>
                     <span>⚙️</span> Routers MikroTik
                   </Link>
+                  <Link href="/settings/team" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                    <span>👥</span> Equipo & RBAC
+                  </Link>
                 </nav>
               </div>
 
