@@ -34,6 +34,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Single Floating Container Panel Sidebar (rounded-3xl) */}
           <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
             <div>
+              {/* SaaS TOI Brand Logo with Continuous Soft Glow Animation */}
+              <div style={{ textAlign: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                <Link href="/" style={{ textDecoration: 'none', display: 'inline-block' }}>
+                  <img
+                    src="/logotoi.webp"
+                    alt="SaaS TOI Logo"
+                    className="logo-animated-glow"
+                    style={{ height: '38px', width: 'auto', objectFit: 'contain' }}
+                  />
+                </Link>
+              </div>
+
               {/* User Avatar, Name & Role Header */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <div

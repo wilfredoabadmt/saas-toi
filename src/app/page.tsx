@@ -8,10 +8,12 @@ export default function LandingPage() {
       <nav style={{ borderBottom: '1px solid #1e293b', backgroundColor: 'rgba(9, 13, 22, 0.85)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ fontSize: '1.5rem' }}>📶</span>
-            <span style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.03em', background: 'linear-gradient(135deg, #38bdf8, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              SaaS TOI ISP
-            </span>
+            <img
+              src="/logotoi.webp"
+              alt="SaaS TOI Logo"
+              className="logo-animated-glow"
+              style={{ height: '42px', width: 'auto', objectFit: 'contain' }}
+            />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', fontSize: '0.9rem', fontWeight: 600 }}>

@@ -47,7 +47,16 @@ export default function RegisterPage() {
       <div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '16px', width: '100%', maxWidth: '480px', padding: '2.5rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{ fontSize: '2.25rem', marginBottom: '0.5rem' }}>📶</div>
+          <div style={{ marginBottom: '0.75rem' }}>
+            <Link href="/" style={{ textDecoration: 'none', display: 'inline-block' }}>
+              <img
+                src="/logotoi.webp"
+                alt="SaaS TOI Logo"
+                className="logo-animated-glow"
+                style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
+              />
+            </Link>
+          </div>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
             Registra tu ISP en SaaS TOI
           </h1>
