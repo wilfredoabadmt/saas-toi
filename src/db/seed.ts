@@ -3,6 +3,7 @@ import { users } from './schema/users';
 import { servicePlans } from './schema/service-plans';
 import { subscribers } from './schema/subscribers';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function seedDefaults(dbInstance?: any) {
   const db = dbInstance || (await import('./client')).db;
   const defaultOrgId = '00000000-0000-0000-0000-000000000001';
