@@ -34,19 +34,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Single Floating Container Panel Sidebar (rounded-3xl) */}
           <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
             <div>
-              {/* SaaS TOI Brand Logo with Continuous Soft Glow Animation */}
-              <div style={{ textAlign: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                <Link href="/" style={{ textDecoration: 'none', display: 'inline-block' }}>
-                  <img
-                    src="/logotoi.webp"
-                    alt="SaaS TOI Logo"
-                    className="logo-animated-glow"
-                    style={{ height: '38px', width: 'auto', objectFit: 'contain' }}
-                  />
-                </Link>
-              </div>
-
-              {/* User Avatar, Name & Role Header */}
+              {/* User Avatar + Admin Name + Brand Logo Side-by-Side */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <div
                   style={{
@@ -66,10 +54,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 >
                   RM
                 </div>
-                <div style={{ overflow: 'hidden' }}>
-                  <h2 style={{ fontSize: '0.98rem', fontWeight: 800, margin: 0, color: '#f8fafc', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                    Roberto Morales
-                  </h2>
+
+                <div style={{ overflow: 'hidden', flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+                    <h2 style={{ fontSize: '0.92rem', fontWeight: 800, margin: 0, color: '#f8fafc', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                      Roberto Morales
+                    </h2>
+                    <img
+                      src="/logotoi.webp"
+                      alt="SaaS TOI Logo"
+                      className="logo-animated-glow"
+                      style={{ height: '26px', width: 'auto', objectFit: 'contain', flexShrink: 0 }}
+                    />
+                  </div>
+
                   <span style={{ fontSize: '0.72rem', color: '#818CF8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                     👑 Admin ISP
                   </span>
