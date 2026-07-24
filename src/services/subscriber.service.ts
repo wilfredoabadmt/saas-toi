@@ -122,6 +122,10 @@ export class SubscriberService {
   static async create(organizationId: string, input: Omit<NewSubscriber, 'id' | 'organizationId' | 'createdAt' | 'updatedAt'>) {
     const orgId = assertTenantScope(organizationId);
 
+    // Enforce SaaS Subscription Subscriber Limit Guard
+    const { SubscriptionGuard } = await import('./subscription-guard.service');
+    await SubscriptionGuard.assertCanAddSubscriber(orgId, 1);
+
     // Check for duplicate phone in tenant
     const existing = await db
       .select()

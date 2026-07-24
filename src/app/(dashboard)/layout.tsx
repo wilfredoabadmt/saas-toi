@@ -116,6 +116,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <Link href="/settings/team" className="nav-item" onClick={() => setSidebarOpen(false)}>
                     <span>👥</span> Equipo & RBAC
                   </Link>
+                  <Link href="/settings/billing" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                    <span>💳</span> Suscripción SaaS
+                  </Link>
+                  <Link href="/super-admin/tenants" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                    <span>👑</span> Super Admin Tenants
+                  </Link>
                 </nav>
               </div>
 
