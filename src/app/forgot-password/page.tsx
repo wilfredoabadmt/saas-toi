@@ -1,0 +1,101 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+
+export default function ForgotPasswordPage() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Error al solicitar recuperación');
+
+      setSubmitted(true);
+    } catch (err) {
+      setErrorMsg((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ backgroundColor: '#090d16', color: '#f8fafc', fontFamily: 'system-ui, sans-serif', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem' }}>
+      <div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '16px', width: '100%', maxWidth: '440px', padding: '2.5rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <div style={{ fontSize: '2.25rem', marginBottom: '0.5rem' }}>🔑</div>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
+            Recuperar Contraseña
+          </h1>
+          <p style={{ color: '#94a3b8', fontSize: '0.88rem', marginTop: '0.35rem' }}>
+            Ingresa tu correo electrónico registrado para recibir el enlace seguro
+          </p>
+        </div>
+
+        {submitted ? (
+          <div style={{ backgroundColor: '#064e3b', border: '1px solid #047857', color: '#a7f3d0', padding: '1.25rem', borderRadius: '12px', textAlign: 'center', fontSize: '0.9rem' }}>
+            <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📩</div>
+            <strong>¡Correo Enviado!</strong>
+            <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.85rem' }}>
+              Si existe una cuenta asociada a <strong>{email}</strong>, recibirás un mensaje con las instrucciones de restablecimiento.
+            </p>
+            <div style={{ marginTop: '1.25rem' }}>
+              <Link href="/subscribers" style={{ color: '#34d399', fontWeight: 700, textDecoration: 'none' }}>
+                Volver a Iniciar Sesión
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+            {errorMsg && (
+              <div style={{ backgroundColor: '#450a0a', border: '1px solid #991b1b', color: '#fca5a5', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '0.85rem' }}>
+                ⚠️ {errorMsg}
+              </div>
+            )}
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#cbd5e1', marginBottom: '0.35rem' }}>
+                Correo Electrónico
+              </label>
+              <input
+                type="email"
+                placeholder="usuario@isp.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{ width: '100%', padding: '0.7rem 0.9rem', backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '0.9rem' }}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{ marginTop: '0.5rem', backgroundColor: '#2563eb', color: '#ffffff', padding: '0.8rem', borderRadius: '8px', fontWeight: 800, fontSize: '0.95rem', border: 'none', cursor: 'pointer' }}
+            >
+              {loading ? 'Enviando Correo...' : 'Enviar Enlace de Recuperación ✉️'}
+            </button>
+          </form>
+        )}
+
+        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.82rem', color: '#64748b' }}>
+          <Link href="/subscribers" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+            ← Volver al inicio de sesión
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

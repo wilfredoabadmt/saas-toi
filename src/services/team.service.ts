@@ -59,6 +59,13 @@ export class TeamService {
       throw new ApiError('DUPLICATE', 'Ya existe un usuario registrado con ese email', 409);
     }
 
+    // Trigger Team Invitation Email
+    const { EmailService } = await import('./email.service');
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://saas-toi-ssd.89.116.29.168.sslip.io';
+    const inviteUrl = `${baseUrl}/accept-invite?email=${encodeURIComponent(created.email)}`;
+
+    await EmailService.sendTeamInvitation(created.email, 'Mi Empresa ISP', created.role, inviteUrl);
+
     return { ...created, role: created.role as UserRole, isActive: true };
   }
 

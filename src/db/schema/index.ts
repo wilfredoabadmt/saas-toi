@@ -9,3 +9,5 @@ export * from './payment-proofs';
 export * from './tickets';
 export * from './router-configs';
 export * from './router-audit-logs';
+export * from './password-resets';
+export * from './team-invitations';
