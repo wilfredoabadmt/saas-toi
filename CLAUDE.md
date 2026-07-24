@@ -5,11 +5,14 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 005-rbac-and-meta-compliance
+## Active feature: 006-landing-and-self-onboarding
 
-Plan técnico: [specs/005-rbac-and-meta-compliance/spec.md](specs/005-rbac-and-meta-compliance/spec.md)
+Plan técnico: [specs/006-landing-and-self-onboarding/spec.md](specs/006-landing-and-self-onboarding/spec.md)
 
-Gestión de Roles y Permisos (RBAC Admin/Billing/Technician), Gestión de Equipo (`/settings/team`) y Páginas Públicas para Meta App Review (`/privacy`, `/terms`, `/data-deletion`).
+Landing Page Comercial Pública (`/`), Registro Autónomo de Tenant (`/register`) y Asistente de Inicio Guiado (Onboarding Wizard `/onboarding`).
+
+## Feature previa: 005-rbac-and-meta-compliance
+Plan técnico: [specs/005-rbac-and-meta-compliance/spec.md](specs/005-rbac-and-meta-compliance/spec.md). Roles y Permisos (RBAC), Gestión de Equipo (`/settings/team`) y Páginas Públicas para Meta App Review (`/privacy`, `/terms`, `/data-deletion`).
 
 ## Feature previa: 004-mikrotik-router-automation
 Plan técnico: [specs/004-mikrotik-router-automation/spec.md](specs/004-mikrotik-router-automation/spec.md). Routers MikroTik (API REST), Cifrado AES-256-GCM y Corte/Reconexión Automática.
