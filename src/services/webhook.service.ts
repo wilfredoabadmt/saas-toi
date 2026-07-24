@@ -140,6 +140,7 @@ export class WebhookService {
       type: string;
       image?: { id: string; caption?: string };
       document?: { id: string; caption?: string };
+      text?: { body: string };
     }
   ) {
     if (msgObj.type === 'image' && msgObj.image) {
@@ -160,6 +161,39 @@ export class WebhookService {
         fileType: 'document',
         caption: msgObj.document.caption,
       });
+    } else if (msgObj.type === 'text' && msgObj.text?.body) {
+      const textBody = msgObj.text.body.toLowerCase();
+      if (textBody.includes('soporte') || textBody.includes('falla') || textBody.includes('averia')) {
+        // Auto-create ticket for subscriber
+        const { wabaConfigs } = await import('@/db/schema/waba-configs');
+        const { subscribers } = await import('@/db/schema/subscribers');
+        const { TicketService } = await import('./ticket.service');
+        const { eq, and } = await import('drizzle-orm');
+
+        const [config] = await db
+          .select()
+          .from(wabaConfigs)
+          .where(eq(wabaConfigs.phoneNumberId, phoneNumberId))
+          .limit(1);
+
+        if (config) {
+          const formattedPhone = msgObj.from.startsWith('+') ? msgObj.from : `+${msgObj.from}`;
+          const [sub] = await db
+            .select()
+            .from(subscribers)
+            .where(and(eq(subscribers.organizationId, config.organizationId), eq(subscribers.phone, formattedPhone)))
+            .limit(1);
+
+          if (sub) {
+            await TicketService.create(config.organizationId, {
+              subscriberId: sub.id,
+              category: textBody.includes('lentitud') ? 'slow_internet' : 'no_service',
+              description: msgObj.text.body,
+              priority: 'high',
+            });
+          }
+        }
+      }
     }
   }
 }

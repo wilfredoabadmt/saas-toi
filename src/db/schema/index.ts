@@ -6,3 +6,4 @@ export * from './waba-configs';
 export * from './message-logs';
 export * from './processed-events';
 export * from './payment-proofs';
+export * from './tickets';

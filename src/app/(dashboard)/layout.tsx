@@ -104,6 +104,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <Link href="/settings/plans" className="nav-item" onClick={() => setSidebarOpen(false)}>
                     <span>📶</span> Planes de Internet
                   </Link>
+                  <Link href="/tickets" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                    <span>🎫</span> Tickets & Averías
+                    <span style={{ marginLeft: 'auto', backgroundColor: '#d97706', color: '#ffffff', fontSize: '0.65rem', padding: '1px 6px', borderRadius: '10px' }}>
+                      Soporte
+                    </span>
+                  </Link>
                 </nav>
               </div>
 
