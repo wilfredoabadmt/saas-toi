@@ -187,22 +187,22 @@ export default function TicketsPage() {
 
       {/* KPI Cards */}
       <div className="kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
-        <div className="kpi-card">
-          <div style={{ color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>TICKETS ABIERTOS</div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#d97706', margin: '0.5rem 0 0.25rem 0' }}>{openCount}</div>
-          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Pendientes de atención</div>
+        <div className="kpi-card-accent">
+          <div style={{ fontSize: '0.82rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>TICKETS ABIERTOS</div>
+          <div style={{ fontSize: '2.25rem', fontWeight: 900, margin: '0.4rem 0 0.25rem 0' }}>{openCount}</div>
+          <div style={{ fontSize: '0.82rem', fontWeight: 600 }}>Averías urgentes pendientes de atención</div>
         </div>
 
         <div className="kpi-card">
-          <div style={{ color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>EN PROCESO</div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb', margin: '0.5rem 0 0.25rem 0' }}>{inProgressCount}</div>
-          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Técnicos asignados en campo</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase' }}>EN PROCESO</div>
+          <div style={{ fontSize: '2.25rem', fontWeight: 900, color: 'var(--primary-accent)', margin: '0.4rem 0 0.25rem 0' }}>{inProgressCount}</div>
+          <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Técnicos asignados en campo</div>
         </div>
 
         <div className="kpi-card">
-          <div style={{ color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>RESUELTOS</div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#16a34a', margin: '0.5rem 0 0.25rem 0' }}>{resolvedCount}</div>
-          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Solucionados hoy</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase' }}>RESUELTOS</div>
+          <div style={{ fontSize: '2.25rem', fontWeight: 900, color: '#10b981', margin: '0.4rem 0 0.25rem 0' }}>{resolvedCount}</div>
+          <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Solucionados hoy</div>
         </div>
       </div>
 

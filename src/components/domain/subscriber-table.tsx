@@ -58,19 +58,20 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
       {/* Table Filter & Search Controls Bar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', gap: '1rem', flexWrap: 'wrap' }}>
         {/* Filter Pills */}
-        <div style={{ display: 'flex', gap: '0.4rem', backgroundColor: '#f1f5f9', padding: '0.25rem', borderRadius: '10px' }}>
+        <div style={{ display: 'flex', gap: '0.4rem', backgroundColor: 'var(--bg-main)', padding: '0.35rem', borderRadius: 'var(--radius-xl)' }}>
           <button
             onClick={() => setFilter('all')}
             style={{
               border: 'none',
-              padding: '0.4rem 0.85rem',
-              borderRadius: '8px',
+              padding: '0.45rem 0.95rem',
+              borderRadius: 'var(--radius-lg)',
               fontSize: '0.82rem',
-              fontWeight: 600,
+              fontWeight: 700,
               cursor: 'pointer',
-              backgroundColor: filter === 'all' ? '#ffffff' : 'transparent',
-              color: filter === 'all' ? '#0f172a' : '#64748b',
-              boxShadow: filter === 'all' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+              backgroundColor: filter === 'all' ? 'var(--primary-accent)' : 'transparent',
+              color: filter === 'all' ? '#ffffff' : 'var(--text-muted)',
+              boxShadow: filter === 'all' ? 'var(--shadow-button)' : 'none',
+              transition: 'all 0.2s ease',
             }}
           >
             Todos ({subscribers.length})
@@ -79,14 +80,15 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
             onClick={() => setFilter('current')}
             style={{
               border: 'none',
-              padding: '0.4rem 0.85rem',
-              borderRadius: '8px',
+              padding: '0.45rem 0.95rem',
+              borderRadius: 'var(--radius-lg)',
               fontSize: '0.82rem',
-              fontWeight: 600,
+              fontWeight: 700,
               cursor: 'pointer',
-              backgroundColor: filter === 'current' ? '#ffffff' : 'transparent',
-              color: filter === 'current' ? '#15803d' : '#64748b',
-              boxShadow: filter === 'current' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+              backgroundColor: filter === 'current' ? 'var(--primary-accent)' : 'transparent',
+              color: filter === 'current' ? '#ffffff' : 'var(--text-muted)',
+              boxShadow: filter === 'current' ? 'var(--shadow-button)' : 'none',
+              transition: 'all 0.2s ease',
             }}
           >
             Al día ({subscribers.filter((s) => s.paymentStatus === 'current').length})
@@ -95,14 +97,15 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
             onClick={() => setFilter('due_soon')}
             style={{
               border: 'none',
-              padding: '0.4rem 0.85rem',
-              borderRadius: '8px',
+              padding: '0.45rem 0.95rem',
+              borderRadius: 'var(--radius-lg)',
               fontSize: '0.82rem',
-              fontWeight: 600,
+              fontWeight: 700,
               cursor: 'pointer',
-              backgroundColor: filter === 'due_soon' ? '#ffffff' : 'transparent',
-              color: filter === 'due_soon' ? '#a16207' : '#64748b',
-              boxShadow: filter === 'due_soon' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+              backgroundColor: filter === 'due_soon' ? 'var(--primary-accent)' : 'transparent',
+              color: filter === 'due_soon' ? '#ffffff' : 'var(--text-muted)',
+              boxShadow: filter === 'due_soon' ? 'var(--shadow-button)' : 'none',
+              transition: 'all 0.2s ease',
             }}
           >
             Por Vencer ({subscribers.filter((s) => s.paymentStatus === 'due_soon').length})
@@ -111,14 +114,15 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
             onClick={() => setFilter('overdue')}
             style={{
               border: 'none',
-              padding: '0.4rem 0.85rem',
-              borderRadius: '8px',
+              padding: '0.45rem 0.95rem',
+              borderRadius: 'var(--radius-lg)',
               fontSize: '0.82rem',
-              fontWeight: 600,
+              fontWeight: 700,
               cursor: 'pointer',
-              backgroundColor: filter === 'overdue' ? '#ffffff' : 'transparent',
-              color: filter === 'overdue' ? '#b91c1c' : '#64748b',
-              boxShadow: filter === 'overdue' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+              backgroundColor: filter === 'overdue' ? 'var(--primary-accent)' : 'transparent',
+              color: filter === 'overdue' ? '#ffffff' : 'var(--text-muted)',
+              boxShadow: filter === 'overdue' ? 'var(--shadow-button)' : 'none',
+              transition: 'all 0.2s ease',
             }}
           >
             Vencidos ({subscribers.filter((s) => s.paymentStatus === 'overdue').length})
@@ -134,12 +138,9 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
             onChange={(e) => setSearch(e.target.value)}
             style={{
               width: '100%',
-              padding: '0.5rem 0.85rem',
-              border: '1px solid #cbd5e1',
-              borderRadius: '8px',
+              padding: '0.55rem 0.95rem',
+              borderRadius: 'var(--radius-xl)',
               fontSize: '0.85rem',
-              outline: 'none',
-              backgroundColor: '#f8fafc',
             }}
           />
         </div>

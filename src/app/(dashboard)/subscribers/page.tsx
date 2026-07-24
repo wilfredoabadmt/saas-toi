@@ -74,18 +74,18 @@ export default async function SubscribersPage() {
           <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Clientes activos en red ISP</div>
         </div>
 
-        {/* KPI 2: Estimated Revenue */}
-        <div className="kpi-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>
+        {/* KPI 2: Estimated Revenue (Hero Metric Card in Lavender Accent) */}
+        <div className="kpi-card-accent">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.82rem', fontWeight: 800 }}>
             <span>RECAUDACIÓN MENSUAL</span>
-            <span style={{ backgroundColor: '#e0f2fe', color: '#0369a1', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700 }}>
-              Facturación
+            <span style={{ backgroundColor: 'rgba(0,0,0,0.1)', color: '#18181B', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800 }}>
+              🚀 Hero Metric
             </span>
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', margin: '0.5rem 0 0.25rem 0' }}>
+          <div style={{ fontSize: '2.25rem', fontWeight: 900, margin: '0.4rem 0 0.25rem 0' }}>
             ${totalRevenue.toLocaleString('es-CL')}
           </div>
-          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Monto total en cartera</div>
+          <div style={{ fontSize: '0.82rem', fontWeight: 600 }}>Monto total proyectado en cartera</div>
         </div>
 
         {/* KPI 3: Overdue Amount */}

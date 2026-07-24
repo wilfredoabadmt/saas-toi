@@ -2,222 +2,203 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ToastProvider } from '@/components/ui/toast-provider';
 import { ThemeProvider, ThemeToggle } from '@/components/ui/theme-provider';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (path: string) => pathname === path || pathname.startsWith(`${path}/`);
 
   return (
     <ThemeProvider>
       <ToastProvider>
         <div className="dashboard-layout">
-        {/* Mobile Hamburger Toggle */}
-        <button
-          className="sidebar-toggle"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          aria-label="Toggle sidebar"
-        >
-          {sidebarOpen ? '✕' : '☰'}
-        </button>
-
-        {/* Mobile Overlay */}
-        <div
-          className={`sidebar-overlay ${sidebarOpen ? 'open' : ''}`}
-          onClick={() => setSidebarOpen(false)}
-        />
-
-        {/* Sleek Left Sidebar */}
-        <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
-          <div>
-            {/* Brand Header */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.75rem' }}>
-              <div
-                style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '10px',
-                  backgroundColor: '#2563eb',
-                  color: '#ffffff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontWeight: '800',
-                  fontSize: '1.1rem',
-                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.4)',
-                  flexShrink: 0,
-                }}
-              >
-                T
-              </div>
-              <div style={{ overflow: 'hidden' }}>
-                <h2 style={{ fontSize: '1.05rem', fontWeight: 700, letterSpacing: '-0.02em', margin: 0, color: '#ffffff', whiteSpace: 'nowrap' }}>
-                  SaaS TOI ISP
-                </h2>
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Multi-Tenant Platform</span>
-              </div>
-            </div>
-
-            {/* Quick Search */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <div
-                style={{
-                  backgroundColor: '#1e293b',
-                  borderRadius: '8px',
-                  padding: '0.5rem 0.75rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  border: '1px solid #334155',
-                }}
-              >
-                <span style={{ color: '#64748b', fontSize: '0.9rem' }}>🔍</span>
-                <input
-                  type="text"
-                  placeholder="Buscar abonado, ID..."
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#f8fafc',
-                    fontSize: '0.82rem',
-                    outline: 'none',
-                    width: '100%',
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Navigation Sections */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div>
-                <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: '#64748b', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
-                  Gestión de Cartera
-                </div>
-                <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                  <Link href="/subscribers" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>📋</span> Abonados
-                    <span style={{ marginLeft: 'auto', backgroundColor: '#334155', color: '#cbd5e1', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '10px' }}>
-                      Active
-                    </span>
-                  </Link>
-                  <Link href="/subscribers/import" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>📥</span> Importar CSV
-                  </Link>
-                  <Link href="/settings/plans" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>📶</span> Planes de Internet
-                  </Link>
-                  <Link href="/tickets" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>🎫</span> Tickets & Averías
-                    <span style={{ marginLeft: 'auto', backgroundColor: '#d97706', color: '#ffffff', fontSize: '0.65rem', padding: '1px 6px', borderRadius: '10px' }}>
-                      Soporte
-                    </span>
-                  </Link>
-                  <Link href="/settings/routers" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>⚙️</span> Routers MikroTik
-                  </Link>
-                  <Link href="/settings/team" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>👥</span> Equipo & RBAC
-                  </Link>
-                  <Link href="/settings/billing" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>💳</span> Suscripción SaaS
-                  </Link>
-                  <Link href="/super-admin/tenants" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>👑</span> Super Admin Tenants
-                  </Link>
-                </nav>
-              </div>
-
-              <div>
-                <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: '#64748b', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
-                  Canales & WhatsApp
-                </div>
-                <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                  <Link href="/chat" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>💬</span> Inbox Multi-Agente
-                    <span style={{ marginLeft: 'auto', backgroundColor: '#2563eb', color: '#ffffff', fontSize: '0.65rem', padding: '1px 6px', borderRadius: '10px' }}>
-                      Live
-                    </span>
-                  </Link>
-                  <Link href="/whatsapp" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>⚙️</span> Conexión WABA
-                    <span style={{ marginLeft: 'auto', backgroundColor: '#15803d', color: '#ffffff', fontSize: '0.65rem', padding: '1px 6px', borderRadius: '10px' }}>
-                      Meta API
-                    </span>
-                  </Link>
-                  <Link href="/messaging" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>📣</span> Recordatorios
-                  </Link>
-                </nav>
-              </div>
-            </div>
-          </div>
-
-          {/* Sidebar Footer User Info */}
-          <div
-            style={{
-              backgroundColor: '#1e293b',
-              borderRadius: '10px',
-              padding: '0.75rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-              border: '1px solid #334155',
-            }}
+          {/* Mobile Hamburger Toggle */}
+          <button
+            className="sidebar-toggle"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label="Toggle sidebar"
           >
+            ☰
+          </button>
+
+          {/* Mobile Overlay */}
+          <div
+            className={`sidebar-overlay ${sidebarOpen ? 'open' : ''}`}
+            onClick={() => setSidebarOpen(false)}
+          />
+
+          {/* Single Floating Container Panel Sidebar (rounded-3xl) */}
+          <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
+            <div>
+              {/* User Avatar, Name & Role Header */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                <div
+                  style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '50%',
+                    backgroundColor: '#818CF8',
+                    color: '#18181B',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 900,
+                    fontSize: '1.05rem',
+                    flexShrink: 0,
+                    boxShadow: '0 4px 12px rgba(129, 140, 248, 0.3)',
+                  }}
+                >
+                  RM
+                </div>
+                <div style={{ overflow: 'hidden' }}>
+                  <h2 style={{ fontSize: '0.98rem', fontWeight: 800, margin: 0, color: '#f8fafc', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                    Roberto Morales
+                  </h2>
+                  <span style={{ fontSize: '0.72rem', color: '#818CF8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    👑 Admin ISP
+                  </span>
+                </div>
+              </div>
+
+              {/* Quick Search */}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <div
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    borderRadius: '12px',
+                    padding: '0.55rem 0.85rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >
+                  <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>🔍</span>
+                  <input
+                    type="text"
+                    placeholder="Buscar abonado, ID..."
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#f8fafc',
+                      fontSize: '0.82rem',
+                      outline: 'none',
+                      width: '100%',
+                      padding: 0,
+                      boxShadow: 'none',
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Navigation Sections */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
+                    Gestión de Cartera
+                  </div>
+                  <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                    <Link href="/subscribers" className={`nav-item ${isActive('/subscribers') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>📋</span> Abonados
+                    </Link>
+                    <Link href="/subscribers/import" className={`nav-item ${isActive('/subscribers/import') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>📥</span> Importar CSV
+                    </Link>
+                    <Link href="/settings/plans" className={`nav-item ${isActive('/settings/plans') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>📶</span> Planes de Internet
+                    </Link>
+                    <Link href="/tickets" className={`nav-item ${isActive('/tickets') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>🎫</span> Tickets & Averías
+                    </Link>
+                    <Link href="/settings/routers" className={`nav-item ${isActive('/settings/routers') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>⚙️</span> Routers MikroTik
+                    </Link>
+                    <Link href="/settings/team" className={`nav-item ${isActive('/settings/team') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>👥</span> Equipo & RBAC
+                    </Link>
+                    <Link href="/settings/billing" className={`nav-item ${isActive('/settings/billing') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>💳</span> Suscripción SaaS
+                    </Link>
+                    <Link href="/super-admin/tenants" className={`nav-item ${isActive('/super-admin/tenants') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>👑</span> Super Admin Tenants
+                    </Link>
+                  </nav>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
+                    Canales & WhatsApp
+                  </div>
+                  <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                    <Link href="/chat" className={`nav-item ${isActive('/chat') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>💬</span> Inbox Multi-Agente
+                    </Link>
+                    <Link href="/whatsapp" className={`nav-item ${isActive('/whatsapp') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>⚙️</span> Conexión WABA
+                    </Link>
+                    <Link href="/messaging" className={`nav-item ${isActive('/messaging') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>📣</span> Recordatorios
+                    </Link>
+                  </nav>
+                </div>
+              </div>
+            </div>
+
+            {/* Sidebar Footer User Info */}
             <div
               style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '50%',
-                backgroundColor: '#3b82f6',
-                color: '#ffffff',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '16px',
+                padding: '0.75rem 1rem',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 'bold',
-                fontSize: '0.85rem',
-                flexShrink: 0,
+                justifyContent: 'space-between',
+                border: '1px solid rgba(255,255,255,0.08)',
+                marginTop: '1.5rem',
               }}
             >
-              AD
-            </div>
-            <div style={{ overflow: 'hidden' }}>
-              <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#ffffff', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                ISP Demo Internet
+              <div style={{ overflow: 'hidden' }}>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                  FiberSpeed ISP
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Plan Pro (1500)</div>
               </div>
-              <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Admin Scope</div>
+
+              <Link href="/onboarding" style={{ color: '#818CF8', fontSize: '1.1rem', textDecoration: 'none' }} title="Asistente de Inicio">
+                ⚙️
+              </Link>
             </div>
+          </aside>
+
+          {/* Main Content Area */}
+          <div className="dashboard-main">
+            {/* Top Header Bar */}
+            <header className="dashboard-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>ISP Workspace</span>
+                <span style={{ color: 'var(--border-color)' }}>/</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-main)' }}>Dashboard Insights</span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <ThemeToggle />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#16a34a', backgroundColor: 'rgba(22, 163, 74, 0.12)', padding: '0.35rem 0.85rem', borderRadius: '999px', fontWeight: 600 }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block' }}></span>
+                  <span className="header-breadcrumb-extra">Database</span> Connected
+                </div>
+              </div>
+            </header>
+
+            {/* Dynamic Page Viewport */}
+            <main className="dashboard-content">
+              {children}
+            </main>
           </div>
-        </aside>
-
-        {/* Main Content Area */}
-        <div className="dashboard-main">
-          {/* Top Header Bar */}
-          <header className="dashboard-header">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span style={{ fontSize: '0.85rem', color: '#64748b' }}>ISP Workspace</span>
-              <span style={{ color: '#cbd5e1' }}>/</span>
-              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#0f172a' }}>Dashboard Insights</span>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <ThemeToggle />
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#15803d', backgroundColor: '#dcfce7', padding: '0.3rem 0.75rem', borderRadius: '20px', fontWeight: 500 }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block' }}></span>
-                <span className="header-breadcrumb-extra">Database</span> Connected
-              </div>
-              <div className="header-breadcrumb-extra" style={{ fontSize: '0.8rem', color: '#64748b', backgroundColor: '#f1f5f9', padding: '0.35rem 0.75rem', borderRadius: '6px', fontWeight: 500 }}>
-                Tenant ID: <code>0000...0001</code>
-              </div>
-            </div>
-          </header>
-
-          {/* Dynamic Page Viewport */}
-          <main className="dashboard-content">
-            {children}
-          </main>
         </div>
-      </div>
       </ToastProvider>
     </ThemeProvider>
   );
