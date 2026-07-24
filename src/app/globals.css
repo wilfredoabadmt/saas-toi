@@ -1,22 +1,60 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-:root {
+/* ─── Soft Tactile / Soft Neumorphic Design System Tokens ─── */
+:root, [data-theme="light"], .light {
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --bg-main: #f3f4f6;
-  --bg-sidebar: #0f172a;
-  --bg-card: #ffffff;
-  --primary-accent: #2563eb;
-  --primary-hover: #1d4ed8;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --border-color: #e2e8f0;
-  --radius-lg: 16px;
-  --radius-md: 10px;
-  --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
-  --shadow-card: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+  
+  /* Light Mode Colors */
+  --bg-main: #F0F2F6;            /* Off-white / Soft light grey */
+  --bg-sidebar: #18181B;         /* Charcoal sidebar */
+  --bg-card: #FFFFFF;            /* Pure white card */
+  --bg-card-accent: #DEDEFE;     /* Hero Metric Card Accent */
+  --text-accent-card: #18181B;   /* High contrast text for hero card */
+  --border-color: #E2E8F0;
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --primary-accent: #6366F1;     /* Soft Indigo / Purple */
+  --primary-hover: #4F46E5;
+  --text-main: #18181B;          /* Primary dark text */
+  --text-muted: #6B7280;         /* Muted grey */
+  
+  /* Geometry & Soft Tactile Radii */
+  --radius-3xl: 28px;
+  --radius-2xl: 20px;
+  --radius-xl: 16px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Soft Neumorphic Shadows (Light) */
+  --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+  --shadow-tactile: 0 10px 25px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-button: 0 4px 14px rgba(99, 102, 241, 0.25);
+  
   --sidebar-width: 260px;
 }
 
+[data-theme="dark"], .dark {
+  /* Dark Mode Colors */
+  --bg-main: #18181B;            /* Charcoal oscuro mate */
+  --bg-sidebar: #121215;         /* Deep dark sidebar */
+  --bg-card: #202024;            /* Soft dark card background */
+  --bg-card-accent: #A5B4FC;     /* Hero Metric Card Accent (Dark) */
+  --text-accent-card: #18181B;   /* High contrast dark text on accent card */
+  --border-color: #2D2D32;       /* Subtle dark border */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --primary-accent: #818CF8;     /* Púrpura / Lavanda pastel suave */
+  --primary-hover: #A5B4FC;
+  --text-main: #F4F4F5;          /* Primary light text */
+  --text-muted: #9CA3AF;         /* Muted grey */
+
+  /* Soft Neumorphic Shadows (Dark) */
+  --shadow-card: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --shadow-tactile: 0 10px 25px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  --shadow-button: 0 4px 16px rgba(129, 140, 248, 0.3);
+}
+
+/* ─── Global Reset & Typography ─── */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -29,9 +67,10 @@ body {
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom scrollbars */
+/* Custom Soft Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -41,44 +80,52 @@ body {
 }
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+.dark ::-webkit-scrollbar-thumb {
+  background: #3f3f46;
 }
 
-/* ─── Card System ─── */
+/* ─── Soft Neumorphic Cards System ─── */
 .glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: var(--radius-lg);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
 }
 
 .kpi-card {
-  background: #ffffff;
+  background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-subtle);
+  border-radius: var(--radius-2xl);
+  padding: 1.35rem;
+  box-shadow: var(--shadow-card);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .kpi-card:hover {
   transform: translateY(-2px);
+  box-shadow: var(--shadow-tactile);
+}
+
+.kpi-card-accent {
+  background-color: var(--bg-card-accent);
+  color: var(--text-accent-card);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-2xl);
+  padding: 1.35rem;
   box-shadow: var(--shadow-card);
 }
 
-/* ─── Navigation ─── */
+/* ─── Navigation & Menus ─── */
 .nav-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.65rem 1rem;
-  border-radius: var(--radius-md);
-  color: #94a3b8;
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--radius-xl);
+  color: var(--text-muted);
   font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
@@ -86,52 +133,93 @@ body {
 }
 
 .nav-item:hover, .nav-item.active {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  box-shadow: var(--shadow-inset);
+}
+
+/* ─── Soft Tactile Inputs ─── */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+  font-family: var(--font-sans);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 0.75rem 1rem;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-inset);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
 }
 
 /* ─── Badges ─── */
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .badge-success {
-  background-color: #dcfce7;
-  color: #15803d;
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+}
+.dark .badge-success {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
 }
 
 .badge-warning {
-  background-color: #fef9c3;
-  color: #a16207;
+  background-color: rgba(234, 179, 8, 0.15);
+  color: #ca8a04;
+}
+.dark .badge-warning {
+  background-color: rgba(234, 179, 8, 0.2);
+  color: #fde047;
 }
 
 .badge-danger {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+}
+.dark .badge-danger {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
 }
 
 .badge-info {
-  background-color: #e0f2fe;
-  color: #0369a1;
+  background-color: rgba(99, 102, 241, 0.15);
+  color: #4f46e5;
+}
+.dark .badge-info {
+  background-color: rgba(129, 140, 248, 0.2);
+  color: #a5b4fc;
 }
 
-/* ─── Buttons ─── */
+/* ─── Soft Tactile Buttons ─── */
 .btn-primary {
   background-color: var(--primary-accent);
   color: #ffffff;
   border: none;
-  padding: 0.65rem 1.25rem;
-  border-radius: var(--radius-md);
-  font-weight: 600;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-xl);
+  font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: var(--shadow-button);
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -140,14 +228,17 @@ body {
 
 .btn-primary:hover {
   background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
 }
 
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
+  box-shadow: var(--shadow-inset);
 }
 
 .btn-primary:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -155,9 +246,9 @@ body {
 .skeleton-pulse {
   background: linear-gradient(
     90deg,
-    #e2e8f0 25%,
-    #f1f5f9 50%,
-    #e2e8f0 75%
+    var(--border-color) 25%,
+    var(--bg-main) 50%,
+    var(--border-color) 75%
   );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s ease-in-out infinite;
@@ -180,52 +271,24 @@ body {
   }
 }
 
-/* ─── Mobile Hamburger Toggle ─── */
-.sidebar-toggle {
-  display: none;
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1001;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background-color: #0f172a;
-  color: #ffffff;
-  border: 1px solid #334155;
-  font-size: 1.2rem;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-/* ─── Mobile Overlay ─── */
-.sidebar-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-}
-
 /* ─── Dashboard Layout ─── */
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
-  background-color: #f1f5f9;
+  background-color: var(--bg-main);
+  color: var(--text-main);
 }
 
 .dashboard-sidebar {
   width: var(--sidebar-width);
   min-width: var(--sidebar-width);
-  background-color: #0f172a;
+  background-color: var(--bg-sidebar);
   color: #f8fafc;
-  padding: 1.5rem 1.25rem;
+  padding: 1.75rem 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-right: 1px solid rgba(255,255,255,0.05);
+  border-right: 1px solid var(--border-subtle);
   transition: transform 0.3s ease;
   z-index: 1000;
 }
@@ -239,14 +302,14 @@ body {
 }
 
 .dashboard-header {
-  height: 64px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
+  height: 68px;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
   padding: 0 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  box-shadow: var(--shadow-card);
 }
 
 .dashboard-content {
@@ -257,35 +320,13 @@ body {
   margin: 0 auto;
 }
 
-/* ─── Responsive Table Container ─── */
+/* Responsive Container */
 .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/* ─── Responsive Breakpoints ─── */
-
-/* Tablet: < 1024px */
-@media (max-width: 1024px) {
-  .dashboard-content {
-    padding: 1.25rem;
-  }
-
-  .dashboard-header {
-    padding: 0 1.25rem;
-  }
-
-  .kpi-card {
-    padding: 1rem;
-  }
-}
-
-/* Mobile: < 768px */
 @media (max-width: 768px) {
-  .sidebar-toggle {
-    display: flex;
-  }
-
   .dashboard-sidebar {
     position: fixed;
     top: 0;
@@ -299,64 +340,17 @@ body {
     transform: translateX(0);
   }
 
-  .sidebar-overlay.open {
-    display: block;
-  }
-
   .dashboard-main {
     width: 100%;
   }
 
   .dashboard-header {
     padding: 0 1rem;
-    padding-left: 3.5rem; /* Space for hamburger */
-    height: 56px;
+    padding-left: 3.5rem;
+    height: 58px;
   }
 
   .dashboard-content {
     padding: 1rem;
-  }
-
-  /* Stack KPI grids on mobile */
-  .kpi-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 0.75rem !important;
-  }
-
-  /* Stack action buttons */
-  .page-header-actions {
-    flex-direction: column !important;
-    width: 100%;
-  }
-
-  .page-header-actions > * {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-  }
-
-  /* Responsive table: horizontal scroll */
-  .table-responsive table {
-    min-width: 640px;
-  }
-
-  /* Hide breadcrumb extra info on mobile */
-  .header-breadcrumb-extra {
-    display: none;
-  }
-}
-
-/* Small mobile: < 480px */
-@media (max-width: 480px) {
-  .kpi-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .dashboard-content {
-    padding: 0.75rem;
-  }
-
-  h1 {
-    font-size: 1.35rem !important;
   }
 }

@@ -3,13 +3,15 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ToastProvider } from '@/components/ui/toast-provider';
+import { ThemeProvider, ThemeToggle } from '@/components/ui/theme-provider';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <ToastProvider>
-      <div className="dashboard-layout">
+    <ThemeProvider>
+      <ToastProvider>
+        <div className="dashboard-layout">
         {/* Mobile Hamburger Toggle */}
         <button
           className="sidebar-toggle"
@@ -199,6 +201,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <ThemeToggle />
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#15803d', backgroundColor: '#dcfce7', padding: '0.3rem 0.75rem', borderRadius: '20px', fontWeight: 500 }}>
                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block' }}></span>
                 <span className="header-breadcrumb-extra">Database</span> Connected
@@ -215,6 +218,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </main>
         </div>
       </div>
-    </ToastProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }
