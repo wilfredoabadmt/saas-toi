@@ -5,11 +5,14 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 007-transactional-email-and-password-reset
+## Active feature: 008-saas-subscription-and-limits
 
-Plan técnico: [specs/007-transactional-email-and-password-reset/spec.md](specs/007-transactional-email-and-password-reset/spec.md)
+Plan técnico: [specs/008-saas-subscription-and-limits/spec.md](specs/008-saas-subscription-and-limits/spec.md)
 
-Servicio de Email Transaccional (`EmailService`), Recuperación de Contraseña Tokenizada (`/forgot-password` & `/reset-password`), Invitaciones por Correo y Alertas de Red MikroTik.
+Monetización del SaaS, Planes de Suscripción (`saas_plans` & `subscriptions`), Panel del ISP (`/settings/billing`), Panel Super Admin (`/super-admin/tenants`) y Guardián de Límites (`SubscriptionGuard`).
+
+## Feature previa: 007-transactional-email-and-password-reset
+Plan técnico: [specs/007-transactional-email-and-password-reset/spec.md](specs/007-transactional-email-and-password-reset/spec.md). Email Transaccional, Recuperación de Contraseña (`/forgot-password`), Invitaciones por Correo y Alertas MikroTik.
 
 ## Feature previa: 006-landing-and-self-onboarding
 Plan técnico: [specs/006-landing-and-self-onboarding/spec.md](specs/006-landing-and-self-onboarding/spec.md). Landing Comercial (`/`), Registro de Tenant (`/register`) y Wizard (`/onboarding`).
