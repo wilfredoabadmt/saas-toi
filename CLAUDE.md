@@ -5,11 +5,14 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 002-plans-and-whatsapp-inbox
+## Active feature: 003-support-tickets-and-field-tech
 
-Plan técnico: [specs/002-plans-and-whatsapp-inbox/spec.md](specs/002-plans-and-whatsapp-inbox/spec.md)
+Plan técnico: [specs/003-support-tickets-and-field-tech/spec.md](specs/003-support-tickets-and-field-tech/spec.md)
 
-Gestión de Planes de Internet (CRUD Mbps/Precio por Tenant), CRM / Inbox Multi-Agente de WhatsApp en tiempo real (`/messages`) y Panel Lateral con Ficha del Abonado en ventana de chat.
+Módulo de Tickets de Soporte Técnico, Registro de Averías por WhatsApp, Asignación a Técnicos de Campo y Notificaciones Automáticas de Estado.
+
+## Feature previa: 002-plans-and-whatsapp-inbox
+Plan técnico: [specs/002-plans-and-whatsapp-inbox/spec.md](specs/002-plans-and-whatsapp-inbox/spec.md). Planes de Internet (Mbps/Tarifas por Tenant), CRM Multi-Agente de WhatsApp (`/chat`) y Ficha Contextual del Abonado.
 
 ## Feature previa: 001-tenant-whatsapp-billing
 Plan técnico: [specs/001-tenant-whatsapp-billing/plan.md](specs/001-tenant-whatsapp-billing/plan.md). Gestión multi-tenant de abonados, conexión de WhatsApp Business vía Embedded Signup, envío de recordatorios de cobranza Utility e ingesta idempotente de comprobantes S3.
