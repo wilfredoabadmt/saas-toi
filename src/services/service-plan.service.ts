@@ -1,4 +1,4 @@
-import { db } from '@/db/client';
+import { db, ensureMigrationsRun } from '@/db/client';
 import { servicePlans, NewServicePlan } from '@/db/schema/service-plans';
 import { assertTenantScope } from '@/lib/tenant';
 import { ApiError } from '@/lib/api-errors';
@@ -9,6 +9,7 @@ export class ServicePlanService {
    * List service plans scoped strictly to organizationId.
    */
   static async list(organizationId: string) {
+    await ensureMigrationsRun();
     const orgId = assertTenantScope(organizationId);
 
     const plans = await db
@@ -24,6 +25,7 @@ export class ServicePlanService {
    * Get plan by ID with tenant scope enforcement.
    */
   static async getById(organizationId: string, id: string) {
+    await ensureMigrationsRun();
     const orgId = assertTenantScope(organizationId);
 
     const result = await db
@@ -53,6 +55,7 @@ export class ServicePlanService {
       isActive?: boolean;
     }
   ) {
+    await ensureMigrationsRun();
     const orgId = assertTenantScope(organizationId);
 
     const newPlan: NewServicePlan = {
@@ -87,6 +90,7 @@ export class ServicePlanService {
       isActive: boolean;
     }>
   ) {
+    await ensureMigrationsRun();
     const orgId = assertTenantScope(organizationId);
     await ServicePlanService.getById(orgId, id);
 

@@ -11,7 +11,7 @@ export async function GET(
   try {
     const { id } = await params;
     const plan = await ServicePlanService.getById(DEFAULT_ORG_ID, id);
-    return NextResponse.json({ data: plan });
+    return NextResponse.json({ success: true, data: plan });
   } catch (error) {
     return handleApiError(error);
   }
@@ -26,7 +26,7 @@ export async function PATCH(
     const body = await req.json();
 
     const updated = await ServicePlanService.update(DEFAULT_ORG_ID, id, body);
-    return NextResponse.json({ data: updated });
+    return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     return handleApiError(error);
   }

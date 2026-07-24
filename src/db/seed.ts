@@ -1,10 +1,10 @@
-import { db } from './client';
 import { organizations } from './schema/organizations';
 import { users } from './schema/users';
 import { servicePlans } from './schema/service-plans';
 import { subscribers } from './schema/subscribers';
 
-export async function seedDefaults() {
+export async function seedDefaults(dbInstance?: any) {
+  const db = dbInstance || (await import('./client')).db;
   const defaultOrgId = '00000000-0000-0000-0000-000000000001';
   const defaultUserId = '00000000-0000-0000-0000-000000000002';
 

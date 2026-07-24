@@ -7,7 +7,7 @@ const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
 export async function GET() {
   try {
     const plans = await ServicePlanService.list(DEFAULT_ORG_ID);
-    return NextResponse.json({ data: plans });
+    return NextResponse.json({ success: true, data: plans });
   } catch (error) {
     return handleApiError(error);
   }
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       speedUp,
     });
 
-    return NextResponse.json({ data: created }, { status: 201 });
+    return NextResponse.json({ success: true, data: created }, { status: 201 });
   } catch (error) {
     return handleApiError(error);
   }

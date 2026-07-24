@@ -23,6 +23,11 @@ export async function ensureMigrationsRun() {
       try {
         const migrationsFolder = path.join(process.cwd(), 'src/db/migrations');
         await migrate(db, { migrationsFolder });
+        
+        // Dynamically import and run default seeding to ensure 
+        // the default organization (and other initial records) exists.
+        const { seedDefaults } = await import('./seed');
+        await seedDefaults(db);
       } catch (err) {
         migrationPromise = null;
         console.warn('[DB Auto-Migration Notice]:', (err as Error).message);
