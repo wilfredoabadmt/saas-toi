@@ -5,14 +5,17 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 006-landing-and-self-onboarding
+## Active feature: 007-transactional-email-and-password-reset
 
-Plan técnico: [specs/006-landing-and-self-onboarding/spec.md](specs/006-landing-and-self-onboarding/spec.md)
+Plan técnico: [specs/007-transactional-email-and-password-reset/spec.md](specs/007-transactional-email-and-password-reset/spec.md)
 
-Landing Page Comercial Pública (`/`), Registro Autónomo de Tenant (`/register`) y Asistente de Inicio Guiado (Onboarding Wizard `/onboarding`).
+Servicio de Email Transaccional (`EmailService`), Recuperación de Contraseña Tokenizada (`/forgot-password` & `/reset-password`), Invitaciones por Correo y Alertas de Red MikroTik.
+
+## Feature previa: 006-landing-and-self-onboarding
+Plan técnico: [specs/006-landing-and-self-onboarding/spec.md](specs/006-landing-and-self-onboarding/spec.md). Landing Comercial (`/`), Registro de Tenant (`/register`) y Wizard (`/onboarding`).
 
 ## Feature previa: 005-rbac-and-meta-compliance
-Plan técnico: [specs/005-rbac-and-meta-compliance/spec.md](specs/005-rbac-and-meta-compliance/spec.md). Roles y Permisos (RBAC), Gestión de Equipo (`/settings/team`) y Páginas Públicas para Meta App Review (`/privacy`, `/terms`, `/data-deletion`).
+Plan técnico: [specs/005-rbac-and-meta-compliance/spec.md](specs/005-rbac-and-meta-compliance/spec.md). Roles y Permisos (RBAC), Gestión de Equipo (`/settings/team`) y Páginas Públicas Meta.
 
 ## Feature previa: 004-mikrotik-router-automation
 Plan técnico: [specs/004-mikrotik-router-automation/spec.md](specs/004-mikrotik-router-automation/spec.md). Routers MikroTik (API REST), Cifrado AES-256-GCM y Corte/Reconexión Automática.
