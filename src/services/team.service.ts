@@ -52,7 +52,7 @@ export class TeamService {
         role: input.role,
         passwordHash: 'invited_user_hash',
       })
-      .onConflictDoNothing({ target: users.email })
+      .onConflictDoNothing({ target: [users.email, users.organizationId] })
       .returning();
 
     if (!created) {
