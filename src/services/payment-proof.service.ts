@@ -155,6 +155,20 @@ export class PaymentProofService {
       throw new ApiError('NOT_FOUND', 'Comprobante no encontrado', 404);
     }
 
+    if (status === 'approved') {
+      const { subscribers } = await import('@/db/schema/subscribers');
+      const { RouterService } = await import('./router.service');
+
+      // Update subscriber status to current
+      await db
+        .update(subscribers)
+        .set({ paymentStatus: 'current', updatedAt: new Date() })
+        .where(and(eq(subscribers.id, updated.subscriberId), eq(subscribers.organizationId, orgId)));
+
+      // Trigger automatic network reconnection on MikroTik router
+      await RouterService.executeReconnection(orgId, updated.subscriberId);
+    }
+
     return updated;
   }
 }

@@ -110,6 +110,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       Soporte
                     </span>
                   </Link>
+                  <Link href="/settings/routers" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                    <span>⚙️</span> Routers MikroTik
+                  </Link>
                 </nav>
               </div>
 

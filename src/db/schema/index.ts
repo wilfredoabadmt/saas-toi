@@ -7,3 +7,5 @@ export * from './message-logs';
 export * from './processed-events';
 export * from './payment-proofs';
 export * from './tickets';
+export * from './router-configs';
+export * from './router-audit-logs';
