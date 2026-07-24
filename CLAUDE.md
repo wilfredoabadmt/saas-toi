@@ -5,11 +5,14 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 003-support-tickets-and-field-tech
+## Active feature: 004-mikrotik-router-automation
 
-Plan técnico: [specs/003-support-tickets-and-field-tech/spec.md](specs/003-support-tickets-and-field-tech/spec.md)
+Plan técnico: [specs/004-mikrotik-router-automation/spec.md](specs/004-mikrotik-router-automation/spec.md)
 
-Módulo de Tickets de Soporte Técnico, Registro de Averías por WhatsApp, Asignación a Técnicos de Campo y Notificaciones Automáticas de Estado.
+Integración con Routers/MikroTik (API REST), Cifrado AES-256-GCM de Credenciales de Red, Corte y Reconexión Automática por Estado de Cobro y Logs de Auditoría.
+
+## Feature previa: 003-support-tickets-and-field-tech
+Plan técnico: [specs/003-support-tickets-and-field-tech/spec.md](specs/003-support-tickets-and-field-tech/spec.md). Tickets de Soporte Técnico, Registro de Averías por WhatsApp, Asignación a Técnicos de Campo y Notificaciones Automáticas.
 
 ## Feature previa: 002-plans-and-whatsapp-inbox
 Plan técnico: [specs/002-plans-and-whatsapp-inbox/spec.md](specs/002-plans-and-whatsapp-inbox/spec.md). Planes de Internet (Mbps/Tarifas por Tenant), CRM Multi-Agente de WhatsApp (`/chat`) y Ficha Contextual del Abonado.
