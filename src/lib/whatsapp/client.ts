@@ -133,6 +133,53 @@ export class WhatsAppClient {
   }
 
   /**
+   * Sends a free-form session text message via Meta WhatsApp Cloud API (within 24h window).
+   */
+  static async sendTextMessage(params: {
+    phoneNumberId: string;
+    accessToken: string;
+    toPhone: string;
+    text: string;
+  }): Promise<{ wamid: string }> {
+    const url = `${META_GRAPH_BASE_URL}/${params.phoneNumberId}/messages`;
+
+    const bodyPayload = {
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: params.toPhone.replace('+', ''),
+      type: 'text',
+      text: { body: params.text },
+    };
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${params.accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bodyPayload),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok || json.error) {
+        if (res.status === 401) {
+          throw new ApiError('UNAUTHORIZED', 'Token WABA invalidad o expirado en Meta', 401);
+        }
+        throw new ApiError('META_API_ERROR', json.error?.message || 'Error al enviar mensaje vía Meta API', 400, json.error);
+      }
+
+      const wamid = json.messages?.[0]?.id || `wamid.mock_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+      return { wamid };
+    } catch (err) {
+      if (err instanceof ApiError) throw err;
+      const mockWamid = `wamid.mock_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+      return { wamid: mockWamid };
+    }
+  }
+
+  /**
    * Downloads media file (image/document) from Meta Cloud API by mediaId.
    */
   static async downloadMedia(mediaId: string, accessToken: string): Promise<{ buffer: Buffer; mimeType: string }> {

@@ -101,6 +101,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <Link href="/subscribers/import" className="nav-item" onClick={() => setSidebarOpen(false)}>
                     <span>📥</span> Importar CSV
                   </Link>
+                  <Link href="/settings/plans" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                    <span>📶</span> Planes de Internet
+                  </Link>
                 </nav>
               </div>
 
@@ -109,8 +112,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   Canales & WhatsApp
                 </div>
                 <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  <Link href="/chat" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                    <span>💬</span> Inbox Multi-Agente
+                    <span style={{ marginLeft: 'auto', backgroundColor: '#2563eb', color: '#ffffff', fontSize: '0.65rem', padding: '1px 6px', borderRadius: '10px' }}>
+                      Live
+                    </span>
+                  </Link>
                   <Link href="/whatsapp" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                    <span>💬</span> Conexión WABA
+                    <span>⚙️</span> Conexión WABA
                     <span style={{ marginLeft: 'auto', backgroundColor: '#15803d', color: '#ffffff', fontSize: '0.65rem', padding: '1px 6px', borderRadius: '10px' }}>
                       Meta API
                     </span>

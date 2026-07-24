@@ -78,7 +78,7 @@ describe('WABA API Integration Tests', () => {
     };
 
     vi.mocked(WhatsAppClient.exchangeCodeForToken).mockResolvedValue(mockExchange);
-    vi.mocked(WhatsAppClient.subscribeAppToWaba).mockResolvedValue({ success: true });
+    vi.mocked(WhatsAppClient.subscribeAppToWaba).mockResolvedValue(true);
 
     const result = await WabaService.connect(orgId, 'mock_auth_code');
 
