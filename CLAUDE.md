@@ -5,11 +5,14 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 004-mikrotik-router-automation
+## Active feature: 005-rbac-and-meta-compliance
 
-Plan técnico: [specs/004-mikrotik-router-automation/spec.md](specs/004-mikrotik-router-automation/spec.md)
+Plan técnico: [specs/005-rbac-and-meta-compliance/spec.md](specs/005-rbac-and-meta-compliance/spec.md)
 
-Integración con Routers/MikroTik (API REST), Cifrado AES-256-GCM de Credenciales de Red, Corte y Reconexión Automática por Estado de Cobro y Logs de Auditoría.
+Gestión de Roles y Permisos (RBAC Admin/Billing/Technician), Gestión de Equipo (`/settings/team`) y Páginas Públicas para Meta App Review (`/privacy`, `/terms`, `/data-deletion`).
+
+## Feature previa: 004-mikrotik-router-automation
+Plan técnico: [specs/004-mikrotik-router-automation/spec.md](specs/004-mikrotik-router-automation/spec.md). Routers MikroTik (API REST), Cifrado AES-256-GCM y Corte/Reconexión Automática.
 
 ## Feature previa: 003-support-tickets-and-field-tech
 Plan técnico: [specs/003-support-tickets-and-field-tech/spec.md](specs/003-support-tickets-and-field-tech/spec.md). Tickets de Soporte Técnico, Registro de Averías por WhatsApp, Asignación a Técnicos de Campo y Notificaciones Automáticas.
