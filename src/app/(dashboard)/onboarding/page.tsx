@@ -16,10 +16,10 @@ export default function OnboardingPage() {
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
         <span style={{ fontSize: '2.5rem' }}>🎉</span>
-        <h1 style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', letterSpacing: '-0.03em', margin: '0.5rem 0 0.25rem 0' }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--text-main)', letterSpacing: '-0.03em', margin: '0.5rem 0 0.25rem 0' }}>
           ¡Bienvenido a SaaS TOI ISP!
         </h1>
-        <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
           Completa estos 3 sencillos pasos para dejar lista la cobranza y soporte automatizado de tu ISP
         </p>
       </div>
@@ -27,10 +27,10 @@ export default function OnboardingPage() {
       {/* Progress Bar Card */}
       <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-          <span style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.9rem' }}>
+          <span style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.9rem' }}>
             Progreso de Configuración Inicial
           </span>
-          <span style={{ fontWeight: 800, color: '#2563eb', fontSize: '0.9rem' }}>
+          <span style={{ fontWeight: 800, color: 'var(--primary-accent)', fontSize: '0.9rem' }}>
             {progressPercent}% Completado
           </span>
         </div>
@@ -40,7 +40,7 @@ export default function OnboardingPage() {
             style={{
               width: `${progressPercent}%`,
               height: '100%',
-              backgroundColor: '#2563eb',
+              backgroundColor: 'var(--primary-accent)',
               borderRadius: '5px',
               transition: 'width 0.4s ease',
             }}
@@ -57,10 +57,10 @@ export default function OnboardingPage() {
               1
             </div>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.35rem 0' }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.35rem 0' }}>
                 Paso 1: Configurar Planes de Internet & Cobranza
               </h3>
-              <p style={{ color: '#64748b', fontSize: '0.88rem', margin: 0 }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', margin: 0 }}>
                 Define los planes de velocidad (Mbps) y tarifas mensuales de tu ISP para asociarlos a los abonados.
               </p>
             </div>
@@ -81,17 +81,17 @@ export default function OnboardingPage() {
               2
             </div>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.35rem 0' }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.35rem 0' }}>
                 Paso 2: Importar la Cartera de Abonados
               </h3>
-              <p style={{ color: '#64748b', fontSize: '0.88rem', margin: 0 }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', margin: 0 }}>
                 Carga tu base de clientes mediante archivo CSV para activar el envío de recordatorios de cobro.
               </p>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <label style={{ fontSize: '0.8rem', color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <input
                 type="checkbox"
                 checked={step2Done}
@@ -99,7 +99,7 @@ export default function OnboardingPage() {
               />
               Marcar listo
             </label>
-            <Link href="/subscribers/import" style={{ backgroundColor: '#2563eb', color: '#ffffff', padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none' }}>
+            <Link href="/subscribers/import" style={{ backgroundColor: 'var(--primary-accent)', color: '#ffffff', padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none' }}>
               Importar CSV
             </Link>
           </div>
@@ -112,17 +112,17 @@ export default function OnboardingPage() {
               3
             </div>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.35rem 0' }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.35rem 0' }}>
                 Paso 3: Conectar la Cuenta de WhatsApp Business (WABA)
               </h3>
-              <p style={{ color: '#64748b', fontSize: '0.88rem', margin: 0 }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', margin: 0 }}>
                 Enlaza tus credenciales de Meta Graph API para habilitar las conversaciones y avisos de cobranza.
               </p>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <label style={{ fontSize: '0.8rem', color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <input
                 type="checkbox"
                 checked={step3Done}

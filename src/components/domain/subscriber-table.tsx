@@ -23,7 +23,7 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
   const [search, setSearch] = useState<string>('');
 
   if (isLoading) {
-    return <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>Cargando abonados...</div>;
+    return <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Cargando abonados...</div>;
   }
 
   const filteredSubscribers = subscribers.filter((sub) => {
@@ -148,7 +148,7 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
 
       {/* Table Data */}
       {filteredSubscribers.length === 0 ? (
-        <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
+        <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
           <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📭</div>
           <p style={{ fontWeight: 500 }}>No se encontraron abonados con los filtros seleccionados.</p>
         </div>
@@ -156,7 +156,7 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
         <div className="table-responsive" style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
             <thead>
-              <tr style={{ borderBottom: '2px solid #f1f5f9', color: '#64748b', fontWeight: 600 }}>
+              <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600 }}>
                 <th style={{ padding: '12px 16px' }}>Abonado</th>
                 <th style={{ padding: '12px 16px' }}>Teléfono WhatsApp</th>
                 <th style={{ padding: '12px 16px' }}>Monto Mensual</th>
@@ -167,23 +167,24 @@ export function SubscriberTable({ subscribers, isLoading }: SubscriberTableProps
             </thead>
             <tbody>
               {filteredSubscribers.map((sub) => (
-                <tr key={sub.id} style={{ borderBottom: '1px solid #f1f5f9', transition: 'background-color 0.15s ease' }}>
-                  <td style={{ padding: '14px 16px', fontWeight: 600, color: '#0f172a' }}>{sub.name}</td>
-                  <td style={{ padding: '14px 16px', color: '#475569' }}>{sub.phone}</td>
-                  <td style={{ padding: '14px 16px', fontWeight: 600, color: '#0f172a' }}>${sub.monthlyAmount}</td>
-                  <td style={{ padding: '14px 16px', color: '#475569' }}>{sub.dueDate}</td>
+                <tr key={sub.id} style={{ borderBottom: '1px solid var(--border-color)', transition: 'background-color 0.15s ease' }}>
+                  <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--text-main)' }}>{sub.name}</td>
+                  <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{sub.phone}</td>
+                  <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--text-main)' }}>${sub.monthlyAmount}</td>
+                  <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{sub.dueDate}</td>
                   <td style={{ padding: '14px 16px' }}>{getStatusBadge(sub.paymentStatus)}</td>
                   <td style={{ padding: '14px 16px', textAlign: 'right' }}>
                     <Link
                       href={`/subscribers/${sub.id}`}
                       style={{
-                        backgroundColor: '#f1f5f9',
-                        color: '#2563eb',
+                        backgroundColor: 'var(--bg-main)',
+                        color: 'var(--primary-accent)',
                         padding: '0.35rem 0.75rem',
                         borderRadius: '6px',
                         textDecoration: 'none',
                         fontSize: '0.8rem',
                         fontWeight: 600,
+                        border: '1px solid var(--border-color)',
                       }}
                     >
                       Ver Expediente →

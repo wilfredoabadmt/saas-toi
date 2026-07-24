@@ -10,10 +10,10 @@ export default async function PlansPage() {
   return (
     <div>
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#0f172a', margin: 0 }}>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
           Planes de Internet & Tarifario ISP
         </h1>
-        <p style={{ color: '#64748b', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
+        <p style={{ color: 'var(--text-muted)', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
           Configuración comercial de velocidades de bajada/subida, valores de tarifa mensual e integración con cobranza
         </p>
       </div>

@@ -106,9 +106,9 @@ export function ChatInbox() {
     <div className="glass-card" style={{ display: 'grid', gridTemplateColumns: '280px 1fr 300px', height: 'calc(100vh - 160px)', minHeight: '600px', overflow: 'hidden' }}>
       
       {/* Columna 1: Hilos de Conversación */}
-      <div style={{ borderRight: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff' }}>
-        <div style={{ padding: '1rem', borderBottom: '1px solid #f1f5f9' }}>
-          <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.75rem 0' }}>
+      <div style={{ borderRight: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-card)' }}>
+        <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+          <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.75rem 0' }}>
             💬 Chat Multi-Agente
           </h2>
           <input
@@ -116,15 +116,15 @@ export function ChatInbox() {
             placeholder="Buscar conversación..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ width: '100%', padding: '0.45rem 0.75rem', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.82rem', outline: 'none', backgroundColor: '#f8fafc' }}
+            style={{ width: '100%', padding: '0.45rem 0.75rem', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.82rem', outline: 'none', backgroundColor: 'var(--bg-main)' }}
           />
         </div>
 
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {loadingChats ? (
-            <div style={{ padding: '1.5rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>Cargando chats...</div>
+            <div style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Cargando chats...</div>
           ) : filteredConversations.length === 0 ? (
-            <div style={{ padding: '2rem 1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>No hay chats activos.</div>
+            <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>No hay chats activos.</div>
           ) : (
             filteredConversations.map((chat) => {
               const isActive = chat.subscriberId === activeSubId;
@@ -134,7 +134,7 @@ export function ChatInbox() {
                   onClick={() => chat.subscriberId && setActiveSubId(chat.subscriberId)}
                   style={{
                     padding: '0.85rem 1rem',
-                    borderBottom: '1px solid #f1f5f9',
+                    borderBottom: '1px solid var(--border-color)',
                     cursor: 'pointer',
                     backgroundColor: isActive ? '#eff6ff' : 'transparent',
                     borderLeft: isActive ? '4px solid #2563eb' : '4px solid transparent',
@@ -142,19 +142,19 @@ export function ChatInbox() {
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                    <strong style={{ fontSize: '0.88rem', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>
+                    <strong style={{ fontSize: '0.88rem', color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>
                       {chat.name}
                     </strong>
-                    <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                       {new Date(chat.lastMessageAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <p style={{ fontSize: '0.78rem', color: '#64748b', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '180px' }}>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '180px' }}>
                       {chat.lastMessage}
                     </p>
                     {chat.unreadCount > 0 && (
-                      <span style={{ backgroundColor: '#2563eb', color: '#ffffff', fontSize: '0.65rem', fontWeight: 700, borderRadius: '999px', padding: '1px 6px' }}>
+                      <span style={{ backgroundColor: 'var(--primary-accent)', color: '#ffffff', fontSize: '0.65rem', fontWeight: 700, borderRadius: '999px', padding: '1px 6px' }}>
                         {chat.unreadCount}
                       </span>
                     )}
@@ -167,14 +167,14 @@ export function ChatInbox() {
       </div>
 
       {/* Columna 2: Ventana Principal de Chat */}
-      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#f8fafc' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main)' }}>
         {activeConversation ? (
           <>
             {/* Header Chat */}
-            <div style={{ padding: '0.85rem 1.25rem', backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ padding: '0.85rem 1.25rem', backgroundColor: 'var(--bg-card)', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
-                <strong style={{ fontSize: '0.98rem', color: '#0f172a' }}>{activeConversation.name}</strong>
-                <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{activeConversation.phone}</div>
+                <strong style={{ fontSize: '0.98rem', color: 'var(--text-main)' }}>{activeConversation.name}</strong>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{activeConversation.phone}</div>
               </div>
               <div>{getStatusBadge(activeConversation.paymentStatus)}</div>
             </div>
@@ -182,9 +182,9 @@ export function ChatInbox() {
             {/* Historial de Mensajes */}
             <div style={{ flex: 1, padding: '1.25rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {loadingMessages ? (
-                <div style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem', marginTop: '2rem' }}>Cargando mensajes...</div>
+                <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2rem' }}>Cargando mensajes...</div>
               ) : messages.length === 0 ? (
-                <div style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem', marginTop: '2rem' }}>No hay mensajes registrados en esta conversación.</div>
+                <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2rem' }}>No hay mensajes registrados en esta conversación.</div>
               ) : (
                 messages.map((msg) => {
                   const isInbound = msg.direction === 'inbound';
@@ -219,13 +219,13 @@ export function ChatInbox() {
             </div>
 
             {/* Input para responder */}
-            <form onSubmit={handleSendMessage} style={{ padding: '0.85rem 1rem', backgroundColor: '#ffffff', borderTop: '1px solid #e2e8f0', display: 'flex', gap: '0.6rem' }}>
+            <form onSubmit={handleSendMessage} style={{ padding: '0.85rem 1rem', backgroundColor: 'var(--bg-card)', borderTop: '1px solid #e2e8f0', display: 'flex', gap: '0.6rem' }}>
               <input
                 type="text"
                 placeholder="Escribe una respuesta al abonado..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                style={{ flex: 1, padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.88rem', outline: 'none' }}
+                style={{ flex: 1, padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.88rem', outline: 'none' }}
               />
               <button type="submit" className="btn-primary" disabled={sending || !inputText.trim()}>
                 {sending ? 'Enviando...' : 'Enviar 🚀'}
@@ -233,7 +233,7 @@ export function ChatInbox() {
             </form>
           </>
         ) : (
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', flexDirection: 'column' }}>
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', flexDirection: 'column' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>💬</div>
             <p>Selecciona una conversación de la izquierda para comenzar.</p>
           </div>
@@ -241,39 +241,39 @@ export function ChatInbox() {
       </div>
 
       {/* Columna 3: Ficha Contextual del Abonado (Panel Lateral US3) */}
-      <div style={{ borderLeft: '1px solid #e2e8f0', backgroundColor: '#ffffff', padding: '1.25rem', overflowY: 'auto' }}>
+      <div style={{ borderLeft: '1px solid #e2e8f0', backgroundColor: 'var(--bg-card)', padding: '1.25rem', overflowY: 'auto' }}>
         {activeConversation ? (
           <div>
-            <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
               📋 Ficha del Abonado
             </h3>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.85rem' }}>
               <div>
-                <span style={{ color: '#64748b', fontSize: '0.75rem', display: 'block', fontWeight: 600 }}>NOMBRE</span>
-                <strong style={{ color: '#0f172a', fontSize: '0.92rem' }}>{activeConversation.name}</strong>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', fontWeight: 600 }}>NOMBRE</span>
+                <strong style={{ color: 'var(--text-main)', fontSize: '0.92rem' }}>{activeConversation.name}</strong>
               </div>
 
               <div>
-                <span style={{ color: '#64748b', fontSize: '0.75rem', display: 'block', fontWeight: 600 }}>TELÉFONO WHATSAPP</span>
-                <span style={{ color: '#0f172a', fontWeight: 600 }}>{activeConversation.phone}</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', fontWeight: 600 }}>TELÉFONO WHATSAPP</span>
+                <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>{activeConversation.phone}</span>
               </div>
 
               <div>
-                <span style={{ color: '#64748b', fontSize: '0.75rem', display: 'block', fontWeight: 600 }}>EMAIL</span>
-                <span style={{ color: '#0f172a' }}>{activeConversation.email || 'No registrado'}</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', fontWeight: 600 }}>EMAIL</span>
+                <span style={{ color: 'var(--text-main)' }}>{activeConversation.email || 'No registrado'}</span>
               </div>
 
-              <div style={{ backgroundColor: '#f8fafc', padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <span style={{ color: '#64748b', fontSize: '0.72rem', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>PLAN DE INTERNET</span>
-                <strong style={{ color: '#2563eb', fontSize: '0.92rem', display: 'block', margin: '0.2rem 0' }}>Fibra 100 Mbps Hogar</strong>
-                <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Tarifa: <strong>${activeConversation.monthlyAmount || '25.000'}</strong>/mes</span>
+              <div style={{ backgroundColor: 'var(--bg-main)', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', display: 'block', fontWeight: 700, textTransform: 'uppercase' }}>PLAN DE INTERNET</span>
+                <strong style={{ color: 'var(--primary-accent)', fontSize: '0.92rem', display: 'block', margin: '0.2rem 0' }}>Fibra 100 Mbps Hogar</strong>
+                <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Tarifa: <strong>${activeConversation.monthlyAmount || '25.000'}</strong>/mes</span>
               </div>
 
               <div>
-                <span style={{ color: '#64748b', fontSize: '0.75rem', display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>ESTADO DE COBRANZA</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>ESTADO DE COBRANZA</span>
                 <div>{getStatusBadge(activeConversation.paymentStatus)}</div>
-                <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '0.25rem' }}>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
                   Vencimiento: <strong>{activeConversation.dueDate || 'N/A'}</strong>
                 </div>
               </div>
@@ -281,7 +281,7 @@ export function ChatInbox() {
               <div style={{ marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid #f1f5f9' }}>
                 <Link
                   href={`/subscribers/${activeConversation.subscriberId}`}
-                  style={{ display: 'block', textAlign: 'center', backgroundColor: '#f1f5f9', color: '#2563eb', padding: '0.5rem', borderRadius: '6px', fontWeight: 600, textDecoration: 'none', fontSize: '0.82rem' }}
+                  style={{ display: 'block', textAlign: 'center', backgroundColor: 'var(--bg-main)', color: 'var(--primary-accent)', padding: '0.5rem', borderRadius: '6px', fontWeight: 600, textDecoration: 'none', fontSize: '0.82rem' }}
                 >
                   Ver Expediente Completo →
                 </Link>
@@ -289,7 +289,7 @@ export function ChatInbox() {
             </div>
           </div>
         ) : (
-          <div style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem', marginTop: '2rem' }}>
+          <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2rem' }}>
             No hay información de abonado seleccionada.
           </div>
         )}

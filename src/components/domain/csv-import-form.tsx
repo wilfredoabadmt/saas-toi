@@ -51,7 +51,7 @@ export function CsvImportForm() {
     <div className="glass-card" style={{ padding: '2rem', maxWidth: '650px' }}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div>
-          <label style={{ display: 'block', fontWeight: 700, fontSize: '0.95rem', marginBottom: '0.5rem', color: '#0f172a' }}>
+          <label style={{ display: 'block', fontWeight: 700, fontSize: '0.95rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>
             Seleccionar archivo CSV de Abonados
           </label>
           <div
@@ -60,7 +60,7 @@ export function CsvImportForm() {
               borderRadius: '12px',
               padding: '2rem',
               textAlign: 'center',
-              backgroundColor: '#f8fafc',
+              backgroundColor: 'var(--bg-main)',
               cursor: 'pointer',
               transition: 'border-color 0.2s ease',
             }}
@@ -72,7 +72,7 @@ export function CsvImportForm() {
               onChange={(e) => setFile(e.target.files?.[0] || null)}
               style={{ display: 'block', width: '100%', fontSize: '0.85rem' }}
             />
-            <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.75rem' }}>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>
               Formato de columnas: <code>nombre,telefono,plan,monto,fecha_vencimiento</code>
             </p>
           </div>
@@ -90,15 +90,15 @@ export function CsvImportForm() {
       )}
 
       {result && (
-        <div style={{ marginTop: '1.5rem', padding: '1.25rem', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px' }}>
-          <h4 style={{ margin: '0 0 0.75rem 0', color: '#0f172a', fontWeight: 700 }}>Resumen de Importación</h4>
+        <div style={{ marginTop: '1.5rem', padding: '1.25rem', backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-color)', borderRadius: '12px' }}>
+          <h4 style={{ margin: '0 0 0.75rem 0', color: 'var(--text-main)', fontWeight: 700 }}>Resumen de Importación</h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', fontSize: '0.9rem' }}>
-            <div style={{ backgroundColor: '#ffffff', padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-              <span style={{ color: '#64748b', fontSize: '0.78rem', display: 'block' }}>NUEVOS IMPORTADOS</span>
+            <div style={{ backgroundColor: 'var(--bg-card)', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', display: 'block' }}>NUEVOS IMPORTADOS</span>
               <strong style={{ fontSize: '1.25rem', color: '#15803d' }}>{result.imported}</strong>
             </div>
-            <div style={{ backgroundColor: '#ffffff', padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-              <span style={{ color: '#64748b', fontSize: '0.78rem', display: 'block' }}>DUPLICADOS OMITIDOS</span>
+            <div style={{ backgroundColor: 'var(--bg-card)', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', display: 'block' }}>DUPLICADOS OMITIDOS</span>
               <strong style={{ fontSize: '1.25rem', color: '#a16207' }}>{result.duplicates}</strong>
             </div>
           </div>

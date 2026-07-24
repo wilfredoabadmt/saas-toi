@@ -125,10 +125,10 @@ export default function RoutersPage() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#0f172a', margin: 0 }}>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
             Routers MikroTik & Automatización de Red
           </h1>
-          <p style={{ color: '#64748b', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
+          <p style={{ color: 'var(--text-muted)', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
             Integración API REST para corte y reconexión automática con cifrado AES-256-GCM
           </p>
         </div>
@@ -141,37 +141,37 @@ export default function RoutersPage() {
       {/* KPI Cards */}
       <div className="kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
         <div className="kpi-card">
-          <div style={{ color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>ROUTERS CONECTADOS</div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', margin: '0.5rem 0 0.25rem 0' }}>{routers.length}</div>
-          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Infraestructura registrada</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem', fontWeight: 600 }}>ROUTERS CONECTADOS</div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-main)', margin: '0.5rem 0 0.25rem 0' }}>{routers.length}</div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Infraestructura registrada</div>
         </div>
 
         <div className="kpi-card">
-          <div style={{ color: '#64748b', fontSize: '0.82rem', fontWeight: 600 }}>AUDITORÍA DE RED</div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb', margin: '0.5rem 0 0.25rem 0' }}>{auditLogs.length}</div>
-          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Comandos REST ejecutados</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem', fontWeight: 600 }}>AUDITORÍA DE RED</div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary-accent)', margin: '0.5rem 0 0.25rem 0' }}>{auditLogs.length}</div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Comandos REST ejecutados</div>
         </div>
       </div>
 
       {/* Routers List Table */}
       <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
-        <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem' }}>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '1rem' }}>
           🖥️ Routers MikroTik Configurados
         </h2>
 
         {loading ? (
-          <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>Cargando routers...</div>
+          <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Cargando routers...</div>
         ) : routers.length === 0 ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>⚙️</div>
-            <p style={{ fontWeight: 600, color: '#64748b' }}>No se han configurado routers MikroTik aún.</p>
+            <p style={{ fontWeight: 600, color: 'var(--text-muted)' }}>No se han configurado routers MikroTik aún.</p>
             <p style={{ fontSize: '0.85rem' }}>Registra tu primer MikroTik para habilitar el corte y reconexión automática.</p>
           </div>
         ) : (
           <div className="table-responsive">
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #f1f5f9', color: '#64748b', fontWeight: 600 }}>
+                <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600 }}>
                   <th style={{ padding: '12px 16px' }}>Nombre del Router</th>
                   <th style={{ padding: '12px 16px' }}>Host / Dirección IP</th>
                   <th style={{ padding: '12px 16px' }}>Puerto REST</th>
@@ -182,11 +182,11 @@ export default function RoutersPage() {
               </thead>
               <tbody>
                 {routers.map((r) => (
-                  <tr key={r.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                    <td style={{ padding: '14px 16px', fontWeight: 700, color: '#0f172a' }}>{r.name}</td>
-                    <td style={{ padding: '14px 16px', color: '#2563eb', fontWeight: 600 }}><code>{r.host}</code></td>
-                    <td style={{ padding: '14px 16px', color: '#475569' }}>{r.apiPort}</td>
-                    <td style={{ padding: '14px 16px', color: '#475569' }}>{r.username}</td>
+                  <tr key={r.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                    <td style={{ padding: '14px 16px', fontWeight: 700, color: 'var(--text-main)' }}>{r.name}</td>
+                    <td style={{ padding: '14px 16px', color: 'var(--primary-accent)', fontWeight: 600 }}><code>{r.host}</code></td>
+                    <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{r.apiPort}</td>
+                    <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{r.username}</td>
                     <td style={{ padding: '14px 16px' }}>
                       <span className="badge badge-success">🔒 AES-256-GCM</span>
                     </td>
@@ -209,19 +209,19 @@ export default function RoutersPage() {
 
       {/* Audit Logs Table */}
       <div className="glass-card" style={{ padding: '1.5rem' }}>
-        <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem' }}>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '1rem' }}>
           📜 Log de Auditoría de Comandos de Red (`router_audit_logs`)
         </h2>
 
         {auditLogs.length === 0 ? (
-          <div style={{ padding: '1.5rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>
+          <div style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
             No hay comandos de red registrados recientemente.
           </div>
         ) : (
           <div className="table-responsive">
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #f1f5f9', color: '#64748b', fontWeight: 600 }}>
+                <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600 }}>
                   <th style={{ padding: '10px 14px' }}>Timestamp</th>
                   <th style={{ padding: '10px 14px' }}>Acción</th>
                   <th style={{ padding: '10px 14px' }}>Comando REST Ejecutado</th>
@@ -230,18 +230,18 @@ export default function RoutersPage() {
               </thead>
               <tbody>
                 {auditLogs.map((log) => (
-                  <tr key={log.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                    <td style={{ padding: '10px 14px', color: '#64748b' }}>{new Date(log.createdAt).toLocaleString()}</td>
+                  <tr key={log.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                    <td style={{ padding: '10px 14px', color: 'var(--text-muted)' }}>{new Date(log.createdAt).toLocaleString()}</td>
                     <td style={{ padding: '10px 14px', fontWeight: 700 }}>
                       {log.action === 'suspend' ? (
                         <span style={{ color: '#b91c1c' }}>🔴 CORTE</span>
                       ) : log.action === 'reactivate' ? (
                         <span style={{ color: '#16a34a' }}>🟢 RECONEXIÓN</span>
                       ) : (
-                        <span style={{ color: '#2563eb' }}>⚡ TEST</span>
+                        <span style={{ color: 'var(--primary-accent)' }}>⚡ TEST</span>
                       )}
                     </td>
-                    <td style={{ padding: '10px 14px', color: '#334155' }}><code>{log.command}</code></td>
+                    <td style={{ padding: '10px 14px', color: 'var(--text-muted)' }}><code>{log.command}</code></td>
                     <td style={{ padding: '10px 14px' }}>
                       <span className={`badge ${log.responseStatus === 200 ? 'badge-success' : 'badge-danger'}`}>
                         {log.responseStatus} OK
@@ -258,14 +258,14 @@ export default function RoutersPage() {
       {/* Modal Registrar Router */}
       {isModalOpen && (
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div className="glass-card" style={{ backgroundColor: '#ffffff', width: '90%', maxWidth: '500px', padding: '2rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '1.25rem', color: '#0f172a' }}>
+          <div className="glass-card" style={{ backgroundColor: 'var(--bg-card)', width: '90%', maxWidth: '500px', padding: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text-main)' }}>
               Registrar Router MikroTik
             </h2>
 
             <form onSubmit={handleCreateRouter} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                   Nombre Identificador
                 </label>
                 <input
@@ -274,13 +274,13 @@ export default function RoutersPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                 />
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                     Dirección IP / Host
                   </label>
                   <input
@@ -289,12 +289,12 @@ export default function RoutersPage() {
                     required
                     value={host}
                     onChange={(e) => setHost(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                   />
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                     Puerto REST
                   </label>
                   <input
@@ -303,14 +303,14 @@ export default function RoutersPage() {
                     required
                     value={apiPort}
                     onChange={(e) => setApiPort(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                   />
                 </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                     Usuario API
                   </label>
                   <input
@@ -319,12 +319,12 @@ export default function RoutersPage() {
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                   />
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                     Contraseña / Token
                   </label>
                   <input
@@ -333,7 +333,7 @@ export default function RoutersPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                   />
                 </div>
               </div>
@@ -341,7 +341,7 @@ export default function RoutersPage() {
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
                 <button
                   type="button"
-                  style={{ backgroundColor: '#f1f5f9', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: '#475569' }}
+                  style={{ backgroundColor: 'var(--bg-main)', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: 'var(--text-muted)' }}
                   onClick={() => setIsModalOpen(false)}
                 >
                   Cancelar

@@ -98,6 +98,131 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* ─── Dark Mode Global Text & Element Overrides ───
+   Forces readable text/border colors on all elements that have
+   hardcoded light-mode inline styles (#0f172a, #64748b, etc.)
+   Uses !important to override inline styles.
+─── */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] label,
+[data-theme="dark"] div {
+  color: inherit;
+}
+
+/* Table text readability in dark mode */
+[data-theme="dark"] table {
+  color: #E4E4E7;
+}
+
+[data-theme="dark"] thead tr {
+  border-color: #3f3f46 !important;
+}
+
+[data-theme="dark"] th {
+  color: #A1A1AA !important;
+  border-color: #3f3f46 !important;
+}
+
+[data-theme="dark"] td {
+  color: #E4E4E7 !important;
+  border-color: #2D2D32 !important;
+}
+
+[data-theme="dark"] tr {
+  border-color: #2D2D32 !important;
+}
+
+/* Force td with bold/primary data to be white */
+[data-theme="dark"] td[style*="fontWeight"] {
+  color: #FFFFFF !important;
+}
+
+/* KPI cards internal text */
+[data-theme="dark"] .kpi-card div,
+[data-theme="dark"] .kpi-card span {
+  color: #E4E4E7 !important;
+}
+
+[data-theme="dark"] .kpi-card div[style*="fontSize: '2"] {
+  color: #FFFFFF !important;
+}
+
+/* Muted subtitle text in dark mode */
+[data-theme="dark"] [style*="color: #64748b"],
+[data-theme="dark"] [style*="color: '#64748b'"],
+[data-theme="dark"] [style*="color: #475569"],
+[data-theme="dark"] [style*="color: '#475569'"],
+[data-theme="dark"] [style*="color: #94a3b8"],
+[data-theme="dark"] [style*="color: '#94a3b8'"] {
+  color: #A1A1AA !important;
+}
+
+/* Primary dark text overrides */
+[data-theme="dark"] [style*="color: #0f172a"],
+[data-theme="dark"] [style*="color: '#0f172a'"],
+[data-theme="dark"] [style*="color: #1e293b"],
+[data-theme="dark"] [style*="color: '#1e293b'"],
+[data-theme="dark"] [style*="color: #334155"],
+[data-theme="dark"] [style*="color: '#334155'"] {
+  color: #FFFFFF !important;
+}
+
+/* White bg elements need dark card bg in dark mode */
+[data-theme="dark"] [style*="background-color: #ffffff"],
+[data-theme="dark"] [style*="background-color: '#ffffff'"],
+[data-theme="dark"] [style*="backgroundColor: '#ffffff'"],
+[data-theme="dark"] [style*="background-color: #FFFFFF"],
+[data-theme="dark"] [style*="backgroundColor: '#FFFFFF'"] {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Light grey bg elements */
+[data-theme="dark"] [style*="background-color: #f1f5f9"],
+[data-theme="dark"] [style*="backgroundColor: '#f1f5f9'"],
+[data-theme="dark"] [style*="background-color: #f8fafc"],
+[data-theme="dark"] [style*="backgroundColor: '#f8fafc'"] {
+  background-color: #2D2D32 !important;
+}
+
+/* Light borders in dark mode */
+[data-theme="dark"] [style*="border-color: #e2e8f0"],
+[data-theme="dark"] [style*="borderColor: '#e2e8f0'"],
+[data-theme="dark"] [style*="border: 1px solid #cbd5e1"],
+[data-theme="dark"] [style*="border: '1px solid #cbd5e1'"] {
+  border-color: var(--border-color) !important;
+}
+
+/* Links inside table actions */
+[data-theme="dark"] a[style*="backgroundColor: '#f1f5f9'"] {
+  background-color: #2D2D32 !important;
+  color: #818CF8 !important;
+}
+
+/* Modal & dialog dark mode */
+[data-theme="dark"] [style*="backgroundColor: 'rgba(0, 0, 0"],
+[data-theme="dark"] [style*="background-color: rgba(0, 0, 0"] {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+[data-theme="dark"] [style*="backgroundColor: '#fff'"],
+[data-theme="dark"] [style*="backgroundColor: 'white'"],
+[data-theme="dark"] [style*="background-color: white"] {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
 /* Custom Soft Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;

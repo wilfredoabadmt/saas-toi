@@ -50,13 +50,13 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '16px', width: '100%', maxWidth: '440px', padding: '2.5rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+    <div style={{ backgroundColor: '#18181B', border: '1px solid #1e293b', borderRadius: '16px', width: '100%', maxWidth: '440px', padding: '2.5rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <div style={{ fontSize: '2.25rem', marginBottom: '0.5rem' }}>🔒</div>
         <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
           Establecer Nueva Contraseña
         </h1>
-        <p style={{ color: '#94a3b8', fontSize: '0.88rem', marginTop: '0.35rem' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginTop: '0.35rem' }}>
           Ingresa la nueva contraseña para tu cuenta
         </p>
       </div>
@@ -93,7 +93,7 @@ function ResetPasswordForm() {
               minLength={6}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              style={{ width: '100%', padding: '0.7rem 0.9rem', backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '0.9rem' }}
+              style={{ width: '100%', padding: '0.7rem 0.9rem', backgroundColor: '#18181B', border: '1px solid #334155', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '0.9rem' }}
             />
           </div>
 
@@ -108,14 +108,14 @@ function ResetPasswordForm() {
               minLength={6}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              style={{ width: '100%', padding: '0.7rem 0.9rem', backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '0.9rem' }}
+              style={{ width: '100%', padding: '0.7rem 0.9rem', backgroundColor: '#18181B', border: '1px solid #334155', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '0.9rem' }}
             />
           </div>
 
           <button
             type="submit"
             disabled={loading || !token}
-            style={{ marginTop: '0.5rem', backgroundColor: '#2563eb', color: '#ffffff', padding: '0.8rem', borderRadius: '8px', fontWeight: 800, fontSize: '0.95rem', border: 'none', cursor: 'pointer' }}
+            style={{ marginTop: '0.5rem', backgroundColor: 'var(--primary-accent)', color: '#ffffff', padding: '0.8rem', borderRadius: '8px', fontWeight: 800, fontSize: '0.95rem', border: 'none', cursor: 'pointer' }}
           >
             {loading ? 'Guardando...' : 'Guardar Nueva Contraseña 🔐'}
           </button>
@@ -128,7 +128,7 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
   return (
     <div style={{ backgroundColor: '#090d16', color: '#f8fafc', fontFamily: 'system-ui, sans-serif', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem' }}>
-      <Suspense fallback={<div style={{ color: '#94a3b8' }}>Cargando formulario...</div>}>
+      <Suspense fallback={<div style={{ color: 'var(--text-muted)' }}>Cargando formulario...</div>}>
         <ResetPasswordForm />
       </Suspense>
     </div>

@@ -51,14 +51,14 @@ export function MessageSendForm() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
         <span style={{ fontSize: '1.75rem' }}>📣</span>
         <div>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
             Gatillar Recordatorio de Cobranza (Utility Template)
           </h3>
-          <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Envío automatizado bajo políticas oficiales de Meta</span>
+          <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Envío automatizado bajo políticas oficiales de Meta</span>
         </div>
       </div>
 
-      <p style={{ fontSize: '0.88rem', color: '#475569', lineHeight: 1.5, marginBottom: '1.5rem' }}>
+      <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '1.5rem' }}>
         El sistema filtrará automáticamente a los abonados en opt-out y respetará la tasa máxima de envío (sliding window rate limiter de 80 msg/min por tenant).
       </p>
 
@@ -72,7 +72,7 @@ export function MessageSendForm() {
       </button>
 
       {resultMsg && (
-        <div style={{ marginTop: '1.25rem', padding: '1rem', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', fontSize: '0.88rem', fontWeight: 500 }}>
+        <div style={{ marginTop: '1.25rem', padding: '1rem', backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-color)', borderRadius: '10px', fontSize: '0.88rem', fontWeight: 500 }}>
           {resultMsg}
         </div>
       )}

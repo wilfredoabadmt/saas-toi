@@ -29,15 +29,15 @@ export function PaymentProofViewer({ proof }: PaymentProofViewerProps) {
   return (
     <div
       style={{
-        backgroundColor: '#f8fafc',
-        border: '1px solid #e2e8f0',
+        backgroundColor: 'var(--bg-main)',
+        border: '1px solid var(--border-color)',
         borderRadius: '12px',
         padding: '1.25rem',
         marginBottom: '1rem',
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-        <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 500 }}>
+        <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 500 }}>
           Recibido: {new Date(proof.uploadedAt).toLocaleString('es-CL')}
         </span>
         {getBadge(proof.reviewStatus)}
@@ -48,11 +48,11 @@ export function PaymentProofViewer({ proof }: PaymentProofViewerProps) {
           <img
             src={proof.presignedUrl}
             alt="Comprobante de pago"
-            style={{ maxWidth: '100%', maxHeight: '240px', borderRadius: '8px', objectFit: 'contain', border: '1px solid #cbd5e1' }}
+            style={{ maxWidth: '100%', maxHeight: '240px', borderRadius: '8px', objectFit: 'contain', border: '1px solid var(--border-color)' }}
           />
         </div>
       ) : (
-        <div style={{ padding: '1rem', backgroundColor: '#ffffff', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem', color: '#475569' }}>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--bg-card)', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
           📄 Archivo adjunto S3: <code>{proof.s3Key}</code>
         </div>
       )}
@@ -64,9 +64,9 @@ export function PaymentProofViewer({ proof }: PaymentProofViewerProps) {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              backgroundColor: '#ffffff',
-              color: '#2563eb',
-              border: '1px solid #cbd5e1',
+              backgroundColor: 'var(--bg-card)',
+              color: 'var(--primary-accent)',
+              border: '1px solid var(--border-color)',
               padding: '0.4rem 0.85rem',
               borderRadius: '6px',
               fontSize: '0.82rem',

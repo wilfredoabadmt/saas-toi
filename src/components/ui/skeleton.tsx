@@ -62,7 +62,7 @@ export function EmptyState({
       style={{
         padding: '3.5rem 2rem',
         textAlign: 'center',
-        color: '#94a3b8',
+        color: 'var(--text-muted)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -70,7 +70,7 @@ export function EmptyState({
       }}
     >
       <div style={{ fontSize: '2.75rem', marginBottom: '0.25rem' }}>{icon}</div>
-      <p style={{ fontWeight: 600, fontSize: '1rem', color: '#64748b' }}>{title}</p>
+      <p style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--text-muted)' }}>{title}</p>
       {description && <p style={{ fontSize: '0.88rem', maxWidth: '380px' }}>{description}</p>}
       {action && <div style={{ marginTop: '0.75rem' }}>{action}</div>}
     </div>

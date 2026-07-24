@@ -61,10 +61,10 @@ export default function SuperAdminTenantsPage() {
         <div style={{ display: 'inline-block', backgroundColor: '#fef3c7', color: '#b45309', padding: '0.2rem 0.75rem', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800, marginBottom: '0.5rem' }}>
           👑 PANEL SUPER ADMIN
         </div>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#0f172a', margin: 0 }}>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
           Gestión Global de Tenants & Suscripciones
         </h1>
-        <p style={{ color: '#64748b', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
+        <p style={{ color: 'var(--text-muted)', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
           Monitoreo de organizaciones registradas, consumo de abonados y suspensión/activación manual
         </p>
       </div>
@@ -72,14 +72,14 @@ export default function SuperAdminTenantsPage() {
       {/* Tenants Table */}
       <div className="glass-card" style={{ padding: '1.5rem' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>Cargando tenants del SaaS...</div>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>Cargando tenants del SaaS...</div>
         ) : tenants.length === 0 ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No hay organizaciones registradas aún.</div>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>No hay organizaciones registradas aún.</div>
         ) : (
           <div className="table-responsive">
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #f1f5f9', color: '#64748b', fontWeight: 600 }}>
+                <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600 }}>
                   <th style={{ padding: '12px 16px' }}>Organización / ISP</th>
                   <th style={{ padding: '12px 16px' }}>Slug</th>
                   <th style={{ padding: '12px 16px' }}>Abonados Activos</th>
@@ -90,10 +90,10 @@ export default function SuperAdminTenantsPage() {
               </thead>
               <tbody>
                 {tenants.map((t) => (
-                  <tr key={t.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                    <td style={{ padding: '14px 16px', fontWeight: 700, color: '#0f172a' }}>{t.name}</td>
-                    <td style={{ padding: '14px 16px', color: '#2563eb' }}><code>{t.slug}</code></td>
-                    <td style={{ padding: '14px 16px', fontWeight: 800, color: '#0f172a' }}>{t.currentSubscribers}</td>
+                  <tr key={t.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                    <td style={{ padding: '14px 16px', fontWeight: 700, color: 'var(--text-main)' }}>{t.name}</td>
+                    <td style={{ padding: '14px 16px', color: 'var(--primary-accent)' }}><code>{t.slug}</code></td>
+                    <td style={{ padding: '14px 16px', fontWeight: 800, color: 'var(--text-main)' }}>{t.currentSubscribers}</td>
                     <td style={{ padding: '14px 16px' }}><span className="badge badge-info">{t.planName}</span></td>
                     <td style={{ padding: '14px 16px' }}>
                       <span className={`badge ${t.status === 'active' ? 'badge-success' : 'badge-danger'}`}>

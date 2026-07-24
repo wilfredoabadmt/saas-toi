@@ -87,7 +87,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     border: '1px solid rgba(255,255,255,0.08)',
                   }}
                 >
-                  <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>🔍</span>
+                  <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>🔍</span>
                   <input
                     type="text"
                     placeholder="Buscar abonado, ID..."
@@ -108,7 +108,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               {/* Navigation Sections */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div>
-                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
                     Gestión de Cartera
                   </div>
                   <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
@@ -140,7 +140,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
 
                 <div>
-                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
                     Canales & WhatsApp
                   </div>
                   <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
@@ -175,7 +175,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                   FiberSpeed ISP
                 </div>
-                <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Plan Pro (1500)</div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Plan Pro (1500)</div>
               </div>
 
               <Link href="/onboarding" style={{ color: '#818CF8', fontSize: '1.1rem', textDecoration: 'none' }} title="Asistente de Inicio">

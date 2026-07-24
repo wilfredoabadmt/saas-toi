@@ -80,13 +80,13 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
       {/* Create Plan Form */}
       <div className="glass-card" style={{ padding: '1.75rem' }}>
-        <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0f172a', margin: '0 0 1.25rem 0' }}>
+        <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', margin: '0 0 1.25rem 0' }}>
           ➕ Crear Nuevo Plan de Internet
         </h3>
 
         <form onSubmit={handleCreate} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
               Nombre Comercial del Plan
             </label>
             <input
@@ -98,7 +98,7 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
               style={{
                 width: '100%',
                 padding: '0.6rem 0.85rem',
-                border: '1px solid #cbd5e1',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '0.9rem',
                 outline: 'none',
@@ -107,7 +107,7 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
               Valor Tarifa Mensual ($)
             </label>
             <input
@@ -119,7 +119,7 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
               style={{
                 width: '100%',
                 padding: '0.6rem 0.85rem',
-                border: '1px solid #cbd5e1',
+                border: '1px solid var(--border-color)',
                 borderRadius: '8px',
                 fontSize: '0.9rem',
                 outline: 'none',
@@ -129,7 +129,7 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                 Ancho Bajada
               </label>
               <input
@@ -140,14 +140,14 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
                 style={{
                   width: '100%',
                   padding: '0.55rem 0.75rem',
-                  border: '1px solid #cbd5e1',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '0.85rem',
                 }}
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                 Ancho Subida
               </label>
               <input
@@ -158,7 +158,7 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
                 style={{
                   width: '100%',
                   padding: '0.55rem 0.75rem',
-                  border: '1px solid #cbd5e1',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   fontSize: '0.85rem',
                 }}
@@ -172,7 +172,7 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
         </form>
 
         {message && (
-          <div style={{ marginTop: '1rem', padding: '0.75rem', borderRadius: '8px', backgroundColor: '#f8fafc', fontSize: '0.85rem', fontWeight: 500 }}>
+          <div style={{ marginTop: '1rem', padding: '0.75rem', borderRadius: '8px', backgroundColor: 'var(--bg-main)', fontSize: '0.85rem', fontWeight: 500 }}>
             {message}
           </div>
         )}
@@ -180,20 +180,20 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
 
       {/* Plans List Table */}
       <div className="glass-card" style={{ padding: '1.75rem' }}>
-        <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0f172a', margin: '0 0 1.25rem 0' }}>
+        <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', margin: '0 0 1.25rem 0' }}>
           📋 Tarifario Activo del ISP ({plans.length})
         </h3>
 
         {plans.length === 0 ? (
-          <p style={{ color: '#94a3b8', fontSize: '0.9rem' }}>No hay planes registrados aún.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No hay planes registrados aún.</p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
             {plans.map((p) => (
               <div
                 key={p.id}
                 style={{
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #e2e8f0',
+                  backgroundColor: 'var(--bg-card)',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '12px',
                   padding: '1rem 1.25rem',
                   display: 'flex',
@@ -204,12 +204,12 @@ export function PlanManagerForm({ initialPlans }: PlanManagerFormProps) {
               >
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                    <strong style={{ fontSize: '1rem', color: '#0f172a' }}>{p.name}</strong>
+                    <strong style={{ fontSize: '1rem', color: 'var(--text-main)' }}>{p.name}</strong>
                     <span className={p.isActive ? 'badge badge-success' : 'badge badge-danger'}>
                       {p.isActive ? 'Activo' : 'Inactivo'}
                     </span>
                   </div>
-                  <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.35rem', fontSize: '0.8rem', color: '#64748b' }}>
+                  <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.35rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                     <span>⬇️ Bajada: <strong>{p.speedDown || '100 Mbps'}</strong></span>
                     <span>⬆️ Subida: <strong>{p.speedUp || '50 Mbps'}</strong></span>
                   </div>

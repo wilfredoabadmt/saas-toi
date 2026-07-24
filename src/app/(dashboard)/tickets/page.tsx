@@ -163,7 +163,7 @@ export default function TicketsPage() {
       case 'critical': return <span style={{ color: '#b91c1c', fontWeight: 800, fontSize: '0.75rem' }}>🔥 Crítica</span>;
       case 'high': return <span style={{ color: '#c2410c', fontWeight: 700, fontSize: '0.75rem' }}>⚠️ Alta</span>;
       case 'medium': return <span style={{ color: '#0284c7', fontWeight: 600, fontSize: '0.75rem' }}>🟡 Media</span>;
-      default: return <span style={{ color: '#64748b', fontSize: '0.75rem' }}>🟢 Baja</span>;
+      default: return <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>🟢 Baja</span>;
     }
   };
 
@@ -172,10 +172,10 @@ export default function TicketsPage() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#0f172a', margin: 0 }}>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
             Tickets de Soporte & Averías
           </h1>
-          <p style={{ color: '#64748b', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
+          <p style={{ color: 'var(--text-muted)', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
             Atención de incidencias de red, asignación a técnicos de campo y avisos por WhatsApp
           </p>
         </div>
@@ -231,17 +231,17 @@ export default function TicketsPage() {
         </div>
 
         {loading ? (
-          <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>Cargando tickets...</div>
+          <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Cargando tickets...</div>
         ) : ticketList.length === 0 ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
             <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🎫</div>
-            <p style={{ fontWeight: 600, color: '#64748b' }}>No hay tickets de soporte reportados.</p>
+            <p style={{ fontWeight: 600, color: 'var(--text-muted)' }}>No hay tickets de soporte reportados.</p>
           </div>
         ) : (
           <div className="table-responsive">
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #f1f5f9', color: '#64748b', fontWeight: 600 }}>
+                <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600 }}>
                   <th style={{ padding: '12px 16px' }}>Ticket #</th>
                   <th style={{ padding: '12px 16px' }}>Abonado</th>
                   <th style={{ padding: '12px 16px' }}>Descripción de Avería</th>
@@ -253,21 +253,21 @@ export default function TicketsPage() {
               </thead>
               <tbody>
                 {ticketList.map((item) => (
-                  <tr key={item.ticket.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                    <td style={{ padding: '14px 16px', fontWeight: 800, color: '#2563eb' }}>{item.ticket.ticketNumber}</td>
+                  <tr key={item.ticket.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                    <td style={{ padding: '14px 16px', fontWeight: 800, color: 'var(--primary-accent)' }}>{item.ticket.ticketNumber}</td>
                     <td style={{ padding: '14px 16px' }}>
-                      <div style={{ fontWeight: 600, color: '#0f172a' }}>{item.subscriber?.name || 'Abonado no registrado'}</div>
-                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{item.subscriber?.phone}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{item.subscriber?.name || 'Abonado no registrado'}</div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{item.subscriber?.phone}</div>
                     </td>
-                    <td style={{ padding: '14px 16px', color: '#334155', maxWidth: '240px' }}>{item.ticket.description}</td>
+                    <td style={{ padding: '14px 16px', color: 'var(--text-muted)', maxWidth: '240px' }}>{item.ticket.description}</td>
                     <td style={{ padding: '14px 16px' }}>{getPriorityBadge(item.ticket.priority)}</td>
                     <td style={{ padding: '14px 16px' }}>{getStatusBadge(item.ticket.status)}</td>
-                    <td style={{ padding: '14px 16px', color: '#0f172a', fontWeight: 600 }}>
-                      {item.ticket.assignedTechnician ? `👷 ${item.ticket.assignedTechnician}` : <span style={{ color: '#94a3b8', fontWeight: 400 }}>Sin asignar</span>}
+                    <td style={{ padding: '14px 16px', color: 'var(--text-main)', fontWeight: 600 }}>
+                      {item.ticket.assignedTechnician ? `👷 ${item.ticket.assignedTechnician}` : <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>Sin asignar</span>}
                     </td>
                     <td style={{ padding: '14px 16px', textAlign: 'right' }}>
                       <button
-                        style={{ backgroundColor: '#f1f5f9', color: '#2563eb', border: 'none', padding: '0.35rem 0.75rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
+                        style={{ backgroundColor: 'var(--bg-main)', color: 'var(--primary-accent)', border: 'none', padding: '0.35rem 0.75rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
                         onClick={() => handleOpenEditModal(item)}
                       >
                         Gestionar / Asignar →
@@ -284,23 +284,23 @@ export default function TicketsPage() {
       {/* Modal Editar / Asignar Ticket */}
       {selectedTicket && (
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div className="glass-card" style={{ backgroundColor: '#ffffff', width: '90%', maxWidth: '520px', padding: '2rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '0.5rem', color: '#0f172a' }}>
+          <div className="glass-card" style={{ backgroundColor: 'var(--bg-card)', width: '90%', maxWidth: '520px', padding: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '0.5rem', color: 'var(--text-main)' }}>
               Gestionar Ticket {selectedTicket.ticket.ticketNumber}
             </h2>
-            <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '1.25rem' }}>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1.25rem' }}>
               Cliente: <strong>{selectedTicket.subscriber?.name}</strong> ({selectedTicket.subscriber?.phone})
             </p>
 
             <form onSubmit={handleUpdateTicket} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                   Estado del Ticket
                 </label>
                 <select
                   value={editStatus}
                   onChange={(e) => setEditStatus(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                 >
                   <option value="open">Abierto (Pendiente)</option>
                   <option value="in_progress">En Proceso (Técnico Asignado)</option>
@@ -310,7 +310,7 @@ export default function TicketsPage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                   Técnico de Campo Asignado
                 </label>
                 <input
@@ -318,12 +318,12 @@ export default function TicketsPage() {
                   placeholder="Ej: Juan Pérez (Nivel 2)"
                   value={editTech}
                   onChange={(e) => setEditTech(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                   Notas Internas de Soporte
                 </label>
                 <textarea
@@ -331,14 +331,14 @@ export default function TicketsPage() {
                   placeholder="Instrucciones para la visita en terreno o resolución..."
                   value={editNotes}
                   onChange={(e) => setEditNotes(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                 />
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
                 <button
                   type="button"
-                  style={{ backgroundColor: '#f1f5f9', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: '#475569' }}
+                  style={{ backgroundColor: 'var(--bg-main)', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: 'var(--text-muted)' }}
                   onClick={() => setSelectedTicket(null)}
                 >
                   Cancelar
@@ -355,20 +355,20 @@ export default function TicketsPage() {
       {/* Modal Crear Ticket */}
       {isCreateModalOpen && (
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div className="glass-card" style={{ backgroundColor: '#ffffff', width: '90%', maxWidth: '520px', padding: '2rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '1.25rem', color: '#0f172a' }}>
+          <div className="glass-card" style={{ backgroundColor: 'var(--bg-card)', width: '90%', maxWidth: '520px', padding: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text-main)' }}>
               Crear Ticket de Soporte
             </h2>
 
             <form onSubmit={handleCreateTicket} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                   Abonado
                 </label>
                 <select
                   value={newSubId}
                   onChange={(e) => setNewSubId(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                 >
                   {subscribers.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -380,13 +380,13 @@ export default function TicketsPage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                     Categoría
                   </label>
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                   >
                     <option value="no_service">Sin Servicio</option>
                     <option value="slow_internet">Lentitud</option>
@@ -396,13 +396,13 @@ export default function TicketsPage() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                     Prioridad
                   </label>
                   <select
                     value={newPriority}
                     onChange={(e) => setNewPriority(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                   >
                     <option value="low">Baja</option>
                     <option value="medium">Media</option>
@@ -413,7 +413,7 @@ export default function TicketsPage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#475569', marginBottom: '0.35rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
                   Descripción del Problema
                 </label>
                 <textarea
@@ -422,14 +422,14 @@ export default function TicketsPage() {
                   required
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
                 />
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
                 <button
                   type="button"
-                  style={{ backgroundColor: '#f1f5f9', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: '#475569' }}
+                  style={{ backgroundColor: 'var(--bg-main)', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: 'var(--text-muted)' }}
                   onClick={() => setIsCreateModalOpen(false)}
                 >
                   Cancelar

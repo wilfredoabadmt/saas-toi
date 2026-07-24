@@ -34,13 +34,13 @@ export default function ForgotPasswordPage() {
 
   return (
     <div style={{ backgroundColor: '#090d16', color: '#f8fafc', fontFamily: 'system-ui, sans-serif', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem' }}>
-      <div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '16px', width: '100%', maxWidth: '440px', padding: '2.5rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+      <div style={{ backgroundColor: '#18181B', border: '1px solid #1e293b', borderRadius: '16px', width: '100%', maxWidth: '440px', padding: '2.5rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{ fontSize: '2.25rem', marginBottom: '0.5rem' }}>🔑</div>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
             Recuperar Contraseña
           </h1>
-          <p style={{ color: '#94a3b8', fontSize: '0.88rem', marginTop: '0.35rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginTop: '0.35rem' }}>
             Ingresa tu correo electrónico registrado para recibir el enlace seguro
           </p>
         </div>
@@ -76,22 +76,22 @@ export default function ForgotPasswordPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                style={{ width: '100%', padding: '0.7rem 0.9rem', backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '0.9rem' }}
+                style={{ width: '100%', padding: '0.7rem 0.9rem', backgroundColor: '#18181B', border: '1px solid #334155', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '0.9rem' }}
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              style={{ marginTop: '0.5rem', backgroundColor: '#2563eb', color: '#ffffff', padding: '0.8rem', borderRadius: '8px', fontWeight: 800, fontSize: '0.95rem', border: 'none', cursor: 'pointer' }}
+              style={{ marginTop: '0.5rem', backgroundColor: 'var(--primary-accent)', color: '#ffffff', padding: '0.8rem', borderRadius: '8px', fontWeight: 800, fontSize: '0.95rem', border: 'none', cursor: 'pointer' }}
             >
               {loading ? 'Enviando Correo...' : 'Enviar Enlace de Recuperación ✉️'}
             </button>
           </form>
         )}
 
-        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.82rem', color: '#64748b' }}>
-          <Link href="/subscribers" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+          <Link href="/subscribers" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
             ← Volver al inicio de sesión
           </Link>
         </div>
