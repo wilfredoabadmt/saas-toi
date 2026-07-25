@@ -35,7 +35,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
             <div>
               {/* User Avatar + Admin Name + Brand Logo Side-by-Side */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--border-color)' }}>
                 <div
                   style={{
                     width: '42px',
@@ -57,7 +57,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                 <div style={{ overflow: 'hidden', flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
-                    <h2 style={{ fontSize: '0.92rem', fontWeight: 800, margin: 0, color: '#f8fafc', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                    <h2 style={{ fontSize: '0.92rem', fontWeight: 800, margin: 0, color: 'var(--text-main)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                       Roberto Morales
                     </h2>
                     <img
@@ -94,7 +94,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       background: 'none',
                       border: 'none',
                       boxShadow: 'none',
-                      color: '#f8fafc',
+                      color: 'var(--text-main)',
                       fontSize: '0.82rem',
                       outline: 'none',
                       width: '100%',
@@ -171,13 +171,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               }}
             >
               <div style={{ overflow: 'hidden' }}>
-                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                   FiberSpeed ISP
                 </div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Plan Pro (1500)</div>
               </div>
 
-              <Link href="/onboarding" style={{ color: '#818CF8', fontSize: '1.1rem', textDecoration: 'none' }} title="Asistente de Inicio">
+              <Link href="/onboarding" style={{ color: 'var(--primary-accent)', fontSize: '1.1rem', textDecoration: 'none' }} title="Asistente de Inicio">
                 ⚙️
               </Link>
             </div>

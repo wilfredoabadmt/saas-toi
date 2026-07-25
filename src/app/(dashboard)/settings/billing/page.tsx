@@ -110,6 +110,13 @@ export default function BillingPage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
               <div className="neu-card" style={{ padding: '1.5rem' }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.5rem 0' }}>Free</h3>
+                <div style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--primary-accent)' }}>$0 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>/mes</span></div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.5rem 0 1rem 0' }}>Hasta 25 abonados</p>
+                {subInfo.planSlug === 'free' && <span className="badge badge-info">Plan Actual</span>}
+              </div>
+
+              <div className="neu-card" style={{ padding: '1.5rem' }}>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.5rem 0' }}>Starter</h3>
                 <div style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--primary-accent)' }}>$49 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>/mes</span></div>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.5rem 0 1rem 0' }}>Hasta 300 abonados</p>

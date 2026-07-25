@@ -42,6 +42,13 @@ const FEATURES = [
 
 const PLANS = [
   {
+    name: 'Free',
+    price: '$0',
+    features: ['Hasta 25 abonados', 'WhatsApp Cloud API (100 msgs/mes)', '1 Router MikroTik', 'Soporte comunitario'],
+    cta: 'Empezar Gratis',
+    featured: false,
+  },
+  {
     name: 'Starter',
     price: '$49',
     features: ['Hasta 300 abonados', 'WhatsApp Cloud API ilimitado', '1 Router MikroTik integrado', 'Soporte vía tickets'],
@@ -79,7 +86,7 @@ const FAQS = [
   },
   {
     q: '¿Puedo probar la plataforma antes de pagar?',
-    a: 'Sí, ofrecemos una prueba gratuita del plan Starter durante 14 días sin necesidad de tarjeta de crédito. Configura tu ISP y prueba todas las funcionalidades.',
+    a: 'Sí, ofrecemos un plan Free con hasta 25 abonados y 100 mensajes de WhatsApp mensuales sin costo. Sin tarjeta de crédito, sin límite de tiempo.',
   },
 ];
 
