@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { formatCurrency } from '@/lib/currency';
 
 export interface SubscriberItem {
   id: string;
@@ -31,6 +32,7 @@ interface SubscriberTableProps {
 export function SubscriberTable({ subscribers: initialSubscribers, isLoading: initialLoading }: SubscriberTableProps) {
   const [subscribers, setSubscribers] = useState<SubscriberItem[]>(initialSubscribers);
   const [plans, setPlans] = useState<PlanItem[]>([]);
+  const [currency, setCurrency] = useState<string>('BOB');
   const [filter, setFilter] = useState<string>('all');
   const [search, setSearch] = useState<string>('');
 
@@ -50,25 +52,23 @@ export function SubscriberTable({ subscribers: initialSubscribers, isLoading: in
   const [notes, setNotes] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
-  // Sync initial subscribers
   useEffect(() => {
-    setSubscribers(initialSubscribers);
-  }, [initialSubscribers]);
-
-  // Fetch plans on mount
-  useEffect(() => {
-    const fetchPlans = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch('/api/plans');
-        const json = await res.json();
-        if (json.success) {
-          setPlans(json.data);
-        }
+        const [plansRes, currRes] = await Promise.all([
+          fetch('/api/plans'),
+          fetch('/api/organization/currency'),
+        ]);
+        const plansJson = await plansRes.json();
+        const currJson = await currRes.json();
+
+        if (plansJson.data) setPlans(plansJson.data);
+        if (currJson.currency) setCurrency(currJson.currency);
       } catch (err) {
-        console.error('Error fetching plans:', err);
+        console.error('Error fetching plans/currency:', err);
       }
     };
-    fetchPlans();
+    fetchData();
   }, []);
 
   const openCreateModal = () => {
@@ -344,7 +344,7 @@ export function SubscriberTable({ subscribers: initialSubscribers, isLoading: in
                   <tr key={sub.id} style={{ borderBottom: '1px solid var(--border-color)', transition: 'background-color 0.15s ease' }}>
                     <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--text-main)' }}>{sub.name}</td>
                     <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{sub.phone}</td>
-                    <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--text-main)' }}>${sub.monthlyAmount}</td>
+                    <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--text-main)' }}>{formatCurrency(sub.monthlyAmount, currency)}</td>
                     <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{sub.dueDate}</td>
                     <td style={{ padding: '14px 16px' }}>{getStatusBadge(sub.paymentStatus)}</td>
                     <td style={{ padding: '14px 16px', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>

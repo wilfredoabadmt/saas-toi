@@ -7,6 +7,12 @@ export interface PaymentProofItem {
   s3Key: string;
   presignedUrl?: string;
   reviewStatus: 'pending' | 'approved' | 'rejected' | string;
+  extractedAmount?: string;
+  extractedBank?: string;
+  extractedReference?: string;
+  aiConfidence?: number;
+  aiVerified?: boolean;
+  reviewNotes?: string;
   uploadedAt: string;
 }
 
@@ -38,10 +44,45 @@ export function PaymentProofViewer({ proof }: PaymentProofViewerProps) {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
         <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-          Recibido: {new Date(proof.uploadedAt).toLocaleString('es-CL')}
+          Recibido: {new Date(proof.uploadedAt).toLocaleString('es-BO')}
         </span>
         {getBadge(proof.reviewStatus)}
       </div>
+
+      {/* AI Extraction Banner */}
+      {(proof.extractedBank || proof.aiConfidence) && (
+        <div
+          style={{
+            backgroundColor: proof.aiVerified ? 'rgba(34, 197, 94, 0.08)' : 'rgba(234, 179, 8, 0.08)',
+            border: proof.aiVerified ? '1px solid rgba(34, 197, 94, 0.25)' : '1px solid rgba(234, 179, 8, 0.25)',
+            borderRadius: '8px',
+            padding: '0.75rem 1rem',
+            marginBottom: '1rem',
+            fontSize: '0.85rem',
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 700, marginBottom: '0.35rem' }}>
+            <span>🤖 Análisis de Depósito por Agente IA</span>
+            {proof.aiConfidence && (
+              <span className={proof.aiVerified ? 'badge badge-success' : 'badge badge-warning'}>
+                Certeza IA: {proof.aiConfidence}%
+              </span>
+            )}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.5rem', color: 'var(--text-main)', marginTop: '0.4rem' }}>
+            {proof.extractedBank && <div><strong>Banco/Medio:</strong> {proof.extractedBank}</div>}
+            {proof.extractedAmount && <div><strong>Monto Detectado:</strong> Bs. {proof.extractedAmount}</div>}
+            {proof.extractedReference && <div><strong>Nro. Ref:</strong> {proof.extractedReference}</div>}
+          </div>
+
+          {proof.reviewNotes && (
+            <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-muted)', whiteSpace: 'pre-line' }}>
+              {proof.reviewNotes}
+            </div>
+          )}
+        </div>
+      )}
 
       {proof.presignedUrl ? (
         <div style={{ marginBottom: '1rem', textAlign: 'center' }}>

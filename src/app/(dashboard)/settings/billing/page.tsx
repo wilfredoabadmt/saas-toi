@@ -14,20 +14,48 @@ interface SubscriptionInfo {
 
 export default function BillingPage() {
   const [subInfo, setSubInfo] = useState<SubscriptionInfo | null>(null);
+  const [currency, setCurrency] = useState<string>('BOB');
+  const [savingCurrency, setSavingCurrency] = useState(false);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToast();
 
   const fetchSubscription = async () => {
     try {
-      const res = await fetch('/api/subscriptions/current');
-      const json = await res.json();
-      if (json.success) {
-        setSubInfo(json.data);
-      }
+      const [subRes, currRes] = await Promise.all([
+        fetch('/api/subscriptions/current'),
+        fetch('/api/organization/currency'),
+      ]);
+      const subJson = await subRes.json();
+      const currJson = await currRes.json();
+
+      if (subJson.success) setSubInfo(subJson.data);
+      if (currJson.currency) setCurrency(currJson.currency);
     } catch {
       addToast('Error al cargar datos de la suscripción', 'error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCurrencyChange = async (newCurrency: string) => {
+    setSavingCurrency(true);
+    try {
+      const res = await fetch('/api/organization/currency', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currency: newCurrency }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setCurrency(json.currency);
+        addToast(`Moneda de facturación actualizada a ${newCurrency === 'BOB' ? 'Bolivianos (Bs.)' : 'Dólares ($)'}`, 'success');
+      } else {
+        addToast(json.error?.message || 'Error al guardar la moneda', 'error');
+      }
+    } catch {
+      addToast('Error al comunicar con el servidor', 'error');
+    } finally {
+      setSavingCurrency(false);
     }
   };
 
@@ -40,10 +68,10 @@ export default function BillingPage() {
       {/* Header */}
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '1.75rem', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
-          Suscripción & Plan del SaaS
+          Suscripción & Configuración de Moneda
         </h1>
         <p style={{ color: 'var(--text-muted)', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
-          Gestión de cupo de abonados, estado de cuenta e historial de facturación de tu ISP
+          Gestión de cupo de abonados, selección de moneda principal (Bs. / $) e historial de facturación de tu ISP
         </p>
       </div>
 
@@ -51,6 +79,41 @@ export default function BillingPage() {
         <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>Cargando suscripción...</div>
       ) : subInfo ? (
         <>
+          {/* Currency Preference Selector Card */}
+          <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem', borderLeft: '4px solid var(--primary-accent)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+              <div>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.25rem 0' }}>
+                  💱 Moneda de Operación del ISP
+                </h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>
+                  Define el símbolo y formato monetario para abonados, planes y recaudación.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                <button
+                  type="button"
+                  disabled={savingCurrency}
+                  className={currency === 'BOB' ? 'neu-btn-primary' : 'neu-btn'}
+                  onClick={() => handleCurrencyChange('BOB')}
+                  style={{ opacity: savingCurrency ? 0.6 : 1 }}
+                >
+                  🇧🇴 Bolivianos (Bs.)
+                </button>
+
+                <button
+                  type="button"
+                  disabled={savingCurrency}
+                  className={currency === 'USD' ? 'neu-btn-primary' : 'neu-btn'}
+                  onClick={() => handleCurrencyChange('USD')}
+                  style={{ opacity: savingCurrency ? 0.6 : 1 }}
+                >
+                  💵 Dólares ($ USD)
+                </button>
+              </div>
+            </div>
+          </div>
           {/* Main Card Usage */}
           <div className="glass-card" style={{ padding: '2rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>

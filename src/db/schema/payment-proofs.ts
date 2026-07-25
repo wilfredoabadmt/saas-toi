@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, integer, timestamp, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, integer, boolean, timestamp, index } from 'drizzle-orm/pg-core';
 import { organizations } from './organizations';
 import { subscribers } from './subscribers';
 import { messageLogs } from './message-logs';
@@ -21,6 +21,11 @@ export const paymentProofs = pgTable(
     s3Key: text('s3_key').notNull(),
     fileSizeBytes: integer('file_size_bytes'),
     reviewStatus: text('review_status').notNull().default('pending'), // 'pending' | 'approved' | 'rejected'
+    extractedAmount: text('extracted_amount'),
+    extractedReference: text('extracted_reference'),
+    extractedBank: text('extracted_bank'),
+    aiConfidence: integer('ai_confidence'),
+    aiVerified: boolean('ai_verified').default(false),
     reviewedBy: uuid('reviewed_by').references(() => users.id, { onDelete: 'set null' }),
     reviewedAt: timestamp('reviewed_at'),
     reviewNotes: text('review_notes'),

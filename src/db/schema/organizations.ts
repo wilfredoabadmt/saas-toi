@@ -5,6 +5,7 @@ export const organizations = pgTable('organizations', {
   name: text('name').notNull(),
   slug: text('slug').notNull().unique(),
   status: text('status').notNull().default('active'),
+  currency: text('currency').notNull().default('BOB'), // 'BOB' | 'USD' | 'CLP'
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });

@@ -110,6 +110,23 @@ export class PaymentProofService {
       .onConflictDoNothing()
       .returning();
 
+    if (proof) {
+      // 7. Invoke Intelligent AI Payment Verifier Agent
+      try {
+        const { AiPaymentVerifierService } = await import('./ai-payment-verifier.service');
+        await AiPaymentVerifierService.verifyIncomingReceipt({
+          organizationId: orgId,
+          subscriberId: sub.id,
+          proofId: proof.id,
+          caption: params.caption,
+          mimeType: media.mimeType,
+          buffer: media.buffer,
+        });
+      } catch (err) {
+        console.warn('[AI Payment Verifier Warning]: verification failed non-blockingly', err);
+      }
+    }
+
     return proof;
   }
 

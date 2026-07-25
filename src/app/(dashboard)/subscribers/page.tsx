@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { SubscriberTable, SubscriberItem } from '@/components/domain/subscriber-table';
 import { SubscriberService } from '@/services/subscriber.service';
+import { db } from '@/db/client';
+import { organizations } from '@/db/schema/organizations';
+import { formatCurrency } from '@/lib/currency';
+import { eq } from 'drizzle-orm';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,6 +12,14 @@ export default async function SubscribersPage() {
   const defaultOrgId = '00000000-0000-0000-0000-000000000001';
   const result = await SubscriberService.list({ organizationId: defaultOrgId, limit: 100 });
   const allSubscribers = (result.data || []) as SubscriberItem[];
+
+  const [org] = await db
+    .select({ currency: organizations.currency })
+    .from(organizations)
+    .where(eq(organizations.id, defaultOrgId))
+    .limit(1);
+
+  const currency = org?.currency || 'BOB';
 
   // Compute KPI metrics
   const totalSubscribers = result.pagination.total;
@@ -68,7 +80,7 @@ export default async function SubscribersPage() {
             </span>
           </div>
           <div style={{ fontSize: '2.25rem', fontWeight: 900, margin: '0.4rem 0 0.25rem 0' }}>
-            ${totalRevenue.toLocaleString('es-CL')}
+            {formatCurrency(totalRevenue, currency)}
           </div>
           <div style={{ fontSize: '0.82rem', fontWeight: 600 }}>Monto total proyectado en cartera</div>
         </div>
@@ -82,7 +94,7 @@ export default async function SubscribersPage() {
             </span>
           </div>
           <div style={{ fontSize: '2rem', fontWeight: 800, color: '#ef4444', margin: '0.5rem 0 0.25rem 0' }}>
-            ${overdueRevenue.toLocaleString('es-CL')}
+            {formatCurrency(overdueRevenue, currency)}
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Pendiente de cobro en WhatsApp</div>
         </div>
