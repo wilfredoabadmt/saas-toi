@@ -13,3 +13,6 @@ export * from './password-resets';
 export * from './team-invitations';
 export * from './saas-plans';
 export * from './subscriptions';
+export * from './workflows';
+export * from './chatbot';
+export * from './leads';

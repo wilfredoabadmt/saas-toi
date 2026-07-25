@@ -5,7 +5,13 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 008-saas-subscription-and-limits
+## Active feature: 009-workflow-automations-and-ai-chatbot
+
+Plan técnico: [specs/009-workflow-automations-and-ai-chatbot/spec.md](specs/009-workflow-automations-and-ai-chatbot/spec.md)
+
+Automatizaciones de Workflow para nurturing de suscriptores y Chatbot IA con calificación automática de leads por WhatsApp.
+
+## Feature previa: 008-saas-subscription-and-limits
 
 Plan técnico: [specs/008-saas-subscription-and-limits/spec.md](specs/008-saas-subscription-and-limits/spec.md)
 
