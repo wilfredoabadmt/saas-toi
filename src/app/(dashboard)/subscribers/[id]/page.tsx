@@ -47,10 +47,10 @@ export default async function SubscriberDetailPage({
     <div>
       {/* Header Breadcrumb */}
       <div style={{ marginBottom: '1.5rem' }}>
-        <Link href="/subscribers" style={{ color: '#2563eb', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600 }}>
+        <Link href="/subscribers" style={{ color: 'var(--primary-accent)', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600 }}>
           ← Volver a lista de abonados
         </Link>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#0f172a', margin: '0.5rem 0 0 0' }}>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: '0.5rem 0 0 0' }}>
           Expediente del Abonado
         </h1>
       </div>
@@ -59,29 +59,29 @@ export default async function SubscriberDetailPage({
         {/* Subscriber Info Card */}
         <div className="glass-card" style={{ padding: '1.75rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-            <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>{subscriber.name}</h2>
+            <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>{subscriber.name}</h2>
             {getStatusBadge(subscriber.paymentStatus)}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', fontSize: '0.9rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
-              <span style={{ color: '#64748b' }}>Teléfono WhatsApp:</span>
-              <strong style={{ color: '#0f172a' }}>{subscriber.phone}</strong>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+              <span style={{ color: 'var(--text-muted)' }}>Teléfono WhatsApp:</span>
+              <strong style={{ color: 'var(--text-main)' }}>{subscriber.phone}</strong>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
-              <span style={{ color: '#64748b' }}>Monto Mensual:</span>
-              <strong style={{ color: '#0f172a' }}>${subscriber.monthlyAmount}</strong>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+              <span style={{ color: 'var(--text-muted)' }}>Monto Mensual:</span>
+              <strong style={{ color: 'var(--text-main)' }}>${subscriber.monthlyAmount}</strong>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
-              <span style={{ color: '#64748b' }}>Fecha de Vencimiento:</span>
-              <strong style={{ color: '#0f172a' }}>{subscriber.dueDate}</strong>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+              <span style={{ color: 'var(--text-muted)' }}>Fecha de Vencimiento:</span>
+              <strong style={{ color: 'var(--text-main)' }}>{subscriber.dueDate}</strong>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
-              <span style={{ color: '#64748b' }}>Email:</span>
-              <span style={{ color: '#0f172a' }}>{subscriber.email || 'N/A'}</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+              <span style={{ color: 'var(--text-muted)' }}>Email:</span>
+              <span style={{ color: 'var(--text-main)' }}>{subscriber.email || 'N/A'}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#64748b' }}>Opt-out WhatsApp:</span>
+              <span style={{ color: 'var(--text-muted)' }}>Opt-out WhatsApp:</span>
               <span style={{ fontWeight: 600, color: subscriber.optedOutWhatsapp ? '#b91c1c' : '#15803d' }}>
                 {subscriber.optedOutWhatsapp ? 'Sí (Bloqueado)' : 'No (Permitido)'}
               </span>
@@ -91,12 +91,12 @@ export default async function SubscriberDetailPage({
 
         {/* Payment Proofs S3 Section */}
         <div className="glass-card" style={{ padding: '1.75rem' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', margin: '0 0 1rem 0' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', margin: '0 0 1rem 0' }}>
             📸 Comprobantes de Pago Recibidos ({proofs.length})
           </h3>
 
           {proofs.length === 0 ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8', backgroundColor: '#f8fafc', borderRadius: '10px' }}>
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', backgroundColor: 'var(--bg-card)', borderRadius: '10px' }}>
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🧾</div>
               <p style={{ fontSize: '0.88rem' }}>No se han recibido comprobantes de pago para este abonado.</p>
             </div>

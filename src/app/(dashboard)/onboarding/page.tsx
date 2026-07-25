@@ -35,7 +35,7 @@ export default function OnboardingPage() {
           </span>
         </div>
 
-        <div style={{ width: '100%', height: '10px', backgroundColor: '#e2e8f0', borderRadius: '5px', overflow: 'hidden' }}>
+        <div style={{ width: '100%', height: '10px', backgroundColor: 'var(--bg-card)', boxShadow: 'var(--shadow-inset)', borderRadius: '5px', overflow: 'hidden' }}>
           <div
             style={{
               width: `${progressPercent}%`,
@@ -53,7 +53,7 @@ export default function OnboardingPage() {
         {/* Paso 1 */}
         <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
-            <div style={{ backgroundColor: '#dcfce7', color: '#16a34a', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1.1rem', flexShrink: 0 }}>
+            <div style={{ backgroundColor: 'var(--bg-card)', boxShadow: 'var(--shadow-card)', color: '#16a34a', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1.1rem', flexShrink: 0 }}>
               1
             </div>
             <div>
@@ -68,7 +68,7 @@ export default function OnboardingPage() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <span className="badge badge-success">✓ Listo</span>
-            <Link href="/settings/plans" className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+            <Link href="/settings/plans" className="neu-btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
               Configurar Planes
             </Link>
           </div>
@@ -77,7 +77,7 @@ export default function OnboardingPage() {
         {/* Paso 2 */}
         <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
-            <div style={{ backgroundColor: step2Done ? '#dcfce7' : '#e0f2fe', color: step2Done ? '#16a34a' : '#0284c7', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1.1rem', flexShrink: 0 }}>
+            <div style={{ backgroundColor: 'var(--bg-card)', boxShadow: 'var(--shadow-card)', color: step2Done ? '#16a34a' : '#0284c7', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1.1rem', flexShrink: 0 }}>
               2
             </div>
             <div>
@@ -99,7 +99,7 @@ export default function OnboardingPage() {
               />
               Marcar listo
             </label>
-            <Link href="/subscribers/import" style={{ backgroundColor: 'var(--primary-accent)', color: '#ffffff', padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none' }}>
+            <Link href="/subscribers/import" className="neu-btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
               Importar CSV
             </Link>
           </div>
@@ -108,7 +108,7 @@ export default function OnboardingPage() {
         {/* Paso 3 */}
         <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
-            <div style={{ backgroundColor: step3Done ? '#dcfce7' : '#fef3c7', color: step3Done ? '#16a34a' : '#d97706', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1.1rem', flexShrink: 0 }}>
+            <div style={{ backgroundColor: 'var(--bg-card)', boxShadow: 'var(--shadow-card)', color: step3Done ? '#16a34a' : '#d97706', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1.1rem', flexShrink: 0 }}>
               3
             </div>
             <div>
@@ -130,7 +130,7 @@ export default function OnboardingPage() {
               />
               Marcar listo
             </label>
-            <Link href="/whatsapp" style={{ backgroundColor: '#16a34a', color: '#ffffff', padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none' }}>
+            <Link href="/whatsapp" className="neu-btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
               Conectar WhatsApp
             </Link>
           </div>
@@ -139,7 +139,7 @@ export default function OnboardingPage() {
 
       {/* CTA Final */}
       <div style={{ textAlign: 'center' }}>
-        <Link href="/subscribers" className="btn-primary" style={{ padding: '0.85rem 2rem', fontSize: '1.05rem' }}>
+        <Link href="/subscribers" className="neu-btn-primary" style={{ padding: '0.85rem 2rem', fontSize: '1.05rem' }}>
           Ir al Panel de Administración 🚀
         </Link>
       </div>

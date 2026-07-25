@@ -58,7 +58,7 @@ export default function SuperAdminTenantsPage() {
     <div>
       {/* Header */}
       <div style={{ marginBottom: '2rem' }}>
-        <div style={{ display: 'inline-block', backgroundColor: '#fef3c7', color: '#b45309', padding: '0.2rem 0.75rem', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800, marginBottom: '0.5rem' }}>
+        <div className="badge badge-warning" style={{ marginBottom: '0.5rem' }}>
           👑 PANEL SUPER ADMIN
         </div>
         <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
@@ -102,15 +102,12 @@ export default function SuperAdminTenantsPage() {
                     </td>
                     <td style={{ padding: '14px 16px', textAlign: 'right' }}>
                       <button
+                        className="neu-btn"
                         style={{
-                          backgroundColor: t.status === 'active' ? '#fee2e2' : '#dcfce7',
-                          color: t.status === 'active' ? '#b91c1c' : '#15803d',
-                          border: 'none',
+                          backgroundColor: t.status === 'active' ? 'var(--status-danger-bg)' : 'var(--status-success-bg)',
+                          color: t.status === 'active' ? 'var(--status-danger-text)' : 'var(--status-success-text)',
                           padding: '0.35rem 0.75rem',
-                          borderRadius: '6px',
-                          fontWeight: 700,
                           fontSize: '0.8rem',
-                          cursor: 'pointer',
                         }}
                         onClick={() => handleStatusToggle(t)}
                       >

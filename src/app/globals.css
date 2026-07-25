@@ -27,6 +27,12 @@
   --shadow-inset: inset 3px 3px 6px rgba(163, 177, 198, 0.4), inset -3px -3px 6px rgba(255, 255, 255, 0.8);
   --shadow-button: 0 4px 16px rgba(0, 102, 255, 0.3);
 
+  /* Status Colors */
+  --status-success-bg: rgba(16, 185, 129, 0.12);
+  --status-success-text: #10b981;
+  --status-danger-bg: rgba(244, 63, 94, 0.12);
+  --status-danger-text: #f43f5e;
+
   /* Geometry */
   --radius-3xl: 28px;
   --radius-2xl: 20px;
@@ -51,6 +57,12 @@
   --primary-hover: #60A5FA;
   --text-main: #F8FAFC;
   --text-muted: #94A3B8;
+
+  /* Status Colors — Dark */
+  --status-success-bg: rgba(16, 185, 129, 0.18);
+  --status-success-text: #34d399;
+  --status-danger-bg: rgba(244, 63, 94, 0.18);
+  --status-danger-text: #fb7185;
 
   /* Neumorphic Shadows — Dark */
   --shadow-card: 6px 6px 16px rgba(0, 0, 0, 0.5), -4px -4px 10px rgba(255, 255, 255, 0.03);
