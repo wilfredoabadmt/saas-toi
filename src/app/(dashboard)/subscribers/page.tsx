@@ -37,22 +37,7 @@ export default async function SubscribersPage() {
           <Link href="/subscribers/import" className="btn-primary">
             <span>📥</span> Importar Abonados (CSV)
           </Link>
-          <Link
-            href="/messaging"
-            style={{
-              backgroundColor: 'var(--bg-card)',
-              color: 'var(--text-main)',
-              border: '1px solid var(--border-color)',
-              padding: '0.65rem 1.25rem',
-              borderRadius: '10px',
-              fontWeight: 600,
-              fontSize: '0.9rem',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}
-          >
+          <Link href="/messaging" className="neu-btn">
             <span>📣</span> Gatillar Recordatorios
           </Link>
         </div>
@@ -64,7 +49,7 @@ export default async function SubscribersPage() {
         <div className="kpi-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--text-muted)', fontSize: '0.82rem', fontWeight: 600 }}>
             <span>TOTAL ABONADOS</span>
-            <span style={{ backgroundColor: '#dcfce7', color: '#15803d', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <span style={{ backgroundColor: 'var(--bg-card)', color: 'var(--text-muted)', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700, border: '1px solid var(--border-color)' }}>
               +24% mes
             </span>
           </div>
@@ -92,7 +77,7 @@ export default async function SubscribersPage() {
         <div className="kpi-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--text-muted)', fontSize: '0.82rem', fontWeight: 600 }}>
             <span>CARTERA VENCIDA</span>
-            <span style={{ backgroundColor: '#fee2e2', color: '#b91c1c', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <span style={{ backgroundColor: 'var(--bg-card)', color: 'var(--text-muted)', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700, border: '1px solid var(--border-color)' }}>
               {overdueCount} abonados
             </span>
           </div>
@@ -106,7 +91,7 @@ export default async function SubscribersPage() {
         <div className="kpi-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--text-muted)', fontSize: '0.82rem', fontWeight: 600 }}>
             <span>TASA DE COBRANZA</span>
-            <span style={{ backgroundColor: '#fef9c3', color: '#a16207', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <span style={{ backgroundColor: 'var(--bg-card)', color: 'var(--text-muted)', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700, border: '1px solid var(--border-color)' }}>
               Status
             </span>
           </div>

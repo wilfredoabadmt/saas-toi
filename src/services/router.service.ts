@@ -251,4 +251,80 @@ export class RouterService {
 
     return logs;
   }
+
+  /**
+   * Updates an existing router configuration.
+   */
+  static async update(
+    organizationId: string,
+    id: string,
+    input: Partial<{
+      name: string;
+      host: string;
+      apiPort: number;
+      username: string;
+      password?: string;
+      isActive: boolean;
+    }>
+  ) {
+    await ensureMigrationsRun();
+    const orgId = assertTenantScope(organizationId);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const updateData: any = {
+      updatedAt: new Date(),
+    };
+
+    if (input.name !== undefined) updateData.name = input.name.trim();
+    if (input.host !== undefined) updateData.host = input.host.trim();
+    if (input.apiPort !== undefined) updateData.apiPort = input.apiPort;
+    if (input.username !== undefined) updateData.username = input.username.trim();
+    if (input.isActive !== undefined) updateData.isActive = input.isActive;
+
+    if (input.password !== undefined && input.password.trim() !== '') {
+      const encryptedString = encrypt(input.password);
+      const parts = encryptedString.split(':');
+      updateData.encryptedPassword = parts[2] || encryptedString;
+      updateData.iv = parts[0] || '';
+      updateData.authTag = parts[1] || '';
+    }
+
+    const [updated] = await db
+      .update(routerConfigs)
+      .set(updateData)
+      .where(and(eq(routerConfigs.id, id), eq(routerConfigs.organizationId, orgId)))
+      .returning();
+
+    if (!updated) {
+      throw new ApiError('NOT_FOUND', 'Router no encontrado', 404);
+    }
+
+    return {
+      id: updated.id,
+      name: updated.name,
+      host: updated.host,
+      apiPort: updated.apiPort,
+      username: updated.username,
+      isActive: updated.isActive,
+    };
+  }
+
+  /**
+   * Deletes a router configuration.
+   */
+  static async delete(organizationId: string, id: string) {
+    await ensureMigrationsRun();
+    const orgId = assertTenantScope(organizationId);
+
+    const [deleted] = await db
+      .delete(routerConfigs)
+      .where(and(eq(routerConfigs.id, id), eq(routerConfigs.organizationId, orgId)))
+      .returning();
+
+    if (!deleted) {
+      throw new ApiError('NOT_FOUND', 'Router no encontrado', 404);
+    }
+
+    return deleted;
+  }
 }

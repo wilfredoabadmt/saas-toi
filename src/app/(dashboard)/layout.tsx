@@ -77,14 +77,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               {/* Quick Search */}
               <div style={{ marginBottom: '1.5rem' }}>
                 <div
+                  className="neu-input"
                   style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                    borderRadius: '12px',
+                    borderRadius: '9999px',
                     padding: '0.55rem 0.85rem',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    border: '1px solid rgba(255,255,255,0.08)',
                   }}
                 >
                   <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>🔍</span>
@@ -94,12 +93,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     style={{
                       background: 'none',
                       border: 'none',
+                      boxShadow: 'none',
                       color: '#f8fafc',
                       fontSize: '0.82rem',
                       outline: 'none',
                       width: '100%',
                       padding: 0,
-                      boxShadow: 'none',
                     }}
                   />
                 </div>
@@ -161,13 +160,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Sidebar Footer User Info */}
             <div
               style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                backgroundColor: 'var(--bg-card)',
                 borderRadius: '16px',
                 padding: '0.75rem 1rem',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                border: '1px solid rgba(255,255,255,0.08)',
+                border: '1px solid var(--border-color)',
                 marginTop: '1.5rem',
               }}
             >
@@ -196,8 +195,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <ThemeToggle />
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#16a34a', backgroundColor: 'rgba(22, 163, 74, 0.12)', padding: '0.35rem 0.85rem', borderRadius: '999px', fontWeight: 600 }}>
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block' }}></span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--primary-accent)', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', padding: '0.35rem 0.85rem', borderRadius: '999px', fontWeight: 600 }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--primary-accent)', display: 'inline-block' }}></span>
                   <span className="header-breadcrumb-extra">Database</span> Connected
                 </div>
               </div>

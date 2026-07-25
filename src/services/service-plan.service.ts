@@ -119,4 +119,23 @@ export class ServicePlanService {
   static async toggleStatus(organizationId: string, id: string, isActive: boolean) {
     return ServicePlanService.update(organizationId, id, { isActive });
   }
+
+  /**
+   * Deletes a service plan.
+   */
+  static async delete(organizationId: string, id: string) {
+    await ensureMigrationsRun();
+    const orgId = assertTenantScope(organizationId);
+
+    const [deleted] = await db
+      .delete(servicePlans)
+      .where(and(eq(servicePlans.id, id), eq(servicePlans.organizationId, orgId)))
+      .returning();
+
+    if (!deleted) {
+      throw new ApiError('NOT_FOUND', 'Plan de servicio no encontrado', 404);
+    }
+
+    return deleted;
+  }
 }

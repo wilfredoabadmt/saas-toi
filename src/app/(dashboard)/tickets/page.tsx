@@ -211,19 +211,19 @@ export default function TicketsPage() {
         {/* Filters */}
         <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem' }}>
           <button
-            style={{ border: 'none', padding: '0.4rem 0.85rem', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', backgroundColor: statusFilter === '' ? '#ffffff' : 'transparent', color: statusFilter === '' ? '#0f172a' : '#64748b', boxShadow: statusFilter === '' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none' }}
+            className={statusFilter === '' ? 'neu-btn-primary' : 'neu-btn'}
             onClick={() => setStatusFilter('')}
           >
             Todos ({ticketList.length})
           </button>
           <button
-            style={{ border: 'none', padding: '0.4rem 0.85rem', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', backgroundColor: statusFilter === 'open' ? '#ffffff' : 'transparent', color: statusFilter === 'open' ? '#0f172a' : '#64748b', boxShadow: statusFilter === 'open' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none' }}
+            className={statusFilter === 'open' ? 'neu-btn-primary' : 'neu-btn'}
             onClick={() => setStatusFilter('open')}
           >
             Abiertos ({openCount})
           </button>
           <button
-            style={{ border: 'none', padding: '0.4rem 0.85rem', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', backgroundColor: statusFilter === 'in_progress' ? '#ffffff' : 'transparent', color: statusFilter === 'in_progress' ? '#0f172a' : '#64748b', boxShadow: statusFilter === 'in_progress' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none' }}
+            className={statusFilter === 'in_progress' ? 'neu-btn-primary' : 'neu-btn'}
             onClick={() => setStatusFilter('in_progress')}
           >
             En Proceso ({inProgressCount})
@@ -267,7 +267,7 @@ export default function TicketsPage() {
                     </td>
                     <td style={{ padding: '14px 16px', textAlign: 'right' }}>
                       <button
-                        style={{ backgroundColor: 'var(--bg-main)', color: 'var(--primary-accent)', border: 'none', padding: '0.35rem 0.75rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
+                        className="neu-btn"
                         onClick={() => handleOpenEditModal(item)}
                       >
                         Gestionar / Asignar →
@@ -300,7 +300,7 @@ export default function TicketsPage() {
                 <select
                   value={editStatus}
                   onChange={(e) => setEditStatus(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  className="neu-input"
                 >
                   <option value="open">Abierto (Pendiente)</option>
                   <option value="in_progress">En Proceso (Técnico Asignado)</option>
@@ -318,7 +318,7 @@ export default function TicketsPage() {
                   placeholder="Ej: Juan Pérez (Nivel 2)"
                   value={editTech}
                   onChange={(e) => setEditTech(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  className="neu-input"
                 />
               </div>
 
@@ -331,14 +331,14 @@ export default function TicketsPage() {
                   placeholder="Instrucciones para la visita en terreno o resolución..."
                   value={editNotes}
                   onChange={(e) => setEditNotes(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  className="neu-input"
                 />
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
                 <button
                   type="button"
-                  style={{ backgroundColor: 'var(--bg-main)', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: 'var(--text-muted)' }}
+                  className="neu-btn"
                   onClick={() => setSelectedTicket(null)}
                 >
                   Cancelar
@@ -368,7 +368,7 @@ export default function TicketsPage() {
                 <select
                   value={newSubId}
                   onChange={(e) => setNewSubId(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  className="neu-input"
                 >
                   {subscribers.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -386,7 +386,7 @@ export default function TicketsPage() {
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                    className="neu-input"
                   >
                     <option value="no_service">Sin Servicio</option>
                     <option value="slow_internet">Lentitud</option>
@@ -402,7 +402,7 @@ export default function TicketsPage() {
                   <select
                     value={newPriority}
                     onChange={(e) => setNewPriority(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                    className="neu-input"
                   >
                     <option value="low">Baja</option>
                     <option value="medium">Media</option>
@@ -422,14 +422,14 @@ export default function TicketsPage() {
                   required
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  className="neu-input"
                 />
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
                 <button
                   type="button"
-                  style={{ backgroundColor: 'var(--bg-main)', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: 'var(--text-muted)' }}
+                  className="neu-btn"
                   onClick={() => setIsCreateModalOpen(false)}
                 >
                   Cancelar

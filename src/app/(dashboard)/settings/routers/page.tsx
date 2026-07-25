@@ -27,6 +27,8 @@ export default function RoutersPage() {
   const [loading, setLoading] = useState(true);
   const [testingId, setTestingId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedRouter, setSelectedRouter] = useState<RouterItem | null>(null);
   const { addToast } = useToast();
 
   // Form State
@@ -35,6 +37,7 @@ export default function RoutersPage() {
   const [apiPort, setApiPort] = useState('443');
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('');
+  const [isActive, setIsActive] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchRouters = async () => {
@@ -67,6 +70,27 @@ export default function RoutersPage() {
     fetchRouters();
     fetchAuditLogs();
   }, []);
+
+  const openCreateModal = () => {
+    setName('');
+    setHost('');
+    setApiPort('443');
+    setUsername('admin');
+    setPassword('');
+    setIsActive(true);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (router: RouterItem) => {
+    setSelectedRouter(router);
+    setName(router.name);
+    setHost(router.host);
+    setApiPort(String(router.apiPort));
+    setUsername(router.username);
+    setPassword(''); // Leave password empty for no change
+    setIsActive(router.isActive);
+    setIsEditModalOpen(true);
+  };
 
   const handleTestConnection = async (routerId: string) => {
     setTestingId(routerId);
@@ -109,14 +133,58 @@ export default function RoutersPage() {
 
       addToast(`Router ${name} registrado y clave cifrada con AES-256-GCM`, 'success');
       setIsModalOpen(false);
-      setName('');
-      setHost('');
-      setPassword('');
       fetchRouters();
     } catch (err) {
       addToast((err as Error).message, 'error');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleEditRouter = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedRouter) return;
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch(`/api/routers/${selectedRouter.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          host,
+          apiPort: Number(apiPort),
+          username,
+          password: password || undefined,
+          isActive,
+        }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Error al actualizar el router');
+
+      addToast(`Router ${name} actualizado exitosamente`, 'success');
+      setIsEditModalOpen(false);
+      setSelectedRouter(null);
+      fetchRouters();
+    } catch (err) {
+      addToast((err as Error).message, 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteRouter = async (router: RouterItem) => {
+    if (!confirm(`¿Estás seguro de que deseas eliminar el router "${router.name}"?`)) return;
+
+    try {
+      const res = await fetch(`/api/routers/${router.id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Error al eliminar el router');
+
+      addToast(`Router ${router.name} eliminado exitosamente`, 'success');
+      fetchRouters();
+    } catch (err) {
+      addToast((err as Error).message, 'error');
     }
   };
 
@@ -133,7 +201,7 @@ export default function RoutersPage() {
           </p>
         </div>
 
-        <button className="btn-primary" onClick={() => setIsModalOpen(true)}>
+        <button className="btn-primary" onClick={openCreateModal}>
           <span>⚙️</span> Registrar Router MikroTik
         </button>
       </div>
@@ -176,7 +244,7 @@ export default function RoutersPage() {
                   <th style={{ padding: '12px 16px' }}>Host / Dirección IP</th>
                   <th style={{ padding: '12px 16px' }}>Puerto REST</th>
                   <th style={{ padding: '12px 16px' }}>Usuario API</th>
-                  <th style={{ padding: '12px 16px' }}>Seguridad</th>
+                  <th style={{ padding: '12px 16px' }}>Estado</th>
                   <th style={{ padding: '12px 16px', textAlign: 'right' }}>Acciones</th>
                 </tr>
               </thead>
@@ -188,15 +256,29 @@ export default function RoutersPage() {
                     <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{r.apiPort}</td>
                     <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{r.username}</td>
                     <td style={{ padding: '14px 16px' }}>
-                      <span className="badge badge-success">🔒 AES-256-GCM</span>
+                      <span className={`badge ${r.isActive ? 'badge-success' : 'badge-danger'}`}>
+                        {r.isActive ? '● Activo' : '○ Inactivo'}
+                      </span>
                     </td>
-                    <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                    <td style={{ padding: '14px 16px', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                       <button
-                        style={{ backgroundColor: '#e0f2fe', color: '#0369a1', border: 'none', padding: '0.35rem 0.75rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
+                        style={{ backgroundColor: '#e0f2fe', color: '#0369a1', border: 'none', padding: '0.35rem 0.65rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
                         onClick={() => handleTestConnection(r.id)}
                         disabled={testingId === r.id}
                       >
-                        {testingId === r.id ? 'Probando...' : '⚡ Probar Conexión'}
+                        {testingId === r.id ? 'Probando...' : '⚡ Probar'}
+                      </button>
+                      <button
+                        style={{ backgroundColor: '#e0f2fe', color: '#0369a1', border: 'none', padding: '0.35rem 0.65rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
+                        onClick={() => openEditModal(r)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        style={{ backgroundColor: '#fee2e2', color: '#b91c1c', border: 'none', padding: '0.35rem 0.65rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
+                        onClick={() => handleDeleteRouter(r)}
+                      >
+                        Eliminar
                       </button>
                     </td>
                   </tr>
@@ -348,6 +430,113 @@ export default function RoutersPage() {
                 </button>
                 <button type="submit" className="btn-primary" disabled={isSubmitting}>
                   {isSubmitting ? 'Guardando...' : 'Guardar Router (Cifrado GCM)'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Editar Router */}
+      {isEditModalOpen && selectedRouter && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="glass-card" style={{ backgroundColor: 'var(--bg-card)', width: '90%', maxWidth: '500px', padding: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text-main)' }}>
+              Editar Router MikroTik: {selectedRouter.name}
+            </h2>
+
+            <form onSubmit={handleEditRouter} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
+                  Nombre Identificador
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
+                    Dirección IP / Host
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={host}
+                    onChange={(e) => setHost(e.target.value)}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
+                    Puerto REST
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    value={apiPort}
+                    onChange={(e) => setApiPort(e.target.value)}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
+                    Usuario API
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
+                    Contraseña (Dejar vacío para no cambiar)
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <input
+                  type="checkbox"
+                  id="isActiveRouter"
+                  checked={isActive}
+                  onChange={(e) => setIsActive(e.target.checked)}
+                />
+                <label htmlFor="isActiveRouter" style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', cursor: 'pointer' }}>
+                  Router Activo (Habilitar automatizaciones en este equipo)
+                </label>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
+                <button
+                  type="button"
+                  style={{ backgroundColor: 'var(--bg-main)', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: 'var(--text-muted)' }}
+                  onClick={() => setIsEditModalOpen(false)}
+                >
+                  Cancelar
+                </button>
+                <button type="submit" className="btn-primary" disabled={isSubmitting}>
+                  {isSubmitting ? 'Guardando...' : 'Guardar Cambios'}
                 </button>
               </div>
             </form>

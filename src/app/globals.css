@@ -1,88 +1,202 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
-/* ─── Soft Tactile / Soft Neumorphic Design System Tokens ─── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Soft Neumorphic 3D Design System — TOI Telecom
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Light Mode Tokens ─── */
 :root, [data-theme="light"], .light {
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  
-  /* Light Mode Colors */
-  --bg-main: #F0F2F6;            /* Off-white / Soft light grey */
-  --bg-sidebar: #18181B;         /* Charcoal sidebar container */
-  --bg-card: #FFFFFF;            /* Pure white card */
-  --bg-card-accent: #DEDEFE;     /* Hero Metric Card Lavender Accent */
-  --text-accent-card: #18181B;   /* High contrast dark text for hero card */
-  --border-color: #E2E8F0;
-  --border-subtle: rgba(0, 0, 0, 0.05);
-  --primary-accent: #6366F1;     /* Soft Indigo / Purple */
-  --primary-hover: #4F46E5;
-  --text-main: #18181B;          /* Primary dark text */
-  --text-muted: #6B7280;         /* Muted grey */
-  
-  /* Geometry & Soft Tactile Radii */
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Core Colors */
+  --bg-main: #EAEFF5;
+  --bg-sidebar: #0F172A;
+  --bg-card: #F3F6FA;
+  --bg-card-accent: #DBEAFE;
+  --text-accent-card: #1E293B;
+  --border-color: #D6DFE8;
+  --border-subtle: rgba(0, 0, 0, 0.04);
+  --primary-accent: #0066FF;
+  --primary-hover: #2563EB;
+  --text-main: #1E293B;
+  --text-muted: #64748B;
+
+  /* Neumorphic Shadows — Light */
+  --shadow-card: 6px 6px 14px rgba(163, 177, 198, 0.4), -6px -6px 14px rgba(255, 255, 255, 0.8);
+  --shadow-tactile: 8px 8px 18px rgba(163, 177, 198, 0.5), -8px -8px 18px rgba(255, 255, 255, 0.9);
+  --shadow-inset: inset 3px 3px 6px rgba(163, 177, 198, 0.4), inset -3px -3px 6px rgba(255, 255, 255, 0.8);
+  --shadow-button: 0 4px 16px rgba(0, 102, 255, 0.3);
+
+  /* Geometry */
   --radius-3xl: 28px;
   --radius-2xl: 20px;
   --radius-xl: 14px;
   --radius-lg: 10px;
   --radius-full: 9999px;
 
-  /* Soft Neumorphic Shadows (Light) */
-  --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
-  --shadow-tactile: 0 10px 25px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.06);
-  --shadow-button: 0 4px 14px rgba(99, 102, 241, 0.25);
-  
   --sidebar-width: 270px;
 }
 
+/* ─── Dark Mode Tokens — Deep Blue TOI ─── */
 [data-theme="dark"], .dark {
-  /* Dark Mode Colors - Ultra High Contrast & Readability */
-  --bg-main: #18181B;            /* Charcoal oscuro mate */
-  --bg-sidebar: #202024;         /* Floating dark sidebar container */
-  --bg-card: #202024;            /* Soft dark card background */
-  --bg-card-accent: #A5B4FC;     /* Hero Metric Card Accent (Dark) */
-  --text-accent-card: #18181B;   /* High contrast dark text on accent card */
-  --border-color: #2D2D32;       /* Subtle dark border */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --primary-accent: #818CF8;     /* Púrpura / Lavanda pastel suave */
-  --primary-hover: #A5B4FC;
-  --text-main: #FFFFFF;          /* Pure crisp white for primary text */
-  --text-muted: #E4E4E7;         /* Crisp light silver for muted text */
+  /* Core Colors */
+  --bg-main: #0F172A;
+  --bg-sidebar: #0B1120;
+  --bg-card: #1E293B;
+  --bg-card-accent: #3B82F6;
+  --text-accent-card: #FFFFFF;
+  --border-color: #334155;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --primary-accent: #3B82F6;
+  --primary-hover: #60A5FA;
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
 
-  /* Soft Neumorphic Shadows (Dark) */
-  --shadow-card: 0 8px 20px rgba(0, 0, 0, 0.35);
-  --shadow-tactile: 0 10px 25px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.4);
-  --shadow-button: 0 4px 16px rgba(129, 140, 248, 0.3);
+  /* Neumorphic Shadows — Dark */
+  --shadow-card: 6px 6px 16px rgba(0, 0, 0, 0.5), -4px -4px 10px rgba(255, 255, 255, 0.03);
+  --shadow-tactile: 8px 8px 20px rgba(0, 0, 0, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.04);
+  --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.03);
+  --shadow-button: 0 4px 16px rgba(59, 130, 246, 0.35);
 }
 
-/* ─── Continuous Soft Logo Animation Effect ─── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Neumorphic Utility Classes
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Card: raised neumorphic surface */
+.neu-card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-color);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.neu-card:hover {
+  box-shadow: var(--shadow-tactile);
+  transform: translateY(-2px);
+}
+
+/* Input: inset/pressed neumorphic well */
+.neu-input {
+  font-family: var(--font-sans);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 0.75rem 1rem;
+  color: var(--text-main);
+  outline: none;
+  box-shadow: var(--shadow-inset);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+.neu-input:focus {
+  border-color: var(--primary-accent);
+  box-shadow: var(--shadow-inset), 0 0 0 3px rgba(0, 102, 255, 0.15);
+}
+
+.neu-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* Button: subtle raised surface */
+.neu-btn {
+  font-family: var(--font-sans);
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 0.7rem 1.3rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.neu-btn:hover {
+  box-shadow: var(--shadow-tactile);
+  transform: translateY(-1px);
+}
+
+.neu-btn:active {
+  box-shadow: var(--shadow-inset);
+  transform: scale(0.98);
+}
+
+/* Primary Button: raised with brand color glow */
+.neu-btn-primary {
+  font-family: var(--font-sans);
+  background-color: var(--primary-accent);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-xl);
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-button);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.neu-btn-primary:hover {
+  background-color: var(--primary-hover);
+  box-shadow: 0 6px 24px rgba(0, 102, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.neu-btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: var(--shadow-inset);
+}
+
+.neu-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Continuous Soft Logo Animation Effect
+   ═══════════════════════════════════════════════════════════════════════════════ */
 .logo-animated-glow {
   display: inline-block;
   animation: logoFloatGlow 4s ease-in-out infinite alternate;
-  filter: drop-shadow(0 4px 12px rgba(129, 140, 248, 0.25));
+  filter: drop-shadow(0 4px 12px rgba(0, 102, 255, 0.25));
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .logo-animated-glow:hover {
   transform: scale(1.04) translateY(-2px);
-  filter: drop-shadow(0 8px 24px rgba(129, 140, 248, 0.45));
+  filter: drop-shadow(0 8px 24px rgba(0, 102, 255, 0.45));
 }
 
 @keyframes logoFloatGlow {
   0% {
     transform: translateY(0px) scale(1);
-    filter: drop-shadow(0 4px 12px rgba(129, 140, 248, 0.2));
+    filter: drop-shadow(0 4px 12px rgba(0, 102, 255, 0.2));
   }
   50% {
     transform: translateY(-3px) scale(1.015);
-    filter: drop-shadow(0 8px 20px rgba(129, 140, 248, 0.4));
+    filter: drop-shadow(0 8px 20px rgba(0, 102, 255, 0.4));
   }
   100% {
     transform: translateY(0px) scale(1);
-    filter: drop-shadow(0 4px 12px rgba(129, 140, 248, 0.2));
+    filter: drop-shadow(0 4px 12px rgba(0, 102, 255, 0.2));
   }
 }
 
-/* ─── Global Reset & Typography ─── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Global Reset & Typography
+   ═══════════════════════════════════════════════════════════════════════════════ */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -98,11 +212,10 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ─── Dark Mode Global Text & Element Overrides ───
-   Forces readable text/border colors on all elements that have
-   hardcoded light-mode inline styles (#0f172a, #64748b, etc.)
-   Uses !important to override inline styles.
-─── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Dark Mode Global Text & Element Overrides
+   Forces readable text/border colors on elements with hardcoded inline styles
+   ═══════════════════════════════════════════════════════════════════════════════ */
 [data-theme="dark"] h1,
 [data-theme="dark"] h2,
 [data-theme="dark"] h3,
@@ -121,25 +234,25 @@ body {
 
 /* Table text readability in dark mode */
 [data-theme="dark"] table {
-  color: #E4E4E7;
+  color: #F8FAFC;
 }
 
 [data-theme="dark"] thead tr {
-  border-color: #3f3f46 !important;
+  border-color: #475569 !important;
 }
 
 [data-theme="dark"] th {
-  color: #A1A1AA !important;
-  border-color: #3f3f46 !important;
+  color: #94A3B8 !important;
+  border-color: #475569 !important;
 }
 
 [data-theme="dark"] td {
-  color: #E4E4E7 !important;
-  border-color: #2D2D32 !important;
+  color: #F8FAFC !important;
+  border-color: #334155 !important;
 }
 
 [data-theme="dark"] tr {
-  border-color: #2D2D32 !important;
+  border-color: #334155 !important;
 }
 
 /* Force td with bold/primary data to be white */
@@ -150,7 +263,7 @@ body {
 /* KPI cards internal text */
 [data-theme="dark"] .kpi-card div,
 [data-theme="dark"] .kpi-card span {
-  color: #E4E4E7 !important;
+  color: #F8FAFC !important;
 }
 
 [data-theme="dark"] .kpi-card div[style*="fontSize: '2"] {
@@ -164,7 +277,7 @@ body {
 [data-theme="dark"] [style*="color: '#475569'"],
 [data-theme="dark"] [style*="color: #94a3b8"],
 [data-theme="dark"] [style*="color: '#94a3b8'"] {
-  color: #A1A1AA !important;
+  color: #94A3B8 !important;
 }
 
 /* Primary dark text overrides */
@@ -193,7 +306,7 @@ body {
 [data-theme="dark"] [style*="backgroundColor: '#f1f5f9'"],
 [data-theme="dark"] [style*="background-color: #f8fafc"],
 [data-theme="dark"] [style*="backgroundColor: '#f8fafc'"] {
-  background-color: #2D2D32 !important;
+  background-color: #334155 !important;
 }
 
 /* Light borders in dark mode */
@@ -206,8 +319,8 @@ body {
 
 /* Links inside table actions */
 [data-theme="dark"] a[style*="backgroundColor: '#f1f5f9'"] {
-  background-color: #2D2D32 !important;
-  color: #818CF8 !important;
+  background-color: #334155 !important;
+  color: #60A5FA !important;
 }
 
 /* Modal & dialog dark mode */
@@ -236,10 +349,14 @@ body {
   border-radius: var(--radius-full);
 }
 .dark ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
+  background: #475569;
 }
 
-/* ─── Soft Neumorphic Cards System ─── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Component Classes (Soft Neumorphic)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Neumorphic Cards */
 .glass-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -262,29 +379,28 @@ body {
   box-shadow: var(--shadow-tactile);
 }
 
-/* Hero Metric Card (Solid Lavender / Pastel Purple Accent) */
+/* Hero Metric Card */
 .kpi-card-accent {
   background-color: var(--bg-card-accent);
   color: var(--text-accent-card) !important;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   border-radius: var(--radius-2xl);
   padding: 1.5rem;
   box-shadow: var(--shadow-tactile);
 
-  /* Deep Contrast Typography Inside Accent Card */
   h1, h2, h3, div, p, span, strong {
     color: var(--text-accent-card) !important;
   }
 }
 
-/* ─── Navigation & Menus (Tactile Button Effect) ─── */
+/* Navigation */
 .nav-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1.1rem;
   border-radius: var(--radius-xl);
-  color: #d4d4d8;
+  color: #94A3B8;
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
@@ -292,15 +408,14 @@ body {
 }
 
 .dark .nav-item {
-  color: #e4e4e7;
+  color: #CBD5E1;
 }
 
 .nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #FFFFFF;
 }
 
-/* Extruded/Pressed Tactile Selected Button Effect */
 .nav-item.active {
   background-color: var(--primary-accent);
   color: #ffffff !important;
@@ -311,7 +426,7 @@ body {
   }
 }
 
-/* ─── Mobile Hamburger Toggle & Overlay ─── */
+/* Mobile Hamburger Toggle & Overlay */
 .sidebar-toggle {
   display: none;
   position: fixed;
@@ -340,7 +455,7 @@ body {
   z-index: 999;
 }
 
-/* ─── Soft Tactile Inputs ─── */
+/* Neumorphic Inputs (Global) */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -360,10 +475,10 @@ textarea {
 
 input:focus, select:focus, textarea:focus {
   border-color: var(--primary-accent);
-  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+  box-shadow: var(--shadow-inset), 0 0 0 3px rgba(0, 102, 255, 0.15);
 }
 
-/* ─── Badges (Rounded-Full Pastel Colors) ─── */
+/* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -375,7 +490,6 @@ input:focus, select:focus, textarea:focus {
   letter-spacing: 0.02em;
 }
 
-/* Verde: Pagado / Activo */
 .badge-success {
   background-color: rgba(16, 185, 129, 0.12);
   color: #10b981;
@@ -385,17 +499,15 @@ input:focus, select:focus, textarea:focus {
   color: #34d399;
 }
 
-/* Púrpura/Azul: Pendiente / En Proceso */
 .badge-info, .badge-warning {
-  background-color: rgba(99, 102, 241, 0.12);
-  color: #6366f1;
+  background-color: rgba(0, 102, 255, 0.12);
+  color: #0066FF;
 }
 .dark .badge-info, .dark .badge-warning {
-  background-color: rgba(129, 140, 248, 0.18);
-  color: #a5b4fc;
+  background-color: rgba(59, 130, 246, 0.18);
+  color: #60A5FA;
 }
 
-/* Rojo/Rosa: Suspendido / Vencido */
 .badge-danger {
   background-color: rgba(244, 63, 94, 0.12);
   color: #f43f5e;
@@ -405,7 +517,7 @@ input:focus, select:focus, textarea:focus {
   color: #fb7185;
 }
 
-/* ─── Soft Tactile Buttons ─── */
+/* Primary Button (Legacy class) */
 .btn-primary {
   background-color: var(--primary-accent);
   color: #ffffff;
@@ -421,12 +533,13 @@ input:focus, select:focus, textarea:focus {
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
+  font-family: var(--font-sans);
 }
 
 .btn-primary:hover {
   background-color: var(--primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+  box-shadow: 0 6px 24px rgba(0, 102, 255, 0.4);
 }
 
 .btn-primary:active {
@@ -439,7 +552,7 @@ input:focus, select:focus, textarea:focus {
   cursor: not-allowed;
 }
 
-/* ─── Soft Tactile Data Tables ─── */
+/* Data Tables */
 .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -472,7 +585,9 @@ input:focus, select:focus, textarea:focus {
   border-bottom: none;
 }
 
-/* ─── Dashboard Layout & Floating Sidebar Container ─── */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Dashboard Layout & Floating Sidebar
+   ═══════════════════════════════════════════════════════════════════════════════ */
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
@@ -482,12 +597,11 @@ input:focus, select:focus, textarea:focus {
   gap: 1rem;
 }
 
-/* Floating Single Container Panel SideBar (rounded-3xl) */
 .dashboard-sidebar {
   width: var(--sidebar-width);
   min-width: var(--sidebar-width);
   background-color: var(--bg-sidebar);
-  color: #f8fafc;
+  color: #F8FAFC;
   padding: 1.75rem 1.25rem;
   border-radius: var(--radius-3xl);
   display: flex;

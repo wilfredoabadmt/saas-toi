@@ -32,15 +32,18 @@ export default async function WhatsAppPage() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
             <div
+              className="neu-card"
               style={{
                 width: '54px',
                 height: '54px',
                 borderRadius: '16px',
-                backgroundColor: status.isConnected ? '#dcfce7' : '#fef9c3',
+                backgroundColor: 'var(--bg-card)',
+                boxShadow: 'var(--shadow-card)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '1.8rem',
+                flexShrink: 0,
               }}
             >
               💬
@@ -63,8 +66,8 @@ export default async function WhatsAppPage() {
               <WabaConnectButton />
             </div>
           ) : (
-            <div style={{ backgroundColor: 'var(--bg-main)', padding: '1rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
-              <div style={{ fontSize: '0.82rem', color: '#15803d', fontWeight: 600, marginBottom: '0.25rem' }}>
+            <div style={{ backgroundColor: 'var(--bg-card)', padding: '1rem', borderRadius: '10px', boxShadow: 'var(--shadow-inset)' }}>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-success, #15803d)', fontWeight: 600, marginBottom: '0.25rem' }}>
                 ✅ Token System User cifrado AES-256-GCM
               </div>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>

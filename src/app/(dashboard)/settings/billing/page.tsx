@@ -64,7 +64,7 @@ export default function BillingPage() {
               </div>
 
               <button
-                className="btn-primary"
+                className="neu-btn-primary"
                 onClick={() => addToast('Para solicitar upgrade de plan contacta a ventas@saas-toi.com', 'info')}
               >
                 🚀 Solicitar Upgrade de Plan
@@ -109,21 +109,21 @@ export default function BillingPage() {
             </h2>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
-              <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-2xl)', padding: '1.5rem', backgroundColor: 'var(--bg-card)' }}>
+              <div className="neu-card" style={{ padding: '1.5rem' }}>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.5rem 0' }}>Starter</h3>
                 <div style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--primary-accent)' }}>$49 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>/mes</span></div>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.5rem 0 1rem 0' }}>Hasta 300 abonados</p>
                 {subInfo.planSlug === 'starter' && <span className="badge badge-info">Plan Actual</span>}
               </div>
 
-              <div style={{ border: '2px solid var(--primary-accent)', borderRadius: 'var(--radius-2xl)', padding: '1.5rem', backgroundColor: 'var(--bg-card)', boxShadow: 'var(--shadow-button)' }}>
+              <div className="neu-card" style={{ border: '2px solid var(--primary-accent)', boxShadow: 'var(--shadow-button)', padding: '1.5rem' }}>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.5rem 0' }}>Pro</h3>
                 <div style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--primary-accent)' }}>$99 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>/mes</span></div>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.5rem 0 1rem 0' }}>Hasta 1,500 abonados</p>
                 {subInfo.planSlug === 'pro' ? <span className="badge badge-info">Plan Actual</span> : <span className="badge badge-success">Recomendado</span>}
               </div>
 
-              <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-2xl)', padding: '1.5rem', backgroundColor: 'var(--bg-card)' }}>
+              <div className="neu-card" style={{ padding: '1.5rem' }}>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.5rem 0' }}>Enterprise</h3>
                 <div style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--primary-accent)' }}>$199 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>/mes</span></div>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.5rem 0 1rem 0' }}>Abonados Ilimitados</p>

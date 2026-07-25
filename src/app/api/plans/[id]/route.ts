@@ -31,3 +31,16 @@ export async function PATCH(
     return handleApiError(error);
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const deleted = await ServicePlanService.delete(DEFAULT_ORG_ID, id);
+    return NextResponse.json({ success: true, data: deleted });
+  } catch (error) {
+    return handleApiError(error);
+  }
+}

@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { TeamService } from '@/services/team.service';
+import { RouterService } from '@/services/router.service';
 import { handleApiError } from '@/lib/api-errors';
 
 const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
 
-/**
- * PATCH /api/team/[id]
- * Updates role or status of a team member.
- */
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -15,13 +11,8 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { role, isActive } = body;
 
-    const updated = await TeamService.updateMember(DEFAULT_ORG_ID, id, {
-      role,
-      isActive,
-    });
-
+    const updated = await RouterService.update(DEFAULT_ORG_ID, id, body);
     return NextResponse.json({ success: true, data: updated });
   } catch (err) {
     return handleApiError(err);
@@ -34,7 +25,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const deleted = await TeamService.deleteMember(DEFAULT_ORG_ID, id);
+    const deleted = await RouterService.delete(DEFAULT_ORG_ID, id);
     return NextResponse.json({ success: true, data: deleted });
   } catch (err) {
     return handleApiError(err);

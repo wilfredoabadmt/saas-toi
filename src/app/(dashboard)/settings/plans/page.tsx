@@ -16,6 +16,8 @@ export default function ServicePlansPage() {
   const [plans, setPlans] = useState<ServicePlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<ServicePlan | null>(null);
   const { addToast } = useToast();
 
   // Form State
@@ -43,6 +45,23 @@ export default function ServicePlansPage() {
     fetchPlans();
   }, []);
 
+  const openCreateModal = () => {
+    setName('');
+    setPrice('');
+    setSpeedDown('');
+    setSpeedUp('');
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (plan: ServicePlan) => {
+    setSelectedPlan(plan);
+    setName(plan.name);
+    setPrice(plan.price);
+    setSpeedDown(plan.speedDown);
+    setSpeedUp(plan.speedUp);
+    setIsEditModalOpen(true);
+  };
+
   const handleCreatePlan = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -58,11 +77,33 @@ export default function ServicePlansPage() {
       if (!res.ok) throw new Error(json.message || 'Error al crear el plan');
 
       addToast(`Plan ${name} creado exitosamente`, 'success');
-      setName('');
-      setPrice('');
-      setSpeedDown('');
-      setSpeedUp('');
       setIsModalOpen(false);
+      fetchPlans();
+    } catch (err) {
+      addToast((err as Error).message, 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEditPlan = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedPlan) return;
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch(`/api/plans/${selectedPlan.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, price, speedDown, speedUp }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Error al actualizar el plan');
+
+      addToast(`Plan ${name} actualizado exitosamente`, 'success');
+      setIsEditModalOpen(false);
+      setSelectedPlan(null);
       fetchPlans();
     } catch (err) {
       addToast((err as Error).message, 'error');
@@ -88,6 +129,23 @@ export default function ServicePlansPage() {
     }
   };
 
+  const handleDeletePlan = async (plan: ServicePlan) => {
+    if (!confirm(`¿Estás seguro de que deseas eliminar el plan "${plan.name}"? Los abonados asociados quedarán sin plan asignado.`)) return;
+
+    try {
+      const res = await fetch(`/api/plans/${plan.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) throw new Error('Error al eliminar el plan');
+
+      addToast(`Plan ${plan.name} eliminado exitosamente`, 'success');
+      fetchPlans();
+    } catch (err) {
+      addToast((err as Error).message, 'error');
+    }
+  };
+
   return (
     <div>
       {/* Header */}
@@ -101,7 +159,7 @@ export default function ServicePlansPage() {
           </p>
         </div>
 
-        <button className="btn-primary" onClick={() => setIsModalOpen(true)}>
+        <button className="btn-primary" onClick={openCreateModal}>
           <span>➕</span> Nuevo Plan de Internet
         </button>
       </div>
@@ -155,21 +213,36 @@ export default function ServicePlansPage() {
                         {plan.isActive ? '● Activo' : '○ Inactivo'}
                       </span>
                     </td>
-                    <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                    <td style={{ padding: '14px 16px', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                       <button
+                        className="neu-btn"
                         style={{
                           backgroundColor: plan.isActive ? '#fee2e2' : '#dcfce7',
                           color: plan.isActive ? '#b91c1c' : '#15803d',
-                          border: 'none',
-                          padding: '0.35rem 0.75rem',
-                          borderRadius: '6px',
-                          fontWeight: 600,
-                          fontSize: '0.8rem',
-                          cursor: 'pointer',
                         }}
                         onClick={() => handleToggleStatus(plan)}
                       >
                         {plan.isActive ? 'Desactivar' : 'Activar'}
+                      </button>
+                      <button
+                        className="neu-btn"
+                        style={{
+                          backgroundColor: '#e0f2fe',
+                          color: '#0369a1',
+                        }}
+                        onClick={() => openEditModal(plan)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className="neu-btn"
+                        style={{
+                          backgroundColor: '#fee2e2',
+                          color: '#b91c1c',
+                        }}
+                        onClick={() => handleDeletePlan(plan)}
+                      >
+                        Eliminar
                       </button>
                     </td>
                   </tr>
@@ -199,7 +272,7 @@ export default function ServicePlansPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  className="neu-input"
                 />
               </div>
 
@@ -213,7 +286,7 @@ export default function ServicePlansPage() {
                   required
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                  className="neu-input"
                 />
               </div>
 
@@ -228,7 +301,7 @@ export default function ServicePlansPage() {
                     required
                     value={speedDown}
                     onChange={(e) => setSpeedDown(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                    className="neu-input"
                   />
                 </div>
 
@@ -242,7 +315,7 @@ export default function ServicePlansPage() {
                     required
                     value={speedUp}
                     onChange={(e) => setSpeedUp(e.target.value)}
-                    style={{ width: '100%', padding: '0.6rem 0.85rem', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+                    className="neu-input"
                   />
                 </div>
               </div>
@@ -250,13 +323,93 @@ export default function ServicePlansPage() {
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
                 <button
                   type="button"
-                  style={{ backgroundColor: 'var(--bg-main)', border: 'none', padding: '0.6rem 1.25rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', color: 'var(--text-muted)' }}
+                  className="neu-btn"
                   onClick={() => setIsModalOpen(false)}
                 >
                   Cancelar
                 </button>
                 <button type="submit" className="btn-primary" disabled={isSubmitting}>
                   {isSubmitting ? 'Guardando...' : 'Crear Plan'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Editar Plan */}
+      {isEditModalOpen && selectedPlan && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="glass-card" style={{ backgroundColor: 'var(--bg-card)', width: '90%', maxWidth: '480px', padding: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text-main)' }}>
+              Editar Plan: {selectedPlan.name}
+            </h2>
+
+            <form onSubmit={handleEditPlan} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
+                  Nombre del Plan
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="neu-input"
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
+                  Precio Mensual ($)
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="neu-input"
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
+                    Velocidad Bajada
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={speedDown}
+                    onChange={(e) => setSpeedDown(e.target.value)}
+                    className="neu-input"
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>
+                    Velocidad Subida
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={speedUp}
+                    onChange={(e) => setSpeedUp(e.target.value)}
+                    className="neu-input"
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
+                <button
+                  type="button"
+                  className="neu-btn"
+                  onClick={() => setIsEditModalOpen(false)}
+                >
+                  Cancelar
+                </button>
+                <button type="submit" className="btn-primary" disabled={isSubmitting}>
+                  {isSubmitting ? 'Guardando...' : 'Guardar Cambios'}
                 </button>
               </div>
             </form>

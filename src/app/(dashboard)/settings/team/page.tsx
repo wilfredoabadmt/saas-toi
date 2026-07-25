@@ -104,6 +104,20 @@ export default function TeamPage() {
     }
   };
 
+  const handleDeleteMember = async (member: TeamMember) => {
+    if (!confirm(`¿Estás seguro de que deseas eliminar permanentemente a "${member.name}" de tu equipo?`)) return;
+
+    try {
+      const res = await fetch(`/api/team/${member.id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Error al eliminar miembro del equipo');
+
+      addToast(`Miembro ${member.name} eliminado exitosamente`, 'success');
+      fetchMembers();
+    } catch (err) {
+      addToast((err as Error).message, 'error');
+    }
+  };
+
   const adminCount = members.filter((m) => m.role === 'admin').length;
   const billingCount = members.filter((m) => m.role === 'billing').length;
   const techCount = members.filter((m) => m.role === 'technician').length;
@@ -206,13 +220,13 @@ export default function TeamPage() {
                         {m.isActive ? '● Habilitado' : '○ Suspendido'}
                       </span>
                     </td>
-                    <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                    <td style={{ padding: '14px 16px', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                       <button
                         style={{
                           backgroundColor: m.isActive ? '#fee2e2' : '#dcfce7',
                           color: m.isActive ? '#b91c1c' : '#15803d',
                           border: 'none',
-                          padding: '0.35rem 0.75rem',
+                          padding: '0.35rem 0.65rem',
                           borderRadius: '6px',
                           fontWeight: 600,
                           fontSize: '0.8rem',
@@ -221,6 +235,21 @@ export default function TeamPage() {
                         onClick={() => handleToggleStatus(m)}
                       >
                         {m.isActive ? 'Revocar' : 'Activar'}
+                      </button>
+                      <button
+                        style={{
+                          backgroundColor: '#fee2e2',
+                          color: '#b91c1c',
+                          border: 'none',
+                          padding: '0.35rem 0.65rem',
+                          borderRadius: '6px',
+                          fontWeight: 600,
+                          fontSize: '0.8rem',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => handleDeleteMember(m)}
+                      >
+                        Eliminar
                       </button>
                     </td>
                   </tr>

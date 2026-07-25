@@ -98,4 +98,23 @@ export class TeamService {
 
     return { ...updated, role: updated.role as UserRole, isActive: input.isActive ?? true };
   }
+
+  /**
+   * Deletes a team member from the tenant.
+   */
+  static async deleteMember(organizationId: string, userId: string) {
+    await ensureMigrationsRun();
+    const orgId = assertTenantScope(organizationId);
+
+    const [deleted] = await db
+      .delete(users)
+      .where(and(eq(users.id, userId), eq(users.organizationId, orgId)))
+      .returning();
+
+    if (!deleted) {
+      throw new ApiError('NOT_FOUND', 'Miembro del equipo no encontrado', 404);
+    }
+
+    return deleted;
+  }
 }
