@@ -77,7 +77,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               {/* Quick Search */}
               <div style={{ marginBottom: '1.5rem' }}>
                 <div
-                  className="neu-input"
+                  className="glass-input-auto"
                   style={{
                     borderRadius: '9999px',
                     padding: '0.55rem 0.85rem',
@@ -159,14 +159,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             {/* Sidebar Footer User Info */}
             <div
+              className="glass-auto"
               style={{
-                backgroundColor: 'var(--bg-card)',
                 borderRadius: '16px',
                 padding: '0.75rem 1rem',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                border: '1px solid var(--border-color)',
                 marginTop: '1.5rem',
               }}
             >
@@ -195,8 +194,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <ThemeToggle />
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--primary-accent)', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', padding: '0.35rem 0.85rem', borderRadius: '999px', fontWeight: 600 }}>
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--primary-accent)', display: 'inline-block' }}></span>
+                <div className="glass-badge glass-badge-success" style={{ padding: '0.35rem 0.85rem', fontWeight: 600, fontSize: '0.8rem' }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'currentColor', display: 'inline-block' }}></span>
                   <span className="header-breadcrumb-extra">Database</span> Connected
                 </div>
               </div>

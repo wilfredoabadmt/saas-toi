@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 /* ═══════════════════════════════════════════════════════════════════════════════
-   Landing Page — SaaS TOI ISP · Neumorphic Convex 45° Dark Premium
+   Landing Page — Dark Glassmorphism & Glossy Chrome UI (Locked Dark)
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 const FEATURES = [
@@ -97,21 +97,25 @@ export default function LandingPage() {
   const [contactMessage, setContactMessage] = useState('');
 
   return (
-    <div style={{ fontFamily: 'var(--font-sans)', backgroundColor: '#13151b', color: '#F1F5F9', minHeight: '100vh' }}>
+    <div style={{ fontFamily: 'var(--font-sans)', backgroundColor: '#060709', color: '#F8FAFC', minHeight: '100vh', overflow: 'hidden' }}>
+
+      {/* Background Spotlight Effects */}
+      <div style={{ position: 'fixed', top: '-300px', left: '-200px', width: '900px', height: '900px', background: 'radial-gradient(ellipse, rgba(26, 117, 255, 0.12) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }}></div>
+      <div style={{ position: 'fixed', top: '-200px', right: '-300px', width: '800px', height: '800px', background: 'radial-gradient(ellipse, rgba(0, 229, 255, 0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }}></div>
 
       {/* ═══ NAVBAR ═══ */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 100, backgroundColor: 'rgba(19, 21, 27, 0.85)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+      <nav style={{ position: 'sticky', top: '1rem', zIndex: 100, padding: '0 1.5rem', maxWidth: '1200px', margin: '1rem auto 0' }}>
+        <div className="glass-card-dark" style={{ borderRadius: '9999px', padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
-            <img src="/logotoi.webp" alt="SaaS TOI" className="logo-animated-glow" style={{ height: '40px', width: 'auto' }} />
-            <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#F1F5F9' }}>SaaS TOI</span>
+            <img src="/logotoi.webp" alt="SaaS TOI" className="logo-animated-glow" style={{ height: '36px', width: 'auto' }} />
+            <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#F8FAFC' }}>SaaS TOI</span>
           </Link>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
-            <a href="#features" style={{ fontSize: '0.88rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s' }}>Módulos</a>
-            <a href="#pricing" style={{ fontSize: '0.88rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s' }}>Planes</a>
-            <a href="#faq" style={{ fontSize: '0.88rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s' }}>FAQ</a>
-            <Link href="/login" className="neu-dark-btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.85rem', borderRadius: '23px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <a href="#features" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Módulos</a>
+            <a href="#pricing" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Planes</a>
+            <a href="#faq" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>FAQ</a>
+            <Link href="/login" className="glossy-pill-btn" style={{ padding: '0.5rem 1.25rem', fontSize: '0.82rem' }}>
               Iniciar Sesión
             </Link>
           </div>
@@ -119,137 +123,152 @@ export default function LandingPage() {
       </nav>
 
       {/* ═══ HERO SECTION ═══ */}
-      <section style={{ padding: '6rem 1.5rem 10rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        {/* Background Glow Effects */}
-        <div style={{ position: 'absolute', top: '-200px', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '600px', background: 'radial-gradient(ellipse, rgba(0, 102, 255, 0.12) 0%, transparent 70%)', pointerEvents: 'none' }}></div>
-        <div style={{ position: 'absolute', top: '100px', right: '-100px', width: '400px', height: '400px', background: 'radial-gradient(ellipse, rgba(0, 229, 255, 0.06) 0%, transparent 70%)', pointerEvents: 'none' }}></div>
+      <section style={{ padding: '5rem 1.5rem 8rem', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '4rem', alignItems: 'center' }}>
 
-        <div style={{ maxWidth: '900px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
-          {/* Status Badge */}
-          <div className="neu-dark-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.82rem', color: '#00E5FF', marginBottom: '2rem' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#00E5FF', display: 'inline-block', boxShadow: '0 0 8px rgba(0, 229, 255, 0.5)' }}></span>
-            WhatsApp Cloud API + Auto-Corte MikroTik en una sola plataforma
+          {/* Left: Headline */}
+          <div>
+            {/* Status Badge */}
+            <div className="glass-badge glass-badge-info" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.78rem', marginBottom: '1.5rem' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'currentColor', display: 'inline-block', boxShadow: '0 0 8px rgba(26, 117, 255, 0.5)' }}></span>
+              WhatsApp Cloud API + Auto-Corte MikroTik
+            </div>
+
+            {/* Main Title */}
+            <h1 style={{ fontSize: 'clamp(2.25rem, 5vw, 3.25rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', color: '#F8FAFC', marginBottom: '1.25rem' }}>
+              Plataforma Todo-en-Uno para tu{' '}
+              <span style={{ background: 'linear-gradient(135deg, #1A75FF, #00E5FF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                ISP
+              </span>
+            </h1>
+
+            {/* Description */}
+            <p style={{ fontSize: '1.05rem', color: '#94A3B8', maxWidth: '520px', lineHeight: 1.65, marginBottom: '2rem' }}>
+              Reduce la morosidad hasta un 40% con recordatorios automáticos por WhatsApp, gestión de comprobantes S3, corte y reconexión instantánea en MikroTik y módulo de tickets para técnicos.
+            </p>
+
+            {/* CTA Buttons */}
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <Link href="/register" className="glossy-blue-btn" style={{ padding: '0.85rem 2rem', fontSize: '0.95rem' }}>
+                Empieza Gratis
+              </Link>
+              <a href="#features" className="glossy-pill-btn" style={{ padding: '0.85rem 2rem', fontSize: '0.95rem' }}>
+                Ver Módulos
+              </a>
+            </div>
           </div>
 
-          {/* Main Title */}
-          <h1 style={{ fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', fontWeight: 900, lineHeight: 1.12, letterSpacing: '-0.03em', color: '#F1F5F9', marginBottom: '1.5rem' }}>
-            La Plataforma Multi-Tenant de{' '}
-            <span style={{ background: 'linear-gradient(135deg, #0066FF, #00E5FF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              Cobranza & Gestión
-            </span>{' '}
-            para ISPs y WISPs
-          </h1>
-
-          {/* Description */}
-          <p style={{ fontSize: '1.1rem', color: '#94A3B8', maxWidth: '640px', margin: '0 auto 2.5rem', lineHeight: 1.65 }}>
-            Reduce la morosidad hasta un 40% con recordatorios automáticos por WhatsApp, gestión de comprobantes S3, corte y reconexión instantánea en MikroTik y módulo de tickets para técnicos.
-          </p>
-
-          {/* CTA Buttons */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <Link href="/register" className="neu-dark-btn-primary" style={{ padding: '0.85rem 2.25rem', fontSize: '1rem', borderRadius: '23px' }}>
-              Empieza Gratis Ahora
-            </Link>
-            <a href="#features" className="neu-dark-btn-ghost" style={{ padding: '0.85rem 2.25rem', fontSize: '1rem', borderRadius: '23px' }}>
-              Ver Módulos
-            </a>
-          </div>
-        </div>
-
-        {/* Floating Dashboard Mockup */}
-        <div style={{ maxWidth: '900px', margin: '4.5rem auto 0', position: 'relative', zIndex: 1 }}>
-          <div className="neu-dark-card" style={{ padding: '1.5rem', transform: 'perspective(1000px) rotateX(2deg)' }}>
-            {/* Mockup Header */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+          {/* Right: Widget Demo */}
+          <div className="glass-card-dark" style={{ padding: '2rem', borderRadius: '28px', position: 'relative' }}>
+            {/* Widget Header */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
               <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ef4444' }}></div>
               <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b' }}></div>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#00E5FF' }}></div>
-              <span style={{ marginLeft: '0.75rem', fontSize: '0.78rem', color: '#94A3B8', fontWeight: 600 }}>SaaS TOI Dashboard</span>
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#22c55e' }}></div>
+              <span style={{ marginLeft: '0.75rem', fontSize: '0.75rem', color: '#64748B', fontWeight: 600 }}>SaaS TOI — Panel de Cobranza</span>
             </div>
-            {/* Mockup Content - Mini KPI Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
+
+            {/* Mini KPI Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginBottom: '1.5rem' }}>
               {[
-                { label: 'ABONADOS', value: '1,247', color: '#0066FF' },
+                { label: 'ABONADOS', value: '1,247', color: '#1A75FF' },
                 { label: 'RECAUDACIÓN', value: '$32.4M', color: '#00E5FF' },
-                { label: 'PENDIENTE', value: '$1.8M', color: '#fb7185' },
-                { label: 'COBRANZA', value: '94%', color: '#00E5FF' },
+                { label: 'PENDIENTE', value: '$1.8M', color: '#FB7185' },
+                { label: 'COBRANZA', value: '94%', color: '#34D399' },
               ].map((kpi) => (
-                <div key={kpi.label} className="neu-dark-input" style={{ borderRadius: '18px', padding: '1rem' }}>
-                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{kpi.label}</div>
-                  <div style={{ fontSize: '1.35rem', fontWeight: 900, color: kpi.color, marginTop: '0.25rem' }}>{kpi.value}</div>
+                <div key={kpi.label} className="glass-input-dark" style={{ borderRadius: '16px', padding: '0.85rem' }}>
+                  <div style={{ fontSize: '0.62rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{kpi.label}</div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 900, color: kpi.color, marginTop: '0.2rem' }}>{kpi.value}</div>
                 </div>
               ))}
             </div>
+
+            {/* Action Widget */}
+            <div className="glass-input-dark" style={{ borderRadius: '16px', padding: '1rem', marginBottom: '1rem' }}>
+              <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Último Pago Recibido</div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontSize: '1rem', fontWeight: 800, color: '#F8FAFC' }}>Juan Pérez — #1248</div>
+                  <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>Plan Pro 150 Mbps</div>
+                </div>
+                <div className="glass-badge glass-badge-success" style={{ fontSize: '0.85rem', fontWeight: 800 }}>$4,500</div>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <button className="glossy-blue-btn" style={{ width: '100%', justifyContent: 'center', padding: '0.85rem' }}>
+              💳 Registrar Pago
+            </button>
           </div>
         </div>
       </section>
 
       {/* ═══ FEATURES GRID ═══ */}
-      <section id="features" style={{ padding: '5rem 1.5rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <section id="features" style={{ padding: '5rem 1.5rem', maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.25rem)', fontWeight: 900, color: '#F1F5F9', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
+          <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.25rem)', fontWeight: 900, color: '#F8FAFC', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
             Todo lo que tu ISP necesita en un solo lugar
           </h2>
-          <p style={{ fontSize: '1.05rem', color: '#94A3B8', maxWidth: '600px', margin: '0 auto' }}>
+          <p style={{ fontSize: '1rem', color: '#94A3B8', maxWidth: '600px', margin: '0 auto' }}>
             Diseñado para optimizar las operaciones de proveedores de internet de cualquier tamaño
           </p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
           {FEATURES.map((f) => (
-            <div key={f.title} className="neu-dark-card" style={{ padding: '2rem', textAlign: 'center' }}>
-              <div className="neu-dark-icon" style={{ width: '64px', height: '64px', fontSize: '1.75rem', margin: '0 auto 1.25rem' }}>
+            <div key={f.title} className="glass-card-dark" style={{ padding: '2rem', textAlign: 'center' }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '18px', background: 'linear-gradient(180deg, rgba(26, 117, 255, 0.2) 0%, rgba(26, 117, 255, 0.05) 100%)', border: '1px solid rgba(26, 117, 255, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', margin: '0 auto 1.25rem', boxShadow: '0 8px 20px rgba(26, 117, 255, 0.15)' }}>
                 {f.icon}
               </div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#F1F5F9', marginBottom: '0.5rem' }}>{f.title}</h3>
-              <p style={{ fontSize: '0.92rem', color: '#94A3B8', lineHeight: 1.6 }}>{f.desc}</p>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#F8FAFC', marginBottom: '0.5rem' }}>{f.title}</h3>
+              <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6 }}>{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ═══ PRICING SECTION ═══ */}
-      <section id="pricing" style={{ padding: '5rem 1.5rem' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.25rem)', fontWeight: 900, color: '#F1F5F9', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
+      <section id="pricing" style={{ padding: '5rem 1.5rem', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.25rem)', fontWeight: 900, color: '#F8FAFC', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
             Planes Transparentes para tu ISP
           </h2>
-          <p style={{ fontSize: '1.05rem', color: '#94A3B8', marginBottom: '3rem' }}>
+          <p style={{ fontSize: '1rem', color: '#94A3B8', marginBottom: '3rem' }}>
             Sin contratos forzosos. Cancela o cambia de plan en cualquier momento.
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
             {PLANS.map((plan) => (
               <div
                 key={plan.name}
-                className="neu-dark-card"
+                className="glass-card-dark"
                 style={{
                   padding: '2rem',
                   position: 'relative',
                   transform: plan.featured ? 'scale(1.03)' : 'none',
                   boxShadow: plan.featured
-                    ? '9px -9px 18px #111318, -9px 9px 18px #212530, 0 0 30px rgba(0, 229, 255, 0.12), 0 0 60px rgba(0, 102, 255, 0.08)'
+                    ? '0 25px 60px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.2), 0 0 40px rgba(26, 117, 255, 0.15)'
                     : undefined,
-                  border: plan.featured ? '1px solid rgba(0, 229, 255, 0.2)' : undefined,
+                  border: plan.featured ? '1px solid rgba(26, 117, 255, 0.3)' : undefined,
                 }}
               >
                 {plan.featured && (
-                  <div className="neu-dark-badge" style={{ position: 'absolute', top: '-14px', left: '50%', transform: 'translateX(-50%)', color: '#00E5FF', padding: '0.35rem 1rem', boxShadow: '3px -3px 8px #111318, -3px 3px 8px #1f2330, 0 0 12px rgba(0, 229, 255, 0.3)' }}>
+                  <div className="glass-badge glass-badge-info" style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', padding: '0.3rem 1rem' }}>
                     MÁS POPULAR
                   </div>
                 )}
 
-                <div style={{ fontSize: '0.85rem', fontWeight: 800, color: plan.featured ? '#00E5FF' : '#0066FF', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: plan.featured ? '#60A5FA' : '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>
                   {plan.name}
                 </div>
-                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#F1F5F9', marginBottom: '0.25rem' }}>
+                <div style={{ fontSize: '2.25rem', fontWeight: 900, color: '#F8FAFC', marginBottom: '0.25rem' }}>
                   {plan.price}
-                  <span style={{ fontSize: '0.9rem', fontWeight: 500, color: '#64748B' }}> /mes</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#64748B' }}> /mes</span>
                 </div>
 
-                <ul style={{ listStyle: 'none', padding: '1.5rem 0', margin: 0, borderTop: '1px solid rgba(255,255,255,0.04)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <ul style={{ listStyle: 'none', padding: '1.5rem 0', margin: 0, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {plan.features.map((feat) => (
-                    <li key={feat} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: '#CBD5E1' }}>
+                    <li key={feat} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.88rem', color: '#CBD5E1' }}>
                       <span style={{ color: '#00E5FF', fontWeight: 700 }}>✓</span>
                       {feat}
                     </li>
@@ -258,8 +277,8 @@ export default function LandingPage() {
 
                 <Link
                   href="/register"
-                  className={plan.featured ? 'neu-dark-btn-primary' : 'neu-dark-btn-ghost'}
-                  style={{ display: 'block', textAlign: 'center', padding: '0.75rem', fontSize: '0.92rem', marginTop: 'auto', borderRadius: '23px' }}
+                  className={plan.featured ? 'glossy-blue-btn' : 'glossy-pill-btn'}
+                  style={{ display: 'block', textAlign: 'center', padding: '0.75rem', fontSize: '0.88rem', marginTop: 'auto' }}
                 >
                   {plan.cta}
                 </Link>
@@ -270,88 +289,85 @@ export default function LandingPage() {
       </section>
 
       {/* ═══ FAQ SECTION ═══ */}
-      <section id="faq" style={{ padding: '5rem 1.5rem', maxWidth: '900px', margin: '0 auto' }}>
+      <section id="faq" style={{ padding: '5rem 1.5rem', maxWidth: '900px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.25rem)', fontWeight: 900, color: '#F1F5F9', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
+          <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.25rem)', fontWeight: 900, color: '#F8FAFC', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
             Preguntas Frecuentes
           </h2>
-          <p style={{ fontSize: '1.05rem', color: '#94A3B8' }}>
+          <p style={{ fontSize: '1rem', color: '#94A3B8' }}>
             Resuelve tus dudas sobre la integración y funcionamiento
           </p>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {FAQS.map((faq) => (
-            <div key={faq.q} className="neu-dark-card" style={{ padding: '1.5rem' }}>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#F1F5F9', marginBottom: '0.5rem' }}>{faq.q}</h3>
-              <p style={{ fontSize: '0.92rem', color: '#94A3B8', lineHeight: 1.6 }}>{faq.a}</p>
+            <div key={faq.q} className="glass-card-dark" style={{ padding: '1.5rem' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '0.5rem' }}>{faq.q}</h3>
+              <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6 }}>{faq.a}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ═══ NEWSLETTER / CONTACT ═══ */}
-      <section style={{ padding: '5rem 1.5rem' }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem' }}>
+      <section style={{ padding: '5rem 1.5rem', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem' }}>
           {/* Newsletter */}
-          <div className="neu-dark-card" style={{ padding: '2rem' }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#F1F5F9', marginBottom: '0.5rem' }}>
+          <div className="glass-card-dark" style={{ padding: '2rem' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#F8FAFC', marginBottom: '0.5rem' }}>
               Mantente Actualizado
             </h2>
-            <p style={{ fontSize: '0.92rem', color: '#94A3B8', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.88rem', color: '#94A3B8', marginBottom: '1.5rem', lineHeight: 1.5 }}>
               Recibe novedades sobre nuevas funcionalidades, mejoras de la plataforma y tips de gestión para tu ISP.
             </p>
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <input
                 type="email"
                 placeholder="tu@email.com"
-                className="neu-dark-input"
-                style={{ flex: 1, borderRadius: '23px', padding: '0.75rem 1.25rem' }}
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
+                className="glass-input-dark"
+                style={{ flex: 1, padding: '0.75rem 1rem' }}
               />
-              <button className="neu-dark-btn-primary" style={{ padding: '0.75rem 1.5rem', borderRadius: '23px', whiteSpace: 'nowrap' }}>
+              <button className="glossy-blue-btn" style={{ padding: '0.75rem 1.5rem', whiteSpace: 'nowrap' }}>
                 Suscribir
               </button>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="neu-dark-card" style={{ padding: '2rem' }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#F1F5F9', marginBottom: '0.5rem' }}>
-              Contáctanos
+          {/* Contact */}
+          <div className="glass-card-dark" style={{ padding: '2rem' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#F8FAFC', marginBottom: '0.5rem' }}>
+              Contacto Directo
             </h2>
-            <p style={{ fontSize: '0.92rem', color: '#94A3B8', marginBottom: '1.5rem', lineHeight: 1.5 }}>
-              ¿Tienes dudas o necesitas una demo personalizada? Escríbenos y te respondemos en menos de 24 horas.
+            <p style={{ fontSize: '0.88rem', color: '#94A3B8', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+              ¿Tienes dudas específicas? Nuestro equipo técnico responde en menos de 24 horas.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                <input
-                  type="text"
-                  placeholder="Nombre"
-                  className="neu-dark-input"
-                  style={{ borderRadius: '23px', padding: '0.75rem 1.25rem' }}
-                  value={contactName}
-                  onChange={(e) => setContactName(e.target.value)}
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="neu-dark-input"
-                  style={{ borderRadius: '23px', padding: '0.75rem 1.25rem' }}
-                  value={contactEmail}
-                  onChange={(e) => setContactEmail(e.target.value)}
-                />
-              </div>
+              <input
+                type="text"
+                placeholder="Tu nombre"
+                value={contactName}
+                onChange={(e) => setContactName(e.target.value)}
+                className="glass-input-dark"
+                style={{ padding: '0.75rem 1rem' }}
+              />
+              <input
+                type="email"
+                placeholder="tu@email.com"
+                value={contactEmail}
+                onChange={(e) => setContactEmail(e.target.value)}
+                className="glass-input-dark"
+                style={{ padding: '0.75rem 1rem' }}
+              />
               <textarea
-                rows={3}
                 placeholder="Tu mensaje..."
-                className="neu-dark-input"
-                style={{ borderRadius: '23px', padding: '0.75rem 1.25rem', resize: 'vertical' }}
                 value={contactMessage}
                 onChange={(e) => setContactMessage(e.target.value)}
+                className="glass-input-dark"
+                style={{ padding: '0.75rem 1rem', minHeight: '80px', resize: 'vertical' }}
               />
-              <button className="neu-dark-btn-primary" style={{ padding: '0.75rem', borderRadius: '23px' }}>
+              <button className="glossy-blue-btn" style={{ padding: '0.75rem 1.5rem', width: '100%', justifyContent: 'center' }}>
                 Enviar Mensaje
               </button>
             </div>
@@ -360,16 +376,16 @@ export default function LandingPage() {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.03)', padding: '2.5rem 1.5rem' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ fontSize: '0.85rem', color: '#64748B' }}>
-            &copy; 2026 SaaS TOI ISP Platform. Todos los derechos reservados.
+      <footer style={{ padding: '3rem 1.5rem', borderTop: '1px solid rgba(255,255,255,0.06)', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <img src="/logotoi.webp" alt="SaaS TOI" style={{ height: '28px', width: 'auto' }} />
+            <span style={{ fontSize: '0.85rem', color: '#64748B' }}>© 2026 SaaS TOI. Todos los derechos reservados.</span>
           </div>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
-            <Link href="/privacy" style={{ fontSize: '0.85rem', color: '#64748B', textDecoration: 'none' }}>Privacidad</Link>
-            <Link href="/terms" style={{ fontSize: '0.85rem', color: '#64748B', textDecoration: 'none' }}>Términos</Link>
-            <Link href="/data-deletion" style={{ fontSize: '0.85rem', color: '#64748B', textDecoration: 'none' }}>Eliminación de Datos</Link>
-            <a href="https://toi.bo" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: '#00E5FF', textDecoration: 'none', fontWeight: 600 }}>toi.bo</a>
+            <a href="#" style={{ fontSize: '0.82rem', color: '#94A3B8', textDecoration: 'none' }}>Términos</a>
+            <a href="#" style={{ fontSize: '0.82rem', color: '#94A3B8', textDecoration: 'none' }}>Privacidad</a>
+            <a href="#" style={{ fontSize: '0.82rem', color: '#94A3B8', textDecoration: 'none' }}>Soporte</a>
           </div>
         </div>
       </footer>
