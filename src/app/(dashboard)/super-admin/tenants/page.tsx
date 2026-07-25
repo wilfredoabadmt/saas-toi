@@ -16,6 +16,11 @@ interface TenantItem {
 export default function SuperAdminTenantsPage() {
   const [tenants, setTenants] = useState<TenantItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isSuperAdminModalOpen, setIsSuperAdminModalOpen] = useState(false);
+  const [superAdminEmail, setSuperAdminEmail] = useState('');
+  const [superAdminName, setSuperAdminName] = useState('');
+  const [superAdminPass, setSuperAdminPass] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
   const { addToast } = useToast();
 
   const fetchTenants = async () => {
@@ -35,6 +40,37 @@ export default function SuperAdminTenantsPage() {
   useEffect(() => {
     fetchTenants();
   }, []);
+
+  const handleCreateSuperAdmin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsCreating(true);
+    try {
+      const res = await fetch('/api/auth/seed-superadmin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: superAdminEmail,
+          name: superAdminName,
+          password: superAdminPass,
+        }),
+      });
+
+      const json = await res.json();
+      if (json.success) {
+        addToast(`👑 Super Usuario ${json.user.email} creado/promovido exitosamente`, 'success');
+        setIsSuperAdminModalOpen(false);
+        setSuperAdminEmail('');
+        setSuperAdminName('');
+        setSuperAdminPass('');
+      } else {
+        addToast(json.error?.message || 'Error al crear Super Usuario', 'error');
+      }
+    } catch {
+      addToast('Error al conectar con el servidor', 'error');
+    } finally {
+      setIsCreating(false);
+    }
+  };
 
   const handleStatusToggle = async (tenant: TenantItem) => {
     const newStatus = tenant.status === 'active' ? 'suspended' : 'active';
@@ -56,17 +92,26 @@ export default function SuperAdminTenantsPage() {
 
   return (
     <div>
-      {/* Header */}
-      <div style={{ marginBottom: '2rem' }}>
-        <div className="badge badge-warning" style={{ marginBottom: '0.5rem' }}>
-          👑 PANEL SUPER ADMIN
+      {/* Header with Actions */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <div className="badge badge-warning" style={{ marginBottom: '0.5rem' }}>
+            👑 PANEL SUPER ADMIN
+          </div>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
+            Gestión Global de Tenants & Suscripciones
+          </h1>
+          <p style={{ color: 'var(--text-muted)', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
+            Monitoreo de organizaciones registradas, consumo de abonados y suspensión/activación manual
+          </p>
         </div>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)', margin: 0 }}>
-          Gestión Global de Tenants & Suscripciones
-        </h1>
-        <p style={{ color: 'var(--text-muted)', margin: '0.35rem 0 0 0', fontSize: '0.92rem' }}>
-          Monitoreo de organizaciones registradas, consumo de abonados y suspensión/activación manual
-        </p>
+
+        <button
+          className="neu-btn-primary"
+          onClick={() => setIsSuperAdminModalOpen(true)}
+        >
+          👑 Crear Super Usuario
+        </button>
       </div>
 
       {/* Tenants Table */}
@@ -121,6 +166,115 @@ export default function SuperAdminTenantsPage() {
           </div>
         )}
       </div>
+
+      {/* Modal: Crear Super Usuario */}
+      {isSuperAdminModalOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '1rem',
+          }}
+        >
+          <div
+            className="glass-card"
+            style={{
+              width: '100%',
+              maxWidth: '460px',
+              padding: '2rem',
+              borderRadius: '16px',
+              backgroundColor: 'var(--bg-main)',
+              border: '1px solid var(--border-color)',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
+                👑 Crear Nuevo Super Usuario
+              </h3>
+              <button
+                type="button"
+                onClick={() => setIsSuperAdminModalOpen(false)}
+                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.2rem', cursor: 'pointer' }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateSuperAdmin}>
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
+                  Nombre Completo
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={superAdminName}
+                  onChange={(e) => setSuperAdminName(e.target.value)}
+                  placeholder="Ej. Admin Global SaaS"
+                  className="neu-input"
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
+                  Correo Electrónico
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={superAdminEmail}
+                  onChange={(e) => setSuperAdminEmail(e.target.value)}
+                  placeholder="superadmin@saas-toi.com"
+                  className="neu-input"
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
+                  Contraseña
+                </label>
+                <input
+                  type="password"
+                  required
+                  value={superAdminPass}
+                  onChange={(e) => setSuperAdminPass(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="neu-input"
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+                <button
+                  type="button"
+                  className="neu-btn"
+                  onClick={() => setIsSuperAdminModalOpen(false)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isCreating}
+                  className="neu-btn-primary"
+                >
+                  {isCreating ? 'Guardando...' : 'Crear Super Admin 👑'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

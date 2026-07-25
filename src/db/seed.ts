@@ -49,6 +49,9 @@ export async function seedDefaults(dbInstance?: any) {
     ])
     .onConflictDoNothing();
 
+  const crypto = await import('crypto');
+  const hashPass = (p: string) => crypto.createHash('sha256').update(p).digest('hex');
+
   // Seed Default Admin User
   await db
     .insert(users)
@@ -58,7 +61,21 @@ export async function seedDefaults(dbInstance?: any) {
       email: 'admin@ispdemo.com',
       name: 'Admin ISP Demo',
       role: 'admin',
-      passwordHash: 'dummy_hash',
+      passwordHash: hashPass('Admin123!'),
+    })
+    .onConflictDoNothing();
+
+  // Seed Default Super Admin User
+  const superAdminUserId = '00000000-0000-0000-0000-000000000099';
+  await db
+    .insert(users)
+    .values({
+      id: superAdminUserId,
+      organizationId: defaultOrgId,
+      email: 'superadmin@saas-toi.com',
+      name: 'Super Admin SaaS',
+      role: 'super_admin',
+      passwordHash: hashPass('SuperAdmin123!'),
     })
     .onConflictDoNothing();
 

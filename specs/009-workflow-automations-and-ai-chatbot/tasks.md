@@ -6,7 +6,7 @@
 - [x] T002 Create chatbot tables schema in src/db/schema/chatbot.ts (chatbot_config, chatbot_conversations, chatbot_messages)
 - [x] T003 Create leads table schema in src/db/schema/leads.ts (leads)
 - [x] T004 Add workflow tables to src/db/schema/index.ts exports
-- [ ] T005 Create database migration for new tables in src/db/migrations/
+- [x] T005 Create database migration for new tables in src/db/migrations/
 - [x] T006 Create workflow service base in src/services/workflow.service.ts
 - [ ] T007 Create chatbot service base in src/services/chatbot.service.ts
 
