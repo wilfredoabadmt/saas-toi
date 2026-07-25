@@ -2,6 +2,7 @@ import { organizations } from './schema/organizations';
 import { users } from './schema/users';
 import { servicePlans } from './schema/service-plans';
 import { subscribers } from './schema/subscribers';
+import { saasPlans } from './schema/saas-plans';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function seedDefaults(dbInstance?: any) {
@@ -18,6 +19,34 @@ export async function seedDefaults(dbInstance?: any) {
       slug: 'isp-demo',
       status: 'active',
     })
+    .onConflictDoNothing();
+
+  // Seed Default SaaS Plans (required for subscriptions)
+  await db
+    .insert(saasPlans)
+    .values([
+      {
+        name: 'Starter',
+        slug: 'starter',
+        maxSubscribers: 300,
+        maxRouters: 1,
+        priceMonthlyUSD: '49.00',
+      },
+      {
+        name: 'Pro',
+        slug: 'pro',
+        maxSubscribers: 1500,
+        maxRouters: 5,
+        priceMonthlyUSD: '99.00',
+      },
+      {
+        name: 'Enterprise',
+        slug: 'enterprise',
+        maxSubscribers: 999999,
+        maxRouters: 999999,
+        priceMonthlyUSD: '199.00',
+      },
+    ])
     .onConflictDoNothing();
 
   // Seed Default Admin User

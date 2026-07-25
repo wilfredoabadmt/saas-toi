@@ -59,6 +59,17 @@ export class SubscriptionService {
   static async updateTenantStatus(organizationId: string, status: string) {
     await ensureMigrationsRun();
 
+    // Verify organization exists
+    const [org] = await db
+      .select()
+      .from(organizations)
+      .where(eq(organizations.id, organizationId))
+      .limit(1);
+
+    if (!org) {
+      throw new ApiError('NOT_FOUND', 'Organización no encontrada', 404);
+    }
+
     const [existing] = await db
       .select()
       .from(subscriptions)
@@ -78,7 +89,7 @@ export class SubscriptionService {
     // Create default plan assignment
     const [defaultPlan] = await db.select().from(saasPlans).limit(1);
     if (!defaultPlan) {
-      throw new ApiError('INTERNAL_ERROR', 'No hay planes configurados en el sistema', 500);
+      throw new ApiError('INTERNAL_ERROR', 'No hay planes SaaS configurados. Ejecuta el seed de planes por defecto.', 500);
     }
 
     const [created] = await db
