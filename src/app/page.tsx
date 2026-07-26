@@ -345,10 +345,10 @@ export default function LandingPage() {
                   </div>
                 )}
 
-                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: plan.featured ? '#60A5FA' : '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: plan.featured ? '#60A5FA' : '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem', textAlign: 'center' }}>
                   {plan.name}
                 </div>
-                <div style={{ fontSize: '2.25rem', fontWeight: 900, color: '#F8FAFC', marginBottom: '0.25rem' }}>
+                <div style={{ fontSize: '2.25rem', fontWeight: 900, color: '#F8FAFC', marginBottom: '0.25rem', textAlign: 'center' }}>
                   {plan.price}
                   <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#64748B' }}> /mes</span>
                 </div>
