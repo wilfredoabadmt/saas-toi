@@ -106,15 +106,23 @@ export default function LandingPage() {
       {/* ═══ NAVBAR ═══ */}
       <nav style={{ position: 'sticky', top: '1rem', zIndex: 100, padding: '0 1.5rem', maxWidth: '1200px', margin: '1rem auto 0' }}>
         <div className="glass-card-dark" style={{ borderRadius: '9999px', padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
+          {/* Left: Brand Logo */}
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none', flexShrink: 0 }}>
             <img src="/logotoi.webp" alt="SaaS TOI" className="logo-animated-glow" style={{ height: '36px', width: 'auto' }} />
             <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#F8FAFC' }}>SaaS TOI</span>
           </Link>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {/* Center: Main Navigation Menu */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap', flex: 1 }}>
             <a href="#features" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Módulos</a>
             <a href="#pricing" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Planes</a>
             <a href="#faq" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>FAQ</a>
+            <a href="#empresa" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Empresa & Redes</a>
+            <a href="#contacto" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Contacto</a>
+          </div>
+
+          {/* Right: CTA Button */}
+          <div style={{ flexShrink: 0 }}>
             <Link href="/login" className="glossy-pill-btn" style={{ padding: '0.5rem 1.25rem', fontSize: '0.82rem' }}>
               Iniciar Sesión
             </Link>
@@ -309,8 +317,93 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ═══ EMPRESA & REDES SOCIALES (toi.bo) ═══ */}
+      <section id="empresa" style={{ padding: '5rem 1.5rem 2rem', position: 'relative', zIndex: 1 }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <div className="glass-badge glass-badge-info" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 1rem', fontSize: '0.78rem', marginBottom: '1rem' }}>
+              🏢 Datos Corporativos & Redes Oficiales
+            </div>
+            <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)', fontWeight: 800, color: '#F8FAFC', marginBottom: '0.75rem' }}>
+              Telecomunicaciones Oportunas Inteligentes S.R.L.
+            </h2>
+            <p style={{ color: '#94A3B8', fontSize: '0.95rem', maxWidth: '650px', margin: '0 auto' }}>
+              Proveedores de servicios de Internet de alta velocidad para familias y empresas. Conoce nuestra información oficial y canales directos de atención.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+            {/* Card 1: Información Legal & NIT */}
+            <div className="glass-card-dark" style={{ padding: '1.75rem', borderRadius: '20px' }}>
+              <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>🏛️</div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#F8FAFC', marginBottom: '0.5rem' }}>Razón Social & NIT</h3>
+              <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '1rem' }}>
+                <strong style={{ color: '#F8FAFC' }}>TELECOMUNICACIONES OPORTUNAS INTELIGENTES S.R.L.</strong>
+              </p>
+              <div className="glass-input-dark" style={{ padding: '0.6rem 0.85rem', borderRadius: '12px', fontSize: '0.82rem', color: '#38BDF8', fontWeight: 700 }}>
+                NIT: 305020028
+              </div>
+            </div>
+
+            {/* Card 2: Ubicación & Oficina */}
+            <div className="glass-card-dark" style={{ padding: '1.75rem', borderRadius: '20px' }}>
+              <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>📍</div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#F8FAFC', marginBottom: '0.5rem' }}>Oficina Principal</h3>
+              <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '1rem' }}>
+                Av. Juan Pablo II Nº 30, Edificio San Juan de Dios, Piso 2, Oficina 22 (Zona Villa Tunari).<br />
+                <strong style={{ color: '#F8FAFC' }}>El Alto, Bolivia</strong>
+              </p>
+              <div className="glass-input-dark" style={{ padding: '0.6rem 0.85rem', borderRadius: '12px', fontSize: '0.82rem', color: '#34D399', fontWeight: 700 }}>
+                📞 Teléfono: +591 69926886
+              </div>
+            </div>
+
+            {/* Card 3: Redes Sociales Oficiales */}
+            <div className="glass-card-dark" style={{ padding: '1.75rem', borderRadius: '20px' }}>
+              <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>🌐</div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#F8FAFC', marginBottom: '0.5rem' }}>Redes Sociales Oficiales</h3>
+              <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '1rem' }}>
+                Conéctate con nosotros en nuestras plataformas para promociones y soporte al cliente:
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <a
+                  href="https://www.facebook.com/toielaltointernet"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-input-dark"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.6rem 0.85rem', borderRadius: '12px', fontSize: '0.82rem', color: '#60A5FA', textDecoration: 'none', fontWeight: 600 }}
+                >
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
+                  Facebook (@toielaltointernet)
+                </a>
+                <a
+                  href="https://www.tiktok.com/@toi.internet?_t=ZM-8sjbOZErT9B&_r=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-input-dark"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.6rem 0.85rem', borderRadius: '12px', fontSize: '0.82rem', color: '#F472B6', textDecoration: 'none', fontWeight: 600 }}
+                >
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.82.57-1.31 1.56-1.3 2.56.02.97.55 1.89 1.39 2.37.9.52 2.06.52 2.94-.01.88-.53 1.38-1.53 1.39-2.55.03-3.64.01-7.29.02-10.93z" /></svg>
+                  TikTok (@toi.internet)
+                </a>
+                <a
+                  href="https://wa.me/59169926886"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-input-dark"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.6rem 0.85rem', borderRadius: '12px', fontSize: '0.82rem', color: '#4ADE80', textDecoration: 'none', fontWeight: 600 }}
+                >
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" /></svg>
+                  WhatsApp directo (+591 69926886)
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ NEWSLETTER / CONTACT ═══ */}
-      <section style={{ padding: '5rem 1.5rem', position: 'relative', zIndex: 1 }}>
+      <section id="contacto" style={{ padding: '3rem 1.5rem 5rem', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem' }}>
           {/* Newsletter */}
           <div className="glass-card-dark" style={{ padding: '2rem' }}>
@@ -376,16 +469,99 @@ export default function LandingPage() {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer style={{ padding: '3rem 1.5rem', borderTop: '1px solid rgba(255,255,255,0.06)', position: 'relative', zIndex: 1 }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <img src="/logotoi.webp" alt="SaaS TOI" style={{ height: '28px', width: 'auto' }} />
-            <span style={{ fontSize: '0.85rem', color: '#64748B' }}>© 2026 SaaS TOI. Todos los derechos reservados.</span>
+      <footer style={{ padding: '4rem 1.5rem 2rem', borderTop: '1px solid rgba(255,255,255,0.06)', position: 'relative', zIndex: 1, backgroundColor: '#040507' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2.5rem', marginBottom: '3rem' }}>
+
+            {/* Col 1: Brand & Info */}
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                <img src="/logotoi.webp" alt="SaaS TOI" style={{ height: '32px', width: 'auto' }} />
+                <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#F8FAFC' }}>SaaS TOI</span>
+              </div>
+              <p style={{ fontSize: '0.85rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '1rem' }}>
+                Desarrollado para TELECOMUNICACIONES OPORTUNAS INTELIGENTES S.R.L. Plataforma integral de gestión ISP, automatización por WhatsApp Cloud API e integración MikroTik.
+              </p>
+              <div style={{ fontSize: '0.78rem', color: '#64748B' }}>
+                NIT: 305020028
+              </div>
+            </div>
+
+            {/* Col 2: Enlaces Rápidos */}
+            <div>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Navegación</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                <li><a href="#features" style={{ fontSize: '0.85rem', color: '#94A3B8', textDecoration: 'none' }}>Módulos & Funcionalidades</a></li>
+                <li><a href="#pricing" style={{ fontSize: '0.85rem', color: '#94A3B8', textDecoration: 'none' }}>Planes & Precios</a></li>
+                <li><a href="#faq" style={{ fontSize: '0.85rem', color: '#94A3B8', textDecoration: 'none' }}>Preguntas Frecuentes</a></li>
+                <li><a href="#empresa" style={{ fontSize: '0.85rem', color: '#94A3B8', textDecoration: 'none' }}>Datos Corporativos</a></li>
+                <li><Link href="/login" style={{ fontSize: '0.85rem', color: '#1A75FF', textDecoration: 'none', fontWeight: 700 }}>Iniciar Sesión</Link></li>
+              </ul>
+            </div>
+
+            {/* Col 3: Ubicación & Contacto */}
+            <div>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Contacto & Ubicación</h4>
+              <p style={{ fontSize: '0.85rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '0.5rem' }}>
+                📍 Av. Juan Pablo II Nº 30, Edif. San Juan de Dios, Piso 2, Of. 22 (Zona Villa Tunari)
+              </p>
+              <p style={{ fontSize: '0.85rem', color: '#94A3B8', marginBottom: '0.5rem' }}>
+                📍 El Alto, Bolivia
+              </p>
+              <p style={{ fontSize: '0.85rem', color: '#34D399', fontWeight: 600 }}>
+                📞 Teléfono: +591 69926886
+              </p>
+            </div>
+
+            {/* Col 4: Redes Sociales */}
+            <div>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Redes Sociales</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <a
+                  href="https://www.facebook.com/toielaltointernet"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#94A3B8', textDecoration: 'none' }}
+                >
+                  <span style={{ color: '#60A5FA' }}>🔵</span> Facebook Oficial
+                </a>
+                <a
+                  href="https://www.tiktok.com/@toi.internet?_t=ZM-8sjbOZErT9B&_r=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#94A3B8', textDecoration: 'none' }}
+                >
+                  <span style={{ color: '#F472B6' }}>🎵</span> TikTok Official
+                </a>
+                <a
+                  href="https://wa.me/59169926886"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#94A3B8', textDecoration: 'none' }}
+                >
+                  <span style={{ color: '#4ADE80' }}>💬</span> WhatsApp Soporte
+                </a>
+                <a
+                  href="https://toi.bo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#94A3B8', textDecoration: 'none' }}
+                >
+                  <span style={{ color: '#00E5FF' }}>🌐</span> Web Oficial (toi.bo)
+                </a>
+              </div>
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: '1.5rem' }}>
-            <a href="#" style={{ fontSize: '0.82rem', color: '#94A3B8', textDecoration: 'none' }}>Términos</a>
-            <a href="#" style={{ fontSize: '0.82rem', color: '#94A3B8', textDecoration: 'none' }}>Privacidad</a>
-            <a href="#" style={{ fontSize: '0.82rem', color: '#94A3B8', textDecoration: 'none' }}>Soporte</a>
+
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+            <span style={{ fontSize: '0.82rem', color: '#64748B' }}>
+              © 2026 TELECOMUNICACIONES OPORTUNAS INTELIGENTES S.R.L. Todos los derechos reservados.
+            </span>
+            <div style={{ display: 'flex', gap: '1.5rem' }}>
+              <Link href="/terms" style={{ fontSize: '0.82rem', color: '#94A3B8', textDecoration: 'none' }}>Términos</Link>
+              <Link href="/privacy" style={{ fontSize: '0.82rem', color: '#94A3B8', textDecoration: 'none' }}>Privacidad</Link>
+              <a href="https://toi.bo" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.82rem', color: '#94A3B8', textDecoration: 'none' }}>toi.bo</a>
+            </div>
           </div>
         </div>
       </footer>
