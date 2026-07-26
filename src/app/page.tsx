@@ -1,11 +1,101 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    Landing Page — Dark Glassmorphism & Glossy Chrome UI (Locked Dark)
    ═══════════════════════════════════════════════════════════════════════════════ */
+
+interface AnimatedHeadingProps {
+  text: string;
+  className?: string;
+  style?: React.CSSProperties;
+  delay?: number;
+  charDelay?: number;
+}
+
+function AnimatedHeading({
+  text,
+  className = '',
+  style,
+  delay = 200,
+  charDelay = 30,
+}: AnimatedHeadingProps) {
+  const [start, setStart] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStart(true);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  const lines = text.split('\n');
+
+  return (
+    <div className={className} style={style}>
+      {lines.map((line, lineIndex) => (
+        <div key={lineIndex} className="flex flex-wrap justify-center">
+          {line.split('').map((char, charIndex) => {
+            const totalDelay =
+              lineIndex * line.length * charDelay + charIndex * charDelay;
+            return (
+              <span
+                key={charIndex}
+                className="inline-block transition-all duration-500"
+                style={{
+                  opacity: start ? 1 : 0,
+                  transform: start ? 'translateX(0)' : 'translateX(-18px)',
+                  transitionDelay: `${totalDelay}ms`,
+                }}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+interface FadeInProps {
+  children: React.ReactNode;
+  delay?: number;
+  duration?: number;
+  className?: string;
+}
+
+function FadeIn({
+  children,
+  delay = 0,
+  duration = 800,
+  className = '',
+}: FadeInProps) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVisible(true);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  return (
+    <div
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transitionProperty: 'opacity',
+        transitionDuration: `${duration}ms`,
+        transitionTimingFunction: 'ease-out',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 const FEATURES = [
   {
@@ -103,111 +193,117 @@ export default function LandingPage() {
       <div style={{ position: 'fixed', top: '-300px', left: '-200px', width: '900px', height: '900px', background: 'radial-gradient(ellipse, rgba(26, 117, 255, 0.12) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }}></div>
       <div style={{ position: 'fixed', top: '-200px', right: '-300px', width: '800px', height: '800px', background: 'radial-gradient(ellipse, rgba(0, 229, 255, 0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }}></div>
 
-      {/* ═══ NAVBAR ═══ */}
-      <nav style={{ position: 'sticky', top: '1rem', zIndex: 100, padding: '0 1.5rem', maxWidth: '1200px', margin: '1rem auto 0' }}>
-        <div className="glass-card-dark" style={{ borderRadius: '9999px', padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-          {/* Left: Brand Logo */}
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none', flexShrink: 0 }}>
-            <img src="/logotoi.webp" alt="SaaS TOI" className="logo-animated-glow" style={{ height: '36px', width: 'auto' }} />
-            <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#F8FAFC' }}>SaaS TOI</span>
-          </Link>
+      {/* ═══ HERO SECTION (Full-Screen Liquid Glass + Background Video) ═══ */}
+      <section className="min-h-screen bg-black text-white relative overflow-hidden flex flex-col justify-between">
 
-          {/* Center: Main Navigation Menu */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap', flex: 1 }}>
-            <a href="#features" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Módulos</a>
-            <a href="#pricing" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Planes</a>
-            <a href="#faq" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>FAQ</a>
-            <a href="#empresa" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Empresa & Redes</a>
-            <a href="#contacto" style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8', textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '12px', transition: 'all 0.2s', backgroundColor: 'rgba(255,255,255,0.05)' }}>Contacto</a>
-          </div>
+        {/* Background Fullscreen Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0 opacity-50"
+        >
+          <source
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260423_084718_72a17915-4964-4059-afcd-22d59399b72e.mp4"
+            type="video/mp4"
+          />
+        </video>
 
-          {/* Right: CTA Button */}
-          <div style={{ flexShrink: 0 }}>
-            <Link href="/login" className="glossy-pill-btn" style={{ padding: '0.5rem 1.25rem', fontSize: '0.82rem' }}>
-              Iniciar Sesión
-            </Link>
-          </div>
-        </div>
-      </nav>
+        {/* Gradient Overlay for SaaS TOI Theme */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-[#060709] pointer-events-none z-[1]" />
 
-      {/* ═══ HERO SECTION ═══ */}
-      <section style={{ padding: '5rem 1.5rem 8rem', position: 'relative', zIndex: 1 }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '4rem', alignItems: 'center' }}>
+        {/* Content Wrapper */}
+        <div className="relative z-10 min-h-screen flex flex-col justify-between">
 
-          {/* Left: Headline */}
-          <div>
-            {/* Status Badge */}
-            <div className="glass-badge glass-badge-info" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.78rem', marginBottom: '1.5rem' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'currentColor', display: 'inline-block', boxShadow: '0 0 8px rgba(26, 117, 255, 0.5)' }}></span>
-              WhatsApp Cloud API + Auto-Corte MikroTik
-            </div>
-
-            {/* Main Title */}
-            <h1 style={{ fontSize: 'clamp(2.25rem, 5vw, 3.25rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', color: '#F8FAFC', marginBottom: '1.25rem' }}>
-              Plataforma Todo-en-Uno para tu{' '}
-              <span style={{ background: 'linear-gradient(135deg, #1A75FF, #00E5FF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                ISP
-              </span>
-            </h1>
-
-            {/* Description */}
-            <p style={{ fontSize: '1.05rem', color: '#94A3B8', maxWidth: '520px', lineHeight: 1.65, marginBottom: '2rem' }}>
-              Reduce la morosidad hasta un 40% con recordatorios automáticos por WhatsApp, gestión de comprobantes S3, corte y reconexión instantánea en MikroTik y módulo de tickets para técnicos.
-            </p>
-
-            {/* CTA Buttons */}
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link href="/register" className="glossy-blue-btn" style={{ padding: '0.85rem 2rem', fontSize: '0.95rem' }}>
-                Empieza Gratis
+          {/* Floating Liquid Glass Navbar */}
+          <header className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-6">
+            <div className="liquid-glass rounded-xl px-4 py-2 flex items-center justify-between">
+              {/* Left Logo */}
+              <Link href="/" className="flex items-center gap-3 text-2xl font-semibold tracking-tight text-white">
+                <img src="/logotoi.webp" alt="SaaS TOI" className="h-8 w-auto logo-animated-glow" />
+                <span>SaaS TOI</span>
               </Link>
-              <a href="#features" className="glossy-pill-btn" style={{ padding: '0.85rem 2rem', fontSize: '0.95rem' }}>
-                Ver Módulos
-              </a>
-            </div>
-          </div>
 
-          {/* Right: Widget Demo */}
-          <div className="glass-card-dark" style={{ padding: '2rem', borderRadius: '28px', position: 'relative' }}>
-            {/* Widget Header */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ef4444' }}></div>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b' }}></div>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#22c55e' }}></div>
-              <span style={{ marginLeft: '0.75rem', fontSize: '0.75rem', color: '#64748B', fontWeight: 600 }}>SaaS TOI — Panel de Cobranza</span>
-            </div>
-
-            {/* Mini KPI Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginBottom: '1.5rem' }}>
-              {[
-                { label: 'ABONADOS', value: '1,247', color: '#1A75FF' },
-                { label: 'RECAUDACIÓN', value: '$32.4M', color: '#00E5FF' },
-                { label: 'PENDIENTE', value: '$1.8M', color: '#FB7185' },
-                { label: 'COBRANZA', value: '94%', color: '#34D399' },
-              ].map((kpi) => (
-                <div key={kpi.label} className="glass-input-dark" style={{ borderRadius: '16px', padding: '0.85rem' }}>
-                  <div style={{ fontSize: '0.62rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{kpi.label}</div>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 900, color: kpi.color, marginTop: '0.2rem' }}>{kpi.value}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Action Widget */}
-            <div className="glass-input-dark" style={{ borderRadius: '16px', padding: '1rem', marginBottom: '1rem' }}>
-              <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Último Pago Recibido</div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <div style={{ fontSize: '1rem', fontWeight: 800, color: '#F8FAFC' }}>Juan Pérez — #1248</div>
-                  <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>Plan Pro 150 Mbps</div>
-                </div>
-                <div className="glass-badge glass-badge-success" style={{ fontSize: '0.85rem', fontWeight: 800 }}>$4,500</div>
+              {/* Center Navigation Menu (Hidden on mobile, md:flex) */}
+              <div className="hidden md:flex items-center gap-8 text-sm">
+                <a href="#features" className="text-slate-200 hover:text-cyan-400 transition-colors">Módulos</a>
+                <a href="#pricing" className="text-slate-200 hover:text-cyan-400 transition-colors">Planes</a>
+                <a href="#faq" className="text-slate-200 hover:text-cyan-400 transition-colors">FAQ</a>
+                <a href="#empresa" className="text-slate-200 hover:text-cyan-400 transition-colors">Empresa & Redes</a>
+                <a href="#contacto" className="text-slate-200 hover:text-cyan-400 transition-colors">Contacto</a>
               </div>
-            </div>
 
-            {/* CTA Button */}
-            <button className="glossy-blue-btn" style={{ width: '100%', justifyContent: 'center', padding: '0.85rem' }}>
-              💳 Registrar Pago
-            </button>
-          </div>
+              {/* Right Button */}
+              <Link
+                href="/login"
+                className="bg-white text-black hover:bg-gray-100 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
+              >
+                Iniciar Sesión
+              </Link>
+            </div>
+          </header>
+
+          {/* Center Block */}
+          <main className="px-6 md:px-12 lg:px-16 flex flex-col items-center justify-center text-center my-auto py-12">
+            <div className="w-full max-w-4xl flex flex-col items-center">
+              
+              {/* Status Badge */}
+              <FadeIn delay={100} duration={800}>
+                <div className="liquid-glass border border-cyan-500/30 text-cyan-400 rounded-full px-4 py-1.5 text-xs md:text-sm font-medium mb-6 inline-flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                  WhatsApp Cloud API + Auto-Corte MikroTik + Agente IA
+                </div>
+              </FadeIn>
+
+              {/* Animated Heading */}
+              <AnimatedHeading
+                text={"Gestión Integral para ISP\ncon Inteligencia Artificial."}
+                className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal mb-4 text-white"
+                style={{ letterSpacing: '-0.04em' }}
+                delay={200}
+                charDelay={30}
+              />
+
+              {/* Subheading */}
+              <FadeIn delay={800} duration={1000}>
+                <p className="text-base md:text-lg text-gray-300 mb-6 max-w-2xl">
+                  Automatiza cobranzas por WhatsApp Cloud API, auto-corte en MikroTik, tickets de soporte y atención 24/7 con Agente de IA.
+                </p>
+              </FadeIn>
+
+              {/* CTA Buttons */}
+              <FadeIn delay={1200} duration={1000}>
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <Link
+                    href="/register"
+                    className="bg-white text-black px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                  >
+                    Probar Gratis Ahora
+                  </Link>
+                  <a
+                    href="#features"
+                    className="liquid-glass border border-white/20 text-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-black transition-colors"
+                  >
+                    Explorar Módulos
+                  </a>
+                </div>
+              </FadeIn>
+
+            </div>
+          </main>
+
+          {/* Bottom Liquid Glass Tagline Pill */}
+          <footer className="w-full px-6 md:px-12 lg:px-16 pb-12 lg:pb-16 flex justify-center">
+            <FadeIn delay={1400} duration={1000}>
+              <div className="liquid-glass border border-white/20 px-6 py-3 rounded-xl">
+                <p className="text-lg md:text-xl lg:text-2xl font-light text-white">
+                  WhatsApp Cloud · MikroTik RouterOS · Agente de IA
+                </p>
+              </div>
+            </FadeIn>
+          </footer>
+
         </div>
       </section>
 
