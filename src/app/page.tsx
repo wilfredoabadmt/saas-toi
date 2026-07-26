@@ -298,9 +298,9 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
           {FEATURES.map((f) => (
-            <div key={f.title} className="glass-card-dark" style={{ padding: '2rem', textAlign: 'center' }}>
+            <div key={f.title} className="glass-card-dark" style={{ padding: '2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', height: '100%' }}>
               <div style={{ width: '60px', height: '60px', borderRadius: '18px', background: 'linear-gradient(180deg, rgba(26, 117, 255, 0.2) 0%, rgba(26, 117, 255, 0.05) 100%)', border: '1px solid rgba(26, 117, 255, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', margin: '0 auto 1.25rem', boxShadow: '0 8px 20px rgba(26, 117, 255, 0.15)' }}>
                 {f.icon}
               </div>
@@ -321,7 +321,7 @@ export default function LandingPage() {
             Sin contratos forzosos. Cancela o cambia de plan en cualquier momento.
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
             {PLANS.map((plan) => (
               <div
                 key={plan.name}
@@ -329,7 +329,9 @@ export default function LandingPage() {
                 style={{
                   padding: '2rem',
                   position: 'relative',
-                  transform: plan.featured ? 'scale(1.03)' : 'none',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
                   boxShadow: plan.featured
                     ? '0 25px 60px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.2), 0 0 40px rgba(26, 117, 255, 0.15)'
                     : undefined,
@@ -350,7 +352,7 @@ export default function LandingPage() {
                   <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#64748B' }}> /mes</span>
                 </div>
 
-                <ul style={{ listStyle: 'none', padding: '1.5rem 0', margin: 0, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <ul style={{ listStyle: 'none', padding: '1.5rem 0', margin: 0, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1 }}>
                   {plan.features.map((feat) => (
                     <li key={feat} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.88rem', color: '#CBD5E1' }}>
                       <span style={{ color: '#00E5FF', fontWeight: 700 }}>✓</span>
