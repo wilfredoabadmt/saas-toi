@@ -332,6 +332,7 @@ export default function LandingPage() {
                   display: 'flex',
                   flexDirection: 'column',
                   height: '100%',
+                  textAlign: 'left',
                   boxShadow: plan.featured
                     ? '0 25px 60px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.2), 0 0 40px rgba(26, 117, 255, 0.15)'
                     : undefined,
@@ -352,11 +353,11 @@ export default function LandingPage() {
                   <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#64748B' }}> /mes</span>
                 </div>
 
-                <ul style={{ listStyle: 'none', padding: '1.5rem 0', margin: 0, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1 }}>
+                <ul style={{ listStyle: 'none', padding: '1.5rem 0', margin: 0, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1, textAlign: 'left' }}>
                   {plan.features.map((feat) => (
-                    <li key={feat} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.88rem', color: '#CBD5E1' }}>
-                      <span style={{ color: '#00E5FF', fontWeight: 700 }}>✓</span>
-                      {feat}
+                    <li key={feat} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', fontSize: '0.88rem', color: '#CBD5E1', textAlign: 'left' }}>
+                      <span style={{ color: '#00E5FF', fontWeight: 700, flexShrink: 0, marginTop: '2px' }}>✓</span>
+                      <span>{feat}</span>
                     </li>
                   ))}
                 </ul>
