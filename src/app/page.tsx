@@ -7,21 +7,17 @@ import Link from 'next/link';
    Landing Page — Dark Glassmorphism & Glossy Chrome UI (Locked Dark)
    ═══════════════════════════════════════════════════════════════════════════════ */
 
-interface AnimatedHeadingProps {
-  text: string;
-  className?: string;
-  style?: React.CSSProperties;
-  delay?: number;
-  charDelay?: number;
-}
-
 function AnimatedHeading({
   text,
-  className = '',
   style,
   delay = 200,
   charDelay = 30,
-}: AnimatedHeadingProps) {
+}: {
+  text: string;
+  style?: React.CSSProperties;
+  delay?: number;
+  charDelay?: number;
+}) {
   const [start, setStart] = useState(false);
 
   useEffect(() => {
@@ -34,17 +30,18 @@ function AnimatedHeading({
   const lines = text.split('\n');
 
   return (
-    <div className={className} style={style}>
+    <div style={style}>
       {lines.map((line, lineIndex) => (
-        <div key={lineIndex} className="flex flex-wrap justify-center">
+        <div key={lineIndex} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
           {line.split('').map((char, charIndex) => {
             const totalDelay =
               lineIndex * line.length * charDelay + charIndex * charDelay;
             return (
               <span
                 key={charIndex}
-                className="inline-block transition-all duration-500"
                 style={{
+                  display: 'inline-block',
+                  transition: 'all 0.5s ease-out',
                   opacity: start ? 1 : 0,
                   transform: start ? 'translateX(0)' : 'translateX(-18px)',
                   transitionDelay: `${totalDelay}ms`,
@@ -60,19 +57,15 @@ function AnimatedHeading({
   );
 }
 
-interface FadeInProps {
-  children: React.ReactNode;
-  delay?: number;
-  duration?: number;
-  className?: string;
-}
-
 function FadeIn({
   children,
   delay = 0,
   duration = 800,
-  className = '',
-}: FadeInProps) {
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  duration?: number;
+}) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -84,12 +77,9 @@ function FadeIn({
 
   return (
     <div
-      className={className}
       style={{
         opacity: visible ? 1 : 0,
-        transitionProperty: 'opacity',
-        transitionDuration: `${duration}ms`,
-        transitionTimingFunction: 'ease-out',
+        transition: `opacity ${duration}ms ease-out`,
       }}
     >
       {children}
@@ -194,7 +184,7 @@ export default function LandingPage() {
       <div style={{ position: 'fixed', top: '-200px', right: '-300px', width: '800px', height: '800px', background: 'radial-gradient(ellipse, rgba(0, 229, 255, 0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }}></div>
 
       {/* ═══ HERO SECTION (Full-Screen Liquid Glass + Background Video) ═══ */}
-      <section className="min-h-screen bg-black text-white relative overflow-hidden flex flex-col justify-between">
+      <section style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#000000', color: '#FFFFFF', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
 
         {/* Background Fullscreen Video */}
         <video
@@ -202,7 +192,7 @@ export default function LandingPage() {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0 opacity-50"
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, opacity: 0.45 }}
         >
           <source
             src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260423_084718_72a17915-4964-4059-afcd-22d59399b72e.mp4"
@@ -211,47 +201,44 @@ export default function LandingPage() {
         </video>
 
         {/* Gradient Overlay for SaaS TOI Theme */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-[#060709] pointer-events-none z-[1]" />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, #060709 100%)', pointerEvents: 'none', zIndex: 1 }} />
 
         {/* Content Wrapper */}
-        <div className="relative z-10 min-h-screen flex flex-col justify-between">
+        <div style={{ position: 'relative', zIndex: 10, minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '0 1.5rem' }}>
 
           {/* Floating Liquid Glass Navbar */}
-          <header className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-6">
-            <div className="liquid-glass rounded-xl px-4 py-2 flex items-center justify-between">
+          <header style={{ width: '100%', maxWidth: '1200px', margin: '1.25rem auto 0', position: 'sticky', top: '1.25rem', zIndex: 50 }}>
+            <div className="liquid-glass" style={{ borderRadius: '16px', padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
               {/* Left Logo */}
-              <Link href="/" className="flex items-center gap-3 text-2xl font-semibold tracking-tight text-white">
-                <img src="/logotoi.webp" alt="SaaS TOI" className="h-8 w-auto logo-animated-glow" />
-                <span>SaaS TOI</span>
+              <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none', color: '#FFFFFF' }}>
+                <img src="/logotoi.webp" alt="SaaS TOI" className="logo-animated-glow" style={{ height: '36px', width: 'auto', display: 'block' }} />
+                <span style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#FFFFFF' }}>SaaS TOI</span>
               </Link>
 
-              {/* Center Navigation Menu (Hidden on mobile, md:flex) */}
-              <div className="hidden md:flex items-center gap-8 text-sm">
-                <a href="#features" className="text-slate-200 hover:text-cyan-400 transition-colors">Módulos</a>
-                <a href="#pricing" className="text-slate-200 hover:text-cyan-400 transition-colors">Planes</a>
-                <a href="#faq" className="text-slate-200 hover:text-cyan-400 transition-colors">FAQ</a>
-                <a href="#empresa" className="text-slate-200 hover:text-cyan-400 transition-colors">Empresa & Redes</a>
-                <a href="#contacto" className="text-slate-200 hover:text-cyan-400 transition-colors">Contacto</a>
+              {/* Center Navigation Menu */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+                <a href="#features" style={{ color: '#E2E8F0', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.2s' }}>Módulos</a>
+                <a href="#pricing" style={{ color: '#E2E8F0', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.2s' }}>Planes</a>
+                <a href="#faq" style={{ color: '#E2E8F0', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.2s' }}>FAQ</a>
+                <a href="#empresa" style={{ color: '#E2E8F0', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.2s' }}>Empresa & Redes</a>
+                <a href="#contacto" style={{ color: '#E2E8F0', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.2s' }}>Contacto</a>
               </div>
 
-              {/* Right Button */}
-              <Link
-                href="/login"
-                className="bg-white text-black hover:bg-gray-100 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
+              {/* Right CTA Button */}
+              <Link href="/login" className="glossy-pill-btn" style={{ backgroundColor: '#FFFFFF', color: '#000000', padding: '0.55rem 1.35rem', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none', transition: 'all 0.2s' }}>
                 Iniciar Sesión
               </Link>
             </div>
           </header>
 
           {/* Center Block */}
-          <main className="px-6 md:px-12 lg:px-16 flex flex-col items-center justify-center text-center my-auto py-12">
-            <div className="w-full max-w-4xl flex flex-col items-center">
+          <main style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '4rem 1rem', maxWidth: '900px', margin: '0 auto' }}>
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               
               {/* Status Badge */}
               <FadeIn delay={100} duration={800}>
-                <div className="liquid-glass border border-cyan-500/30 text-cyan-400 rounded-full px-4 py-1.5 text-xs md:text-sm font-medium mb-6 inline-flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <div className="liquid-glass" style={{ border: '1px solid rgba(0, 229, 255, 0.3)', color: '#00E5FF', borderRadius: '9999px', padding: '0.5rem 1.25rem', fontSize: '0.85rem', fontWeight: 600, marginBottom: '1.75rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#00E5FF', boxShadow: '0 0 10px #00E5FF', display: 'inline-block' }}></span>
                   WhatsApp Cloud API + Auto-Corte MikroTik + Agente IA
                 </div>
               </FadeIn>
@@ -259,32 +246,25 @@ export default function LandingPage() {
               {/* Animated Heading */}
               <AnimatedHeading
                 text={"Gestión Integral para ISP\ncon Inteligencia Artificial."}
-                className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal mb-4 text-white"
-                style={{ letterSpacing: '-0.04em' }}
+                style={{ fontSize: 'clamp(2.5rem, 5.5vw, 4.25rem)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.04em', color: '#FFFFFF', marginBottom: '1.5rem' }}
                 delay={200}
                 charDelay={30}
               />
 
               {/* Subheading */}
               <FadeIn delay={800} duration={1000}>
-                <p className="text-base md:text-lg text-gray-300 mb-6 max-w-2xl">
+                <p style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: '#CBD5E1', maxWidth: '650px', lineHeight: 1.6, marginBottom: '2.25rem' }}>
                   Automatiza cobranzas por WhatsApp Cloud API, auto-corte en MikroTik, tickets de soporte y atención 24/7 con Agente de IA.
                 </p>
               </FadeIn>
 
               {/* CTA Buttons */}
               <FadeIn delay={1200} duration={1000}>
-                <div className="flex flex-wrap gap-4 justify-center">
-                  <Link
-                    href="/register"
-                    className="bg-white text-black px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors"
-                  >
+                <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+                  <Link href="/register" className="glossy-blue-btn" style={{ padding: '0.9rem 2.25rem', fontSize: '0.95rem', borderRadius: '12px', textDecoration: 'none' }}>
                     Probar Gratis Ahora
                   </Link>
-                  <a
-                    href="#features"
-                    className="liquid-glass border border-white/20 text-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-black transition-colors"
-                  >
+                  <a href="#features" className="liquid-glass" style={{ border: '1px solid rgba(255, 255, 255, 0.2)', color: '#FFFFFF', padding: '0.9rem 2.25rem', borderRadius: '12px', fontWeight: 600, fontSize: '0.95rem', textDecoration: 'none', transition: 'all 0.2s' }}>
                     Explorar Módulos
                   </a>
                 </div>
@@ -294,10 +274,10 @@ export default function LandingPage() {
           </main>
 
           {/* Bottom Liquid Glass Tagline Pill */}
-          <footer className="w-full px-6 md:px-12 lg:px-16 pb-12 lg:pb-16 flex justify-center">
+          <footer style={{ width: '100%', padding: '0 1rem 3.5rem', display: 'flex', justifyContent: 'center' }}>
             <FadeIn delay={1400} duration={1000}>
-              <div className="liquid-glass border border-white/20 px-6 py-3 rounded-xl">
-                <p className="text-lg md:text-xl lg:text-2xl font-light text-white">
+              <div className="liquid-glass" style={{ border: '1px solid rgba(255, 255, 255, 0.2)', padding: '0.75rem 2rem', borderRadius: '16px' }}>
+                <p style={{ fontSize: 'clamp(0.9rem, 2vw, 1.25rem)', fontWeight: 300, color: '#F1F5F9', margin: 0, textAlign: 'center' }}>
                   WhatsApp Cloud · MikroTik RouterOS · Agente de IA
                 </p>
               </div>
