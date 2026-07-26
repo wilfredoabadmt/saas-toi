@@ -143,6 +143,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     Canales & WhatsApp
                   </div>
                   <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                    <Link href="/agent" className={`nav-item ${isActive('/agent') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      <span>🤖</span> Agente de IA
+                    </Link>
                     <Link href="/chat" className={`nav-item ${isActive('/chat') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
                       <span>💬</span> Inbox Multi-Agente
                     </Link>

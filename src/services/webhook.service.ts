@@ -2,7 +2,7 @@ import { db } from '@/db/client';
 import { processedWebhookEvents } from '@/db/schema/processed-events';
 import { messageLogs } from '@/db/schema/message-logs';
 import { PaymentProofService } from './payment-proof.service';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 
 export interface MetaWebhookPayload {
   object: string;
@@ -143,10 +143,13 @@ export class WebhookService {
       text?: { body: string };
     }
   ) {
+    const formattedPhone = msgObj.from.startsWith('+') ? msgObj.from : `+${msgObj.from}`;
+
+    // 1. Process payment proofs if image/document
     if (msgObj.type === 'image' && msgObj.image) {
       await PaymentProofService.processIncomingProof({
         phoneNumberId,
-        senderPhone: `+${msgObj.from}`,
+        senderPhone: formattedPhone,
         wamid: msgObj.id,
         mediaId: msgObj.image.id,
         fileType: 'image',
@@ -155,45 +158,90 @@ export class WebhookService {
     } else if (msgObj.type === 'document' && msgObj.document) {
       await PaymentProofService.processIncomingProof({
         phoneNumberId,
-        senderPhone: `+${msgObj.from}`,
+        senderPhone: formattedPhone,
         wamid: msgObj.id,
         mediaId: msgObj.document.id,
         fileType: 'document',
         caption: msgObj.document.caption,
       });
-    } else if (msgObj.type === 'text' && msgObj.text?.body) {
-      const textBody = msgObj.text.body.toLowerCase();
-      if (textBody.includes('soporte') || textBody.includes('falla') || textBody.includes('averia')) {
-        // Auto-create ticket for subscriber
-        const { wabaConfigs } = await import('@/db/schema/waba-configs');
-        const { subscribers } = await import('@/db/schema/subscribers');
-        const { TicketService } = await import('./ticket.service');
-        const { eq, and } = await import('drizzle-orm');
-
-        const [config] = await db
-          .select()
-          .from(wabaConfigs)
-          .where(eq(wabaConfigs.phoneNumberId, phoneNumberId))
-          .limit(1);
-
-        if (config) {
-          const formattedPhone = msgObj.from.startsWith('+') ? msgObj.from : `+${msgObj.from}`;
-          const [sub] = await db
-            .select()
-            .from(subscribers)
-            .where(and(eq(subscribers.organizationId, config.organizationId), eq(subscribers.phone, formattedPhone)))
-            .limit(1);
-
-          if (sub) {
-            await TicketService.create(config.organizationId, {
-              subscriberId: sub.id,
-              category: textBody.includes('lentitud') ? 'slow_internet' : 'no_service',
-              description: msgObj.text.body,
-              priority: 'high',
-            });
-          }
-        }
-      }
     }
+
+    // 2. Fetch organization config from phoneNumberId
+    const { wabaConfigs } = await import('@/db/schema/waba-configs');
+    const { subscribers } = await import('@/db/schema/subscribers');
+    const { chatbotConversations, chatbotMessages } = await import('@/db/schema/chatbot');
+    const { maybeRunAgentTurn } = await import('@/server/ai/trigger');
+
+    const [config] = await db
+      .select()
+      .from(wabaConfigs)
+      .where(eq(wabaConfigs.phoneNumberId, phoneNumberId))
+      .limit(1);
+
+    if (!config) return;
+
+    const orgId = config.organizationId;
+
+    // 3. Find subscriber
+    const [sub] = await db
+      .select()
+      .from(subscribers)
+      .where(and(eq(subscribers.organizationId, orgId), eq(subscribers.phone, formattedPhone)))
+      .limit(1);
+
+    // 4. Find or create conversation
+    let [conv] = await db
+      .select()
+      .from(chatbotConversations)
+      .where(and(eq(chatbotConversations.organizationId, orgId), eq(chatbotConversations.phone, formattedPhone)))
+      .limit(1);
+
+    if (!conv) {
+      const [newConv] = await db
+        .insert(chatbotConversations)
+        .values({
+          organizationId: orgId,
+          subscriberId: sub?.id || null,
+          phone: formattedPhone,
+          status: 'active',
+          aiEnabled: true,
+          lastInboundAt: new Date(),
+        })
+        .returning();
+      conv = newConv;
+    } else {
+      await db
+        .update(chatbotConversations)
+        .set({
+          subscriberId: sub?.id || conv.subscriberId,
+          lastInboundAt: new Date(),
+        })
+        .where(eq(chatbotConversations.id, conv.id));
+    }
+
+    if (!conv) return;
+
+    // 5. Insert incoming message to chatbotMessages
+    const contentText =
+      msgObj.text?.body ||
+      msgObj.image?.caption ||
+      msgObj.document?.caption ||
+      '';
+
+    const mediaId = msgObj.image?.id || msgObj.document?.id || undefined;
+
+    await db.insert(chatbotMessages).values({
+      conversationId: conv.id,
+      role: 'user',
+      content: contentText,
+      metadata: {
+        wamid: msgObj.id,
+        type: msgObj.type,
+        mediaId,
+      },
+    });
+
+    // 6. Trigger Agent AI Turn
+    await maybeRunAgentTurn(conv.id);
   }
 }
