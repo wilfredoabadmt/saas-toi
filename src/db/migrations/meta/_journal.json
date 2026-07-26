@@ -43,6 +43,13 @@
       "when": 1784947586628,
       "tag": "0005_large_titania",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1784980000000,
+      "tag": "0006_agent_ai_isp",
+      "breakpoints": true
     }
   ]
 }

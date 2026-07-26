@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { getSessionContext } from '@/lib/auth';
 import { assertTenantScope } from '@/lib/tenant';
 import { handleApiError } from '@/lib/api-errors';
-import { db } from '@/db/client';
+import { db, ensureMigrationsRun } from '@/db/client';
 import { kbEntry } from '@/db/schema/chatbot';
 
 export const dynamic = 'force-dynamic';
@@ -17,6 +17,7 @@ const patchSchema = z.object({
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await ensureMigrationsRun();
     const { id } = await params;
     const session = await getSessionContext(request);
     const orgId = assertTenantScope(session.organizationId);
@@ -42,6 +43,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await ensureMigrationsRun();
     const { id } = await params;
     const session = await getSessionContext(request);
     const orgId = assertTenantScope(session.organizationId);

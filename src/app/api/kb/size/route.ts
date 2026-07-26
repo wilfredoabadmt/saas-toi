@@ -3,7 +3,7 @@ import { asc, eq } from 'drizzle-orm';
 import { getSessionContext } from '@/lib/auth';
 import { assertTenantScope } from '@/lib/tenant';
 import { handleApiError } from '@/lib/api-errors';
-import { db } from '@/db/client';
+import { db, ensureMigrationsRun } from '@/db/client';
 import { kbEntry } from '@/db/schema/chatbot';
 import { renderKb } from '@/server/ai/prompts';
 
@@ -13,6 +13,7 @@ const WARN_CHARS = 24_000;
 
 export async function GET(request: NextRequest) {
   try {
+    await ensureMigrationsRun();
     const session = await getSessionContext(request);
     const orgId = assertTenantScope(session.organizationId);
 

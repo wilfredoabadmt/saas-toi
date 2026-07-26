@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { getSessionContext } from '@/lib/auth';
 import { assertTenantScope } from '@/lib/tenant';
 import { handleApiError } from '@/lib/api-errors';
-import { db } from '@/db/client';
+import { db, ensureMigrationsRun } from '@/db/client';
 import { agentProfile } from '@/db/schema/chatbot';
 import { isAiConfigured } from '@/lib/ai';
 import { eq } from 'drizzle-orm';
@@ -17,6 +17,7 @@ function newId(prefix: string): string {
 
 export async function GET(request: NextRequest) {
   try {
+    await ensureMigrationsRun();
     const session = await getSessionContext(request);
     const orgId = assertTenantScope(session.organizationId);
 
@@ -90,6 +91,7 @@ const putSchema = z.object({
 
 export async function PUT(request: NextRequest) {
   try {
+    await ensureMigrationsRun();
     const session = await getSessionContext(request);
     const orgId = assertTenantScope(session.organizationId);
 

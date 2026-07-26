@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { getSessionContext } from '@/lib/auth';
 import { assertTenantScope } from '@/lib/tenant';
 import { handleApiError } from '@/lib/api-errors';
-import { db } from '@/db/client';
+import { db, ensureMigrationsRun } from '@/db/client';
 import { kbEntry } from '@/db/schema/chatbot';
 
 export const dynamic = 'force-dynamic';
@@ -16,6 +16,7 @@ function newId(prefix: string): string {
 
 export async function GET(request: NextRequest) {
   try {
+    await ensureMigrationsRun();
     const session = await getSessionContext(request);
     const orgId = assertTenantScope(session.organizationId);
 
@@ -45,6 +46,7 @@ const createSchema = z.discriminatedUnion('kind', [
 
 export async function POST(request: NextRequest) {
   try {
+    await ensureMigrationsRun();
     const session = await getSessionContext(request);
     const orgId = assertTenantScope(session.organizationId);
 
