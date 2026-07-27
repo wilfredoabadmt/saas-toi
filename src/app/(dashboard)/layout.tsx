@@ -72,26 +72,33 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   };
 
+  const navItems = [
+    { name: 'Abonados', href: '/subscribers', icon: '📋' },
+    { name: 'Importar CSV', href: '/subscribers/import', icon: '📥' },
+    { name: 'Planes', href: '/settings/plans', icon: '📶' },
+    { name: 'Tickets', href: '/tickets', icon: '🎫' },
+    { name: 'Routers', href: '/settings/routers', icon: '⚙️' },
+    { name: 'Equipo', href: '/settings/team', icon: '👥' },
+    { name: 'Suscripción', href: '/settings/billing', icon: '💳' },
+    ...(user?.role === 'super_admin' ? [{ name: 'Tenants', href: '/super-admin/tenants', icon: '👑' }] : []),
+    { name: 'Agente IA', href: '/agent', icon: '🤖' },
+    { name: 'Inbox', href: '/chat', icon: '💬' },
+    { name: 'WhatsApp', href: '/whatsapp', icon: '⚙️' },
+    { name: 'Avisos', href: '/messaging', icon: '📣' },
+  ];
+
+  const filteredNav = navItems;
+
   return (
     <ThemeProvider>
       <ToastProvider>
         <div className="dashboard-layout">
-          {/* Mobile Hamburger Toggle */}
-          <button
-            className="sidebar-toggle"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            aria-label="Toggle sidebar"
-          >
-            ☰
-          </button>
-
           {/* Mobile Overlay */}
           <div
             className={`sidebar-overlay ${sidebarOpen ? 'open' : ''}`}
             onClick={() => setSidebarOpen(false)}
           />
 
-          {/* Single Floating Container Panel Sidebar (rounded-3xl) */}
           <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
             <div>
               {/* User Avatar + Admin Name + Brand Logo Side-by-Side */}
@@ -128,127 +135,92 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     />
                   </div>
 
-                  <span style={{ fontSize: '0.72rem', color: '#818CF8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  <div style={{ marginTop: '0.2rem', fontSize: '0.72rem', color: '#818CF8', fontWeight: 700, textTransform: 'uppercase' }}>
                     {loadingUser ? '...' : getRoleBadge(user?.role)}
-                  </span>
-                </div>
-              </div>
-
-              {/* Quick Search */}
-              <div style={{ marginBottom: '1.5rem' }}>
-                <div
-                  className="glass-input-auto"
-                  style={{
-                    borderRadius: '9999px',
-                    padding: '0.55rem 0.85rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                  }}
-                >
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>🔍</span>
-                  <input
-                    type="text"
-                    placeholder="Buscar abonado, ID..."
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      boxShadow: 'none',
-                      color: 'var(--text-main)',
-                      fontSize: '0.82rem',
-                      outline: 'none',
-                      width: '100%',
-                      padding: 0,
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Navigation Sections */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div>
-                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
-                    Gestión de Cartera
                   </div>
-                  <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                    <Link href="/subscribers" className={`nav-item ${isActive('/subscribers') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>📋</span> Abonados
-                    </Link>
-                    <Link href="/subscribers/import" className={`nav-item ${isActive('/subscribers/import') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>📥</span> Importar CSV
-                    </Link>
-                    <Link href="/settings/plans" className={`nav-item ${isActive('/settings/plans') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>📶</span> Planes de Internet
-                    </Link>
-                    <Link href="/tickets" className={`nav-item ${isActive('/tickets') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>🎫</span> Tickets & Averías
-                    </Link>
-                    <Link href="/settings/routers" className={`nav-item ${isActive('/settings/routers') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>⚙️</span> Routers MikroTik
-                    </Link>
-                    <Link href="/settings/team" className={`nav-item ${isActive('/settings/team') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>👥</span> Equipo & RBAC
-                    </Link>
-                    <Link href="/settings/billing" className={`nav-item ${isActive('/settings/billing') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>💳</span> Suscripción SaaS
-                    </Link>
-                    {user?.role === 'super_admin' && (
-                      <Link href="/super-admin/tenants" className={`nav-item ${isActive('/super-admin/tenants') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                        <span>👑</span> Super Admin Tenants
-                      </Link>
-                    )}
-                  </nav>
                 </div>
+              </div>
 
-                <div>
-                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
+              {/* Search input in sidebar */}
+              <div style={{ marginBottom: '1.5rem', position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder="Buscar abonado, IP..."
+                  className="glass-input-dark"
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem 0.75rem 0.5rem 2.2rem',
+                    fontSize: '0.8rem',
+                    borderRadius: '10px',
+                  }}
+                />
+                <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  🔍
+                </span>
+              </div>
+
+              {/* Navigation Section: CARTERA DE CLIENTES */}
+              <div style={{ marginBottom: '1.25rem' }}>
+                <div style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.6rem', paddingLeft: '0.5rem' }}>
+                  Gestión de Cartera
+                </div>
+                <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  {filteredNav.slice(0, 7).map((item) => {
+                    const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setSidebarOpen(false)}
+                        className={`sidebar-nav-item ${isActive ? 'active' : ''}`}
+                      >
+                        <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
+
+              {/* Navigation Section: CANALES & AUTOMATIZACIÓN */}
+              {filteredNav.length > 7 && (
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <div style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.6rem', paddingLeft: '0.5rem' }}>
                     Canales & WhatsApp
                   </div>
-                  <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                    <Link href="/agent" className={`nav-item ${isActive('/agent') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>🤖</span> Agente de IA
-                    </Link>
-                    <Link href="/chat" className={`nav-item ${isActive('/chat') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>💬</span> Inbox Multi-Agente
-                    </Link>
-                    <Link href="/whatsapp" className={`nav-item ${isActive('/whatsapp') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>⚙️</span> Conexión WABA
-                    </Link>
-                    <Link href="/messaging" className={`nav-item ${isActive('/messaging') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>📣</span> Recordatorios
-                    </Link>
+                  <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    {filteredNav.slice(7).map((item) => {
+                      const isActive = pathname === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setSidebarOpen(false)}
+                          className={`sidebar-nav-item ${isActive ? 'active' : ''}`}
+                        >
+                          <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>
+                          <span>{item.name}</span>
+                        </Link>
+                      );
+                    })}
                   </nav>
                 </div>
-              </div>
+              )}
             </div>
 
-            {/* Sidebar Footer User Info & Logout Button */}
-            <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <div
-                className="glass-auto"
-                style={{
-                  borderRadius: '16px',
-                  padding: '0.75rem 1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <div style={{ overflow: 'hidden' }}>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                    {loadingUser ? 'Cargando ISP...' : user?.organizationName || 'Mi Organización ISP'}
+            {/* Bottom Section: Active Tenant Organization Info */}
+            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem', marginTop: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem', padding: '0 0.25rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--text-main)' }}>
+                    {loadingUser ? 'Cargando...' : user?.organizationName || 'Empresa ISP'}
                   </div>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                     {user?.role === 'super_admin' ? 'Super Admin SaaS' : 'Organización Activa'}
                   </div>
                 </div>
-
-                <Link href="/onboarding" style={{ color: 'var(--primary-accent)', fontSize: '1.1rem', textDecoration: 'none' }} title="Asistente de Inicio">
-                  ⚙️
-                </Link>
               </div>
 
-              {/* Botón de Cerrar Sesión en Sidebar */}
               <button
                 onClick={handleLogout}
                 disabled={loggingOut}
@@ -268,14 +240,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                 }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.18)';
-                  e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.4)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.08)';
-                  e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.25)';
-                }}
               >
                 <span>🚪</span>
                 <span>{loggingOut ? 'Cerrando sesión...' : 'Cerrar sesión'}</span>
@@ -287,19 +251,40 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="dashboard-main">
             {/* Top Header Bar */}
             <header className="dashboard-header">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>ISP Workspace</span>
-                <span style={{ color: 'var(--border-color)' }}>/</span>
-                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-main)' }}>
-                  {loadingUser ? 'Dashboard Insights' : `${user?.organizationName || 'Dashboard'}`}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden', minWidth: 0 }}>
+                {/* Mobile Drawer Hamburger Button */}
+                <button
+                  className="sidebar-toggle touch-target"
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                  aria-label="Abrir Menú"
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    color: 'var(--text-main)',
+                    borderRadius: '10px',
+                    padding: '0.35rem 0.5rem',
+                    cursor: 'pointer',
+                    fontSize: '1.1rem',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  ☰
+                </button>
+
+                <span className="hide-on-mobile" style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>ISP Workspace</span>
+                <span className="hide-on-mobile" style={{ color: 'var(--border-color)' }}>/</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '140px' }}>
+                  {loadingUser ? 'Dashboard' : `${user?.organizationName || 'Dashboard'}`}
                 </span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
                 <ThemeToggle />
-                <div className="glass-badge glass-badge-success" style={{ padding: '0.35rem 0.85rem', fontWeight: 600, fontSize: '0.8rem' }}>
+                <div className="glass-badge glass-badge-success hide-on-mobile" style={{ padding: '0.35rem 0.75rem', fontWeight: 600, fontSize: '0.78rem' }}>
                   <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'currentColor', display: 'inline-block' }}></span>
-                  <span className="header-breadcrumb-extra">Database</span> Connected
+                  Connected
                 </div>
 
                 {/* Direct Logout Button in Top Header */}
@@ -310,8 +295,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.4rem',
-                    padding: '0.35rem 0.75rem',
+                    gap: '0.3rem',
+                    padding: '0.35rem 0.65rem',
                     borderRadius: '9999px',
                     border: '1px solid rgba(239, 68, 68, 0.3)',
                     backgroundColor: 'rgba(239, 68, 68, 0.1)',
@@ -320,12 +305,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     fontWeight: 600,
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
                   }}
                 >
                   <span>🚪</span>

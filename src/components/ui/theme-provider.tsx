@@ -72,7 +72,7 @@ export function ThemeToggle() {
       title={`Cambiar a modo ${theme === 'dark' ? 'claro' : 'oscuro'}`}
     >
       <span>{theme === 'dark' ? '☀️' : '🌙'}</span>
-      <span>{theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}</span>
+      <span className="hide-on-mobile">{theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}</span>
     </button>
   );
 }

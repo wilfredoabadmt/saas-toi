@@ -166,84 +166,147 @@ export default function SuperAdminTenantsPage() {
           </p>
         </div>
 
-        <div className="badge badge-info" style={{ maxWidth: '340px', lineHeight: 1.4, padding: '0.66rem 1rem' }}>
+        <div className="badge badge-info" style={{ width: '100%', maxWidth: '380px', lineHeight: 1.4, padding: '0.66rem 1rem', boxSizing: 'border-box', wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
           🔒 Los Super Usuarios se crean por CLI (<code>scripts/create-super-admin.ts</code>).
         </div>
       </div>
 
-      {/* Tenants Table */}
-      <div className="glass-card" style={{ padding: '1.5rem' }}>
+      {/* Tenants Table & Cards */}
+      <div className="glass-card" style={{ padding: '1.25rem' }}>
         {loading ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>Cargando tenants del SaaS...</div>
         ) : tenants.length === 0 ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>No hay organizaciones registradas aún.</div>
         ) : (
-          <div className="table-responsive">
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600 }}>
-                  <th style={{ padding: '12px 16px' }}>Organización / ISP</th>
-                  <th style={{ padding: '12px 16px' }}>Administrador Principal</th>
-                  <th style={{ padding: '12px 16px' }}>Abonados Activos</th>
-                  <th style={{ padding: '12px 16px' }}>Plan Actual</th>
-                  <th style={{ padding: '12px 16px' }}>Estado & Vencimiento</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'right' }}>Acciones Super Admin</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tenants.map((t) => (
-                  <tr key={t.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                    <td style={{ padding: '14px 16px' }}>
-                      <div style={{ fontWeight: 800, color: 'var(--text-main)', fontSize: '0.95rem' }}>{t.name}</div>
-                      <div style={{ fontSize: '0.78rem', color: 'var(--primary-accent)' }}><code>{t.slug}</code> • Divisa: {t.currency}</div>
-                    </td>
-                    <td style={{ padding: '14px 16px' }}>
-                      <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{t.adminName}</div>
-                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{t.adminEmail}</div>
-                    </td>
-                    <td style={{ padding: '14px 16px' }}>
-                      <div style={{ fontWeight: 800, color: 'var(--text-main)' }}>{t.currentSubscribers} / {t.maxSubscribers}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>abonados en red</div>
-                    </td>
-                    <td style={{ padding: '14px 16px' }}>
-                      <span className="badge badge-info">{t.planName}</span>
-                    </td>
-                    <td style={{ padding: '14px 16px' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        {getStatusBadge(t.status, t.daysRemaining)}
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                          {t.expiresAt ? `Fin: ${new Date(t.expiresAt).toLocaleDateString()}` : 'Sin expiración'}
-                        </div>
-                      </div>
-                    </td>
-                    <td style={{ padding: '14px 16px', textAlign: 'right' }}>
-                      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-                        <button
-                          className="btn-primary"
-                          style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem' }}
-                          onClick={() => openManageModal(t)}
-                        >
-                          ⚙️ Gestionar
-                        </button>
-                        <button
-                          className="neu-btn"
-                          style={{
-                            backgroundColor: t.status === 'active' ? 'var(--status-danger-bg)' : 'var(--status-success-bg)',
-                            color: t.status === 'active' ? 'var(--status-danger-text)' : 'var(--status-success-text)',
-                            padding: '0.4rem 0.75rem',
-                            fontSize: '0.8rem',
-                          }}
-                          onClick={() => handleQuickStatusToggle(t)}
-                        >
-                          {t.status === 'active' ? 'Suspender' : 'Activar'}
-                        </button>
-                      </div>
-                    </td>
+          <>
+            {/* Desktop View (≥ 768px) */}
+            <div className="table-responsive hide-on-mobile">
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600 }}>
+                    <th style={{ padding: '12px 16px' }}>Organización / ISP</th>
+                    <th style={{ padding: '12px 16px' }}>Administrador Principal</th>
+                    <th style={{ padding: '12px 16px' }}>Abonados Activos</th>
+                    <th style={{ padding: '12px 16px' }}>Plan Actual</th>
+                    <th style={{ padding: '12px 16px' }}>Estado & Vencimiento</th>
+                    <th style={{ padding: '12px 16px', textAlign: 'right' }}>Acciones Super Admin</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {tenants.map((t) => (
+                    <tr key={t.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ fontWeight: 800, color: 'var(--text-main)', fontSize: '0.95rem' }}>{t.name}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--primary-accent)' }}><code>{t.slug}</code> • Divisa: {t.currency}</div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{t.adminName}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{t.adminEmail}</div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ fontWeight: 800, color: 'var(--text-main)' }}>{t.currentSubscribers} / {t.maxSubscribers}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>abonados en red</div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <span className="badge badge-info">{t.planName}</span>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          {getStatusBadge(t.status, t.daysRemaining)}
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                            {t.expiresAt ? `Fin: ${new Date(t.expiresAt).toLocaleDateString()}` : 'Sin expiración'}
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                          <button
+                            className="btn-primary"
+                            style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem' }}
+                            onClick={() => openManageModal(t)}
+                          >
+                            ⚙️ Gestionar
+                          </button>
+                          <button
+                            className="neu-btn"
+                            style={{
+                              backgroundColor: t.status === 'active' ? 'var(--status-danger-bg)' : 'var(--status-success-bg)',
+                              color: t.status === 'active' ? 'var(--status-danger-text)' : 'var(--status-success-text)',
+                              padding: '0.4rem 0.75rem',
+                              fontSize: '0.8rem',
+                            }}
+                            onClick={() => handleQuickStatusToggle(t)}
+                          >
+                            {t.status === 'active' ? 'Suspender' : 'Activar'}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Cards View (< 768px) */}
+            <div className="show-on-mobile-only" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              {tenants.map((t) => (
+                <div
+                  key={t.id}
+                  className="glass-card-dark"
+                  style={{
+                    padding: '1rem',
+                    borderRadius: '16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.75rem',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem' }}>
+                    <div>
+                      <div style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--text-main)' }}>{t.name}</div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--primary-accent)' }}><code>{t.slug}</code> • Divisa: {t.currency}</div>
+                    </div>
+                    <span className="badge badge-info">{t.planName}</span>
+                  </div>
+
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', backgroundColor: 'rgba(0,0,0,0.2)', padding: '0.6rem 0.75rem', borderRadius: '10px' }}>
+                    <div>👤 Admin: <strong style={{ color: 'var(--text-main)' }}>{t.adminName}</strong> ({t.adminEmail})</div>
+                    <div style={{ marginTop: '4px' }}>📊 Consumo: <strong style={{ color: 'var(--text-main)' }}>{t.currentSubscribers} / {t.maxSubscribers} abonados</strong></div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>{getStatusBadge(t.status, t.daysRemaining)}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                      {t.expiresAt ? `Fin: ${new Date(t.expiresAt).toLocaleDateString()}` : 'Sin expiración'}
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginTop: '0.25rem' }}>
+                    <button
+                      className="btn-primary"
+                      style={{ minHeight: '44px', justifyContent: 'center', fontSize: '0.82rem' }}
+                      onClick={() => openManageModal(t)}
+                    >
+                      ⚙️ Gestionar
+                    </button>
+                    <button
+                      className="neu-btn"
+                      style={{
+                        minHeight: '44px',
+                        justifyContent: 'center',
+                        backgroundColor: t.status === 'active' ? 'var(--status-danger-bg)' : 'var(--status-success-bg)',
+                        color: t.status === 'active' ? 'var(--status-danger-text)' : 'var(--status-success-text)',
+                        fontSize: '0.82rem',
+                      }}
+                      onClick={() => handleQuickStatusToggle(t)}
+                    >
+                      {t.status === 'active' ? 'Suspender' : 'Activar'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 
