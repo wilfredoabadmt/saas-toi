@@ -20,46 +20,63 @@ export function hashPassword(plain: string): string {
 }
 
 /**
- * Verifies a plain text password against a stored hash (scrypt or legacy SHA-256).
- * Uses crypto.timingSafeEqual for timing-attack resistance.
+ * Verifies a plain text password against a stored hash (scrypt, bcrypt, or legacy SHA-256).
+ * Uses crypto.timingSafeEqual for timing-attack resistance and handles exceptions safely.
  */
 export function verifyPassword(plain: string, stored: string): boolean {
   if (!stored || !plain) return false;
 
-  // New scrypt format
-  if (stored.startsWith('scrypt$')) {
-    const parts = stored.split('$');
-    if (parts.length !== 6) return false;
+  try {
+    // 1. New scrypt format
+    if (stored.startsWith('scrypt$')) {
+      const parts = stored.split('$');
+      if (parts.length !== 6) return false;
 
-    const [, nStr, rStr, pStr, saltB64, hashB64] = parts;
-    if (!nStr || !rStr || !pStr || !saltB64 || !hashB64) return false;
+      const [, nStr, rStr, pStr, saltB64, hashB64] = parts;
+      if (!nStr || !rStr || !pStr || !saltB64 || !hashB64) return false;
 
-    const n = parseInt(nStr, 10);
-    const r = parseInt(rStr, 10);
-    const p = parseInt(pStr, 10);
+      const n = parseInt(nStr, 10);
+      const r = parseInt(rStr, 10);
+      const p = parseInt(pStr, 10);
 
-    if (isNaN(n) || isNaN(r) || isNaN(p)) return false;
+      if (isNaN(n) || isNaN(r) || isNaN(p)) return false;
 
-    const salt = Buffer.from(saltB64, 'base64');
-    const expectedHash = Buffer.from(hashB64, 'base64');
+      const salt = Buffer.from(saltB64, 'base64');
+      const expectedHash = Buffer.from(hashB64, 'base64');
 
-    const actualHash = crypto.scryptSync(plain, salt, expectedHash.length, {
-      N: n,
-      r,
-      p,
-    });
+      const actualHash = crypto.scryptSync(plain, salt, expectedHash.length, {
+        N: n,
+        r,
+        p,
+      });
 
-    if (expectedHash.length !== actualHash.length) return false;
-    return crypto.timingSafeEqual(expectedHash, actualHash);
+      if (expectedHash.length !== actualHash.length) return false;
+      return crypto.timingSafeEqual(expectedHash, actualHash);
+    }
+
+    // 2. Bcrypt format ($2a$, $2b$, $2y$)
+    if (stored.startsWith('$2a$') || stored.startsWith('$2b$') || stored.startsWith('$2y$')) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const bcrypt = require('bcryptjs');
+        return bcrypt.compareSync(plain, stored);
+      } catch {
+        console.warn('[AUTH WARNING] Bcrypt hash format detected but bcryptjs package is not installed.');
+        return false;
+      }
+    }
+
+    // 3. Legacy SHA-256 fallback (hex comparison)
+    const legacyHash = crypto.createHash('sha256').update(plain).digest('hex');
+    const expectedBuf = Buffer.from(stored, 'utf8');
+    const actualBuf = Buffer.from(legacyHash, 'utf8');
+
+    if (expectedBuf.length !== actualBuf.length) return false;
+    return crypto.timingSafeEqual(expectedBuf, actualBuf);
+  } catch (err) {
+    console.error('[AUTH ERROR] Exception during password verification:', (err as Error).message);
+    return false;
   }
-
-  // Legacy SHA-256 fallback (hex comparison)
-  const legacyHash = crypto.createHash('sha256').update(plain).digest('hex');
-  const expectedBuf = Buffer.from(stored, 'utf8');
-  const actualBuf = Buffer.from(legacyHash, 'utf8');
-
-  if (expectedBuf.length !== actualBuf.length) return false;
-  return crypto.timingSafeEqual(expectedBuf, actualBuf);
 }
 
 /**

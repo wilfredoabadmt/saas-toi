@@ -5,11 +5,25 @@ import { handleApiError } from '@/lib/api-errors';
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    // 1. Validate SESSION_SECRET configuration
+    if (!process.env.SESSION_SECRET) {
+      console.warn('[AUTH ERROR] SESSION_SECRET is missing in environment variables.');
+    }
+
+    const body = await req.json().catch(() => null);
+    if (!body || !body.email || !body.password) {
+      return NextResponse.json(
+        { success: false, error: 'BAD_REQUEST', message: 'Se requiere correo electrónico y contraseña.' },
+        { status: 400 }
+      );
+    }
+
     const { email, password } = body;
 
+    // 2. Perform login authentication
     const result = await AuthService.login({ email, password });
 
+    // 3. Create authenticated session in DB and sign token
     const { cookieValue, expiresAt } = await createSession(
       result.user.id,
       result.user.organizationId,
@@ -25,7 +39,7 @@ export async function POST(req: Request) {
       redirectUrl: result.redirectUrl,
     });
 
-    // Set signed HTTP-Only session cookie
+    // 4. Set signed HTTP-Only session cookie
     response.cookies.set(SESSION_COOKIE_NAME, cookieValue, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -36,6 +50,7 @@ export async function POST(req: Request) {
 
     return response;
   } catch (err) {
+    console.error('[AUTH LOGIN ERROR]:', (err as Error).message);
     return handleApiError(err);
   }
 }
