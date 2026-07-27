@@ -24,9 +24,10 @@ export async function GET() {
         organizationStatus: session.organizationStatus,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Error al obtener la sesión.';
     return NextResponse.json(
-      { success: false, error: 'SERVER_ERROR', message: error.message || 'Error al obtener la sesión.' },
+      { success: false, error: 'SERVER_ERROR', message: errorMessage },
       { status: 500 }
     );
   }
