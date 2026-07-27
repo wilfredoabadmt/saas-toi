@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { ToastProvider } from '@/components/ui/toast-provider';
 import { ThemeProvider, ThemeToggle } from '@/components/ui/theme-provider';
 
@@ -22,7 +22,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [loadingUser, setLoadingUser] = useState(true);
   const [loggingOut, setLoggingOut] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   const isActive = (path: string) => pathname === path || pathname.startsWith(`${path}/`);
 
