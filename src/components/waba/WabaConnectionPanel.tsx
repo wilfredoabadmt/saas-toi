@@ -14,6 +14,7 @@ import { getWabaWorkspace, getWabaWebhookConfig } from '@/app/actions/waba.actio
 import { EmbeddedSignupButton } from './EmbeddedSignupButton';
 import { WabaConnectionActions } from './WabaConnectionActions';
 import { WabaManualConnectionCard } from './WabaManualConnectionCard';
+import { MetaChannelsPanel } from './MetaChannelsPanel';
 
 export async function WabaConnectionPanel() {
     const [workspace, webhookConfig] = await Promise.all([
@@ -71,6 +72,8 @@ export async function WabaConnectionPanel() {
                         <li>· El proceso se hace íntegro en la ventana de Meta; no salimos de aquí.</li>
                     </ul>
                 </Card>
+
+                <MetaChannelsPanel />
 
                 <WabaManualConnectionCard
                     callbackUrl={webhookConfig.callbackUrl}
@@ -177,16 +180,17 @@ export async function WabaConnectionPanel() {
                         ? new Date(connection.lastSyncedAt).toLocaleString('es-BO')
                         : 'nunca'}
                 </p>
-            </Card>
+                </Card>
 
-            {/* Formulario manual de credenciales & Webhook (idéntico a la captura de pantalla) */}
-            <WabaManualConnectionCard
-                initialWabaId={connection.wabaId}
-                initialPhoneNumberId={connection.phoneNumberId}
-                callbackUrl={webhookConfig.callbackUrl}
-                verifyToken={webhookConfig.verifyToken}
-                hasAppSecret={webhookConfig.hasAppSecret}
-            />
+                <MetaChannelsPanel />
+
+                <WabaManualConnectionCard
+                    initialWabaId={connection.wabaId}
+                    initialPhoneNumberId={connection.phoneNumberId}
+                    callbackUrl={webhookConfig.callbackUrl}
+                    verifyToken={webhookConfig.verifyToken}
+                    hasAppSecret={webhookConfig.hasAppSecret}
+                />
         </div>
     );
 }

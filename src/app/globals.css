@@ -246,6 +246,78 @@
   transform: none;
 }
 
+/* --- WhatsApp & Meta Glossy Buttons --- */
+.btn-whatsapp-glossy {
+  border-radius: 9999px !important;
+  background: linear-gradient(180deg, #25D366 0%, #128C7E 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+  color: #FFFFFF !important;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.75rem 1.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp-glossy:hover {
+  background: linear-gradient(180deg, #34e075 0%, #159a8b 100%) !important;
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.8) !important;
+  transform: translateY(-2px);
+}
+
+.btn-whatsapp-glossy:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3) !important;
+}
+
+.btn-whatsapp-glossy:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none !important;
+}
+
+.btn-meta-glossy {
+  border-radius: 9999px !important;
+  background: linear-gradient(180deg, #1877F2 0%, #0056b3 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 8px 25px rgba(24, 119, 242, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+  color: #FFFFFF !important;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.75rem 1.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-meta-glossy:hover {
+  background: linear-gradient(180deg, #2b87fd 0%, #1665c0 100%) !important;
+  box-shadow: 0 12px 30px rgba(24, 119, 242, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.8) !important;
+  transform: translateY(-2px);
+}
+
+.btn-meta-glossy:active {
+  transform: scale(0.98);
+}
+
+.btn-meta-glossy:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
 /* --- Glass Badge --- */
 .glass-badge {
   border-radius: 9999px !important;

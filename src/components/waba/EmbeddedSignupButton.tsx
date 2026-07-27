@@ -274,26 +274,15 @@ export function EmbeddedSignupButton({
                 type="button"
                 onClick={launch}
                 disabled={disabled}
+                className={className || 'btn-whatsapp-glossy'}
                 style={
                     className
                         ? undefined
                         : {
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '0.75rem',
-                              padding: '0.75rem 1.5rem',
-                              borderRadius: 'var(--radius-lg)',
-                              backgroundColor: '#16a34a',
-                              color: '#fff',
-                              fontSize: '0.88rem',
-                              fontWeight: 600,
-                              border: 'none',
                               cursor: disabled ? 'not-allowed' : 'pointer',
                               opacity: disabled ? 0.5 : 1,
-                              transition: 'background 0.2s',
                           }
                 }
-                className={className}
             >
                 {isLoading ? (
                     <>

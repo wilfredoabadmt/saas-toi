@@ -16,6 +16,7 @@ import { revalidatePath } from 'next/cache';
 
 import { assertWabaEnv, checkWabaEnv, MESSAGE_STATUS } from '@/lib/waba/column-map';
 import {
+  createTemplate,
   fetchPhoneProfile,
   fetchSubscribedApps,
   fetchTemplates,
@@ -590,4 +591,78 @@ export async function getWabaWebhookConfig() {
     hasAppSecret,
   };
 }
+
+export async function createTemplateAction(input: {
+  name: string;
+  category: 'UTILITY' | 'MARKETING' | 'AUTHENTICATION';
+  language: string;
+  bodyText: string;
+  exampleVariables?: string[];
+}): Promise<ActionResult<{ templateId: string; status: string }>> {
+  try {
+    assertWabaEnv();
+    const { organizationId } = await assertCanManageWaba();
+    const connection = await getActiveConnection(organizationId);
+
+    if (!connection) {
+      return { ok: false, error: 'No hay ningún número de WhatsApp conectado en este tenant.' };
+    }
+
+    const components: Array<Record<string, unknown>> = [
+      {
+        type: 'BODY',
+        text: input.bodyText,
+        ...(input.exampleVariables && input.exampleVariables.length > 0
+          ? {
+              example: {
+                body_text: [input.exampleVariables],
+              },
+            }
+          : {}),
+      },
+    ];
+
+    const result = await createTemplate(connection.wabaId, connection.accessToken, {
+      name: input.name.toLowerCase().replace(/[^a-z0-9_]/g, '_'),
+      category: input.category,
+      language: input.language,
+      components,
+    });
+
+    revalidatePath('/settings/whatsapp/console');
+    revalidatePath('/dashboard');
+
+    return {
+      ok: true,
+      templateId: result.id ?? 'created',
+      status: result.status ?? 'PENDING',
+    };
+  } catch (error) {
+    return toErrorResult(error, 'No se pudo crear la plantilla en Meta.');
+  }
+}
+
+export async function fetchLiveTemplatesAction(): Promise<
+  ActionResult<{ templates: WhatsAppTemplateSummary[] }>
+> {
+  try {
+    assertWabaEnv();
+    const { organizationId } = await assertCanManageWaba();
+    const connection = await getActiveConnection(organizationId);
+
+    if (!connection) {
+      return { ok: false, error: 'No hay ningún número de WhatsApp conectado.' };
+    }
+
+    const templates = await fetchTemplates(connection.wabaId, connection.accessToken);
+
+    return {
+      ok: true,
+      templates,
+    };
+  } catch (error) {
+    return toErrorResult(error, 'No se pudieron consultar las plantillas de Meta.');
+  }
+}
+
 
