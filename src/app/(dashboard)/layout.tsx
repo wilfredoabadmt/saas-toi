@@ -1,16 +1,77 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ToastProvider } from '@/components/ui/toast-provider';
 import { ThemeProvider, ThemeToggle } from '@/components/ui/theme-provider';
 
+interface UserSession {
+  userId: string;
+  userName: string;
+  userEmail: string;
+  role: string;
+  organizationId: string;
+  organizationName: string;
+  organizationStatus: string;
+}
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState<UserSession | null>(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (path: string) => pathname === path || pathname.startsWith(`${path}/`);
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.user) {
+          setUser(data.user);
+        }
+      })
+      .catch((err) => console.error('[LAYOUT AUTH ME ERROR]:', err))
+      .finally(() => setLoadingUser(false));
+  }, []);
+
+  const getInitials = (name?: string) => {
+    if (!name) return 'US';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2 && parts[0] && parts[1]) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  };
+
+  const getRoleBadge = (role?: string) => {
+    switch (role) {
+      case 'super_admin':
+        return '👑 Super Admin';
+      case 'admin':
+        return '👑 Admin ISP';
+      case 'tech':
+        return '🔧 Técnico';
+      case 'operator':
+        return '💬 Operador';
+      default:
+        return '👤 Usuario';
+    }
+  };
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (err) {
+      console.error('[LOGOUT ERROR]:', err);
+    } finally {
+      window.location.href = '/';
+    }
+  };
 
   return (
     <ThemeProvider>
@@ -52,13 +113,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     boxShadow: '0 4px 12px rgba(129, 140, 248, 0.3)',
                   }}
                 >
-                  RM
+                  {loadingUser ? '...' : getInitials(user?.userName)}
                 </div>
 
                 <div style={{ overflow: 'hidden', flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
                     <h2 style={{ fontSize: '0.92rem', fontWeight: 800, margin: 0, color: 'var(--text-main)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                      Roberto Morales
+                      {loadingUser ? 'Cargando...' : user?.userName || 'Usuario'}
                     </h2>
                     <img
                       src="/logotoi.webp"
@@ -69,7 +130,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   </div>
 
                   <span style={{ fontSize: '0.72rem', color: '#818CF8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                    👑 Admin ISP
+                    {loadingUser ? '...' : getRoleBadge(user?.role)}
                   </span>
                 </div>
               </div>
@@ -132,9 +193,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <Link href="/settings/billing" className={`nav-item ${isActive('/settings/billing') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
                       <span>💳</span> Suscripción SaaS
                     </Link>
-                    <Link href="/super-admin/tenants" className={`nav-item ${isActive('/super-admin/tenants') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
-                      <span>👑</span> Super Admin Tenants
-                    </Link>
+                    {user?.role === 'super_admin' && (
+                      <Link href="/super-admin/tenants" className={`nav-item ${isActive('/super-admin/tenants') ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                        <span>👑</span> Super Admin Tenants
+                      </Link>
+                    )}
                   </nav>
                 </div>
 
@@ -160,28 +223,64 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </div>
             </div>
 
-            {/* Sidebar Footer User Info */}
-            <div
-              className="glass-auto"
-              style={{
-                borderRadius: '16px',
-                padding: '0.75rem 1rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginTop: '1.5rem',
-              }}
-            >
-              <div style={{ overflow: 'hidden' }}>
-                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                  FiberSpeed ISP
+            {/* Sidebar Footer User Info & Logout Button */}
+            <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div
+                className="glass-auto"
+                style={{
+                  borderRadius: '16px',
+                  padding: '0.75rem 1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div style={{ overflow: 'hidden' }}>
+                  <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                    {loadingUser ? 'Cargando ISP...' : user?.organizationName || 'Mi Organización ISP'}
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                    {user?.role === 'super_admin' ? 'Super Admin SaaS' : 'Organización Activa'}
+                  </div>
                 </div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Plan Pro (1500)</div>
+
+                <Link href="/onboarding" style={{ color: 'var(--primary-accent)', fontSize: '1.1rem', textDecoration: 'none' }} title="Asistente de Inicio">
+                  ⚙️
+                </Link>
               </div>
 
-              <Link href="/onboarding" style={{ color: 'var(--primary-accent)', fontSize: '1.1rem', textDecoration: 'none' }} title="Asistente de Inicio">
-                ⚙️
-              </Link>
+              {/* Botón de Cerrar Sesión en Sidebar */}
+              <button
+                onClick={handleLogout}
+                disabled={loggingOut}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  padding: '0.65rem 1rem',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(239, 68, 68, 0.25)',
+                  backgroundColor: 'rgba(239, 68, 68, 0.08)',
+                  color: '#F87171',
+                  fontWeight: 700,
+                  fontSize: '0.82rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.18)';
+                  e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.08)';
+                  e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.25)';
+                }}
+              >
+                <span>🚪</span>
+                <span>{loggingOut ? 'Cerrando sesión...' : 'Cerrar sesión'}</span>
+              </button>
             </div>
           </aside>
 
@@ -192,7 +291,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>ISP Workspace</span>
                 <span style={{ color: 'var(--border-color)' }}>/</span>
-                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-main)' }}>Dashboard Insights</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-main)' }}>
+                  {loadingUser ? 'Dashboard Insights' : `${user?.organizationName || 'Dashboard'}`}
+                </span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -201,6 +302,36 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'currentColor', display: 'inline-block' }}></span>
                   <span className="header-breadcrumb-extra">Database</span> Connected
                 </div>
+
+                {/* Direct Logout Button in Top Header */}
+                <button
+                  onClick={handleLogout}
+                  disabled={loggingOut}
+                  title="Cerrar Sesión e Ir a la Landing Page"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    padding: '0.35rem 0.75rem',
+                    borderRadius: '9999px',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    color: '#F87171',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+                  }}
+                >
+                  <span>🚪</span>
+                  <span>{loggingOut ? 'Salir...' : 'Salir'}</span>
+                </button>
               </div>
             </header>
 
