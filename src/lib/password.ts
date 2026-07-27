@@ -1,4 +1,4 @@
-import crypto from 'node:crypto';
+import crypto from 'crypto';
 
 const COST_N = 16384;
 const BLOCK_SIZE_R = 8;

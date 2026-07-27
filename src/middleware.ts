@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { verifySessionToken, SESSION_COOKIE_NAME } from '@/lib/session';
+import { verifySessionToken, SESSION_COOKIE_NAME } from '@/lib/session-crypto';
 
 // Public pages that do not require authentication
 const PUBLIC_PAGES = [

@@ -1,7 +1,5 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { Pool } from 'pg';
-import path from 'path';
 import * as schema from './schema';
 
 const connectionString = process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/saas_toi';
@@ -21,11 +19,11 @@ export async function ensureMigrationsRun() {
   if (!migrationPromise) {
     migrationPromise = (async () => {
       try {
+        const path = await import('path');
+        const { migrate } = await import('drizzle-orm/node-postgres/migrator');
         const migrationsFolder = path.join(process.cwd(), 'src/db/migrations');
         await migrate(db, { migrationsFolder });
-        
-        // Dynamically import and run default seeding to ensure 
-        // the default organization (and other initial records) exists.
+
         const { seedDefaults } = await import('./seed');
         await seedDefaults(db);
       } catch (err) {
@@ -36,4 +34,3 @@ export async function ensureMigrationsRun() {
   }
   return migrationPromise;
 }
-
