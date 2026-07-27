@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ServicePlanService } from '@/services/service-plan.service';
 import { handleApiError } from '@/lib/api-errors';
+import { getSessionContext } from '@/lib/auth';
 
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
-
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const plans = await ServicePlanService.list(DEFAULT_ORG_ID);
+    const { organizationId } = await getSessionContext(req);
+    const plans = await ServicePlanService.list(organizationId);
     return NextResponse.json({ success: true, data: plans });
   } catch (error) {
     return handleApiError(error);
@@ -15,6 +15,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const { organizationId } = await getSessionContext(req);
     const body = await req.json();
     const { name, price, speedDown, speedUp } = body;
 
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'BAD_REQUEST', message: 'Nombre y precio son requeridos' }, { status: 400 });
     }
 
-    const created = await ServicePlanService.create(DEFAULT_ORG_ID, {
+    const created = await ServicePlanService.create(organizationId, {
       name,
       price: String(price),
       speedDown,

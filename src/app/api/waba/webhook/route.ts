@@ -14,7 +14,7 @@
  * webhooks lentos o que devuelven error de forma repetida.
  */
 
-import crypto from 'node:crypto';
+import crypto from 'crypto';
 
 import { NextRequest, NextResponse } from 'next/server';
 

@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { WorkflowService } from '@/services/workflow.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 /**
  * GET /api/workflows/[id]
  * Gets a workflow with its steps.
  */
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const { id } = await params;
-    const result = await WorkflowService.getWorkflow(DEFAULT_ORG_ID, id);
+    const result = await WorkflowService.getWorkflow(organizationId, id);
     return NextResponse.json({ success: true, data: result });
   } catch (err) {
     return handleApiError(err);
@@ -24,6 +24,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
  */
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const { id } = await params;
     const body = await request.json();
     const { status } = body;
@@ -32,7 +33,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       return NextResponse.json({ error: 'BAD_REQUEST', message: 'Estado es requerido' }, { status: 400 });
     }
 
-    const updated = await WorkflowService.updateWorkflowStatus(DEFAULT_ORG_ID, id, status);
+    const updated = await WorkflowService.updateWorkflowStatus(organizationId, id, status);
     return NextResponse.json({ success: true, data: updated });
   } catch (err) {
     return handleApiError(err);
@@ -43,10 +44,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
  * DELETE /api/workflows/[id]
  * Deletes a workflow.
  */
-export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const { id } = await params;
-    await WorkflowService.deleteWorkflow(DEFAULT_ORG_ID, id);
+    await WorkflowService.deleteWorkflow(organizationId, id);
     return NextResponse.json({ success: true });
   } catch (err) {
     return handleApiError(err);

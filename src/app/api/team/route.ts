@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { TeamService } from '@/services/team.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 /**
  * GET /api/team
  * Lists team members for current tenant.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const members = await TeamService.listMembers(DEFAULT_ORG_ID);
+    const { organizationId } = await getSessionContext(request);
+    const members = await TeamService.listMembers(organizationId);
     return NextResponse.json({ success: true, data: members });
   } catch (err) {
     return handleApiError(err);
@@ -23,6 +23,7 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const body = await request.json();
     const { email, name, role } = body;
 
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'BAD_REQUEST', message: 'Email, Nombre y Rol son requeridos' }, { status: 400 });
     }
 
-    const created = await TeamService.inviteMember(DEFAULT_ORG_ID, {
+    const created = await TeamService.inviteMember(organizationId, {
       email,
       name,
       role,

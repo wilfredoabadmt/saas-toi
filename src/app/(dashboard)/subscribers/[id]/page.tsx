@@ -3,6 +3,8 @@ import { SubscriberService } from '@/services/subscriber.service';
 import { PaymentProofService } from '@/services/payment-proof.service';
 import { PaymentProofViewer, PaymentProofItem } from '@/components/domain/payment-proof-viewer';
 
+import { requireSession } from '@/lib/auth';
+
 export const dynamic = 'force-dynamic';
 
 export default async function SubscriberDetailPage({
@@ -10,15 +12,15 @@ export default async function SubscriberDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const session = await requireSession();
   const { id } = await params;
-  const defaultOrgId = '00000000-0000-0000-0000-000000000001';
 
   let subscriber;
   let proofs: PaymentProofItem[] = [];
 
   try {
-    subscriber = await SubscriberService.getById(defaultOrgId, id);
-    proofs = (await PaymentProofService.listBySubscriber(defaultOrgId, id)) as unknown as PaymentProofItem[];
+    subscriber = await SubscriberService.getById(session.organizationId, id);
+    proofs = (await PaymentProofService.listBySubscriber(session.organizationId, id)) as unknown as PaymentProofItem[];
   } catch {
     return (
       <div className="glass-card" style={{ padding: '2rem', textAlign: 'center' }}>

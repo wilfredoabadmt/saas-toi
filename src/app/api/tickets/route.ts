@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { TicketService } from '@/services/ticket.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 /**
  * GET /api/tickets
@@ -10,13 +9,14 @@ const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
  */
 export async function GET(request: NextRequest) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const { searchParams } = new URL(request.url);
 
     const status = searchParams.get('status') || undefined;
     const priority = searchParams.get('priority') || undefined;
     const assignedTechnician = searchParams.get('assignedTechnician') || undefined;
 
-    const ticketList = await TicketService.list(DEFAULT_ORG_ID, {
+    const ticketList = await TicketService.list(organizationId, {
       status,
       priority,
       assignedTechnician,
@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const body = await request.json();
     const { subscriberId, category, priority, description, assignedTechnician, internalNotes } = body;
 
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'BAD_REQUEST', message: 'Abonado y descripción son requeridos' }, { status: 400 });
     }
 
-    const created = await TicketService.create(DEFAULT_ORG_ID, {
+    const created = await TicketService.create(organizationId, {
       subscriberId,
       category: category || 'no_service',
       priority: priority || 'medium',

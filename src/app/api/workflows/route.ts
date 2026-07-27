@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { WorkflowService } from '@/services/workflow.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 /**
  * GET /api/workflows
  * Lists workflows for current tenant.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const result = await WorkflowService.listWorkflows(DEFAULT_ORG_ID);
+    const { organizationId } = await getSessionContext(request);
+    const result = await WorkflowService.listWorkflows(organizationId);
     return NextResponse.json({ success: true, data: result });
   } catch (err) {
     return handleApiError(err);
@@ -23,6 +23,7 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const body = await request.json();
     const { name, description, triggerType, triggerConfig, steps } = body;
 
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     const created = await WorkflowService.createWorkflow({
-      organizationId: DEFAULT_ORG_ID,
+      organizationId,
       name,
       description,
       triggerType,

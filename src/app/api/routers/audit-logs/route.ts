@@ -1,16 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { RouterService } from '@/services/router.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 /**
  * GET /api/routers/audit-logs
  * Retrieves audit logs of network commands sent to MikroTik routers.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const logs = await RouterService.listAuditLogs(DEFAULT_ORG_ID);
+    const { organizationId } = await getSessionContext(request);
+    const logs = await RouterService.listAuditLogs(organizationId);
     return NextResponse.json({ success: true, data: logs });
   } catch (err) {
     return handleApiError(err);

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { TicketService } from '@/services/ticket.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 /**
  * PATCH /api/tickets/[id]
@@ -13,11 +12,12 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const { id } = await params;
     const body = await request.json();
     const { status, priority, assignedTechnician, internalNotes } = body;
 
-    const updated = await TicketService.update(DEFAULT_ORG_ID, id, {
+    const updated = await TicketService.update(organizationId, id, {
       status,
       priority,
       assignedTechnician,

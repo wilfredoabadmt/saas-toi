@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { RouterService } from '@/services/router.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 /**
  * POST /api/routers/[id]/test
@@ -13,8 +12,9 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const { id } = await params;
-    const result = await RouterService.testConnection(DEFAULT_ORG_ID, id);
+    const result = await RouterService.testConnection(organizationId, id);
     return NextResponse.json({ success: true, data: result });
   } catch (err) {
     return handleApiError(err);

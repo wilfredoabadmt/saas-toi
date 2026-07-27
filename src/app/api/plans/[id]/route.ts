@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ServicePlanService } from '@/services/service-plan.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { organizationId } = await getSessionContext(req);
     const { id } = await params;
-    const plan = await ServicePlanService.getById(DEFAULT_ORG_ID, id);
+    const plan = await ServicePlanService.getById(organizationId, id);
     return NextResponse.json({ success: true, data: plan });
   } catch (error) {
     return handleApiError(error);
@@ -22,10 +22,11 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { organizationId } = await getSessionContext(req);
     const { id } = await params;
     const body = await req.json();
 
-    const updated = await ServicePlanService.update(DEFAULT_ORG_ID, id, body);
+    const updated = await ServicePlanService.update(organizationId, id, body);
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     return handleApiError(error);
@@ -37,8 +38,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { organizationId } = await getSessionContext(req);
     const { id } = await params;
-    const deleted = await ServicePlanService.delete(DEFAULT_ORG_ID, id);
+    const deleted = await ServicePlanService.delete(organizationId, id);
     return NextResponse.json({ success: true, data: deleted });
   } catch (error) {
     return handleApiError(error);

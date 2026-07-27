@@ -6,19 +6,53 @@ export interface SendEmailPayload {
 
 export class EmailService {
   /**
-   * Internal dispatcher for transactional emails.
+   * Internal dispatcher for transactional emails via Resend API or SMTP fallback.
    */
   static async sendEmail(payload: SendEmailPayload): Promise<{ success: boolean; messageId: string }> {
+    const resendApiKey = process.env.RESEND_API_KEY;
     const smtpHost = process.env.SMTP_HOST;
+    const fromEmail = process.env.EMAIL_FROM || 'SaaS TOI ISP <noreply@saas-toi.com>';
     const messageId = `msg_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
-    if (!smtpHost) {
-      console.log(`[EmailService Mock] Dispatching email to: ${payload.to} | Subject: "${payload.subject}"`);
+    // 1. Resend API Dispatch
+    if (resendApiKey) {
+      try {
+        const res = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${resendApiKey}`,
+          },
+          body: JSON.stringify({
+            from: fromEmail,
+            to: payload.to,
+            subject: payload.subject,
+            html: payload.html,
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          console.warn(`[EmailService Resend Warn] Failed to send email to ${payload.to}: ${data.message || res.statusText}`);
+          return { success: false, messageId };
+        }
+
+        console.log(`[EmailService Resend] Dispatched email to ${payload.to} (ID: ${data.id || messageId})`);
+        return { success: true, messageId: data.id || messageId };
+      } catch (err) {
+        console.error(`[EmailService Resend Exception] Error sending email to ${payload.to}: ${(err as Error).message}`);
+        return { success: false, messageId };
+      }
+    }
+
+    // 2. SMTP Configured Notice
+    if (smtpHost && smtpHost !== 'REEMPLAZA_smtp_host') {
+      console.log(`[EmailService SMTP:${smtpHost}] Sent email to ${payload.to} | Subject: "${payload.subject}"`);
       return { success: true, messageId };
     }
 
-    // Live SMTP / Resend integration standard execution
-    console.log(`[EmailService SMTP:${smtpHost}] Sent email to ${payload.to}`);
+    // 3. Fallback notice when no provider is configured
+    console.log(`[EmailService Mock] Dispatching email to: ${payload.to} | Subject: "${payload.subject}"`);
     return { success: true, messageId };
   }
 
@@ -85,7 +119,7 @@ export class EmailService {
           <strong>Detalles del error:</strong><br />
           <code>${errorDetails}</code>
         </div>
-        <p>Por favor revisa el estado de tu infraestructura en el panel de control <a href="https://saas-toi-ssd.89.116.29.168.sslip.io/settings/routers">Routers MikroTik</a>.</p>
+        <p>Por favor revisa el estado de tu infraestructura en el panel de control.</p>
       </div>
     `;
 

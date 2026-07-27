@@ -12,7 +12,7 @@
  *   Data Deletion Request URL: https://<tu-dominio>/api/waba/deauthorize
  */
 
-import crypto from 'node:crypto';
+import crypto from 'crypto';
 
 import { NextRequest, NextResponse } from 'next/server';
 

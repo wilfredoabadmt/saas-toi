@@ -1,11 +1,12 @@
 import { MessageSendForm } from '@/components/domain/message-send-form';
 import { MessagingService } from '@/services/messaging.service';
+import { requireSession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export default async function MessagingPage() {
-  const defaultOrgId = '00000000-0000-0000-0000-000000000001';
-  const logs = await MessagingService.listLogs({ organizationId: defaultOrgId, limit: 30 });
+  const session = await requireSession();
+  const logs = await MessagingService.listLogs({ organizationId: session.organizationId, limit: 30 });
 
   return (
     <div>

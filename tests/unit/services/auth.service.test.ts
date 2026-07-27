@@ -1,19 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-const { mockOrg, mockAdminUser } = vi.hoisted(() => ({
+const { mockOrg } = vi.hoisted(() => ({
   mockOrg: {
     id: 'org_123',
     name: 'FiberSpeed ISP',
     slug: 'fiberspeed-isp-123',
-    createdAt: new Date(),
-  },
-  mockAdminUser: {
-    id: 'usr_admin',
-    organizationId: 'org_123',
-    email: 'admin@fiberspeed.com',
-    name: 'Roberto Morales',
-    role: 'admin',
-    passwordHash: 'mock_hash',
     createdAt: new Date(),
   },
 }));
@@ -29,7 +20,7 @@ vi.mock('@/db/client', () => {
           }),
         }),
       }),
-      insert: vi.fn().mockImplementation((table) => {
+      insert: vi.fn().mockImplementation(() => {
         return {
           values: vi.fn().mockReturnValue({
             returning: vi.fn().mockResolvedValue([mockOrg]),
@@ -47,10 +38,10 @@ describe('AuthService Unit Tests', () => {
     vi.clearAllMocks();
   });
 
-  it('hashPassword should generate deterministic SHA-256 hex string', () => {
+  it('hashPassword should generate scrypt formatted hash with salt', () => {
     const hash = AuthService.hashPassword('SecretPassword123');
     expect(hash).toBeDefined();
-    expect(hash.length).toBe(64);
+    expect(hash.startsWith('scrypt$')).toBe(true);
   });
 
   it('registerOrganization should create organization and admin user', async () => {

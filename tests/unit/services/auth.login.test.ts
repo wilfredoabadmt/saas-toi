@@ -7,6 +7,7 @@ const { mockUser, mockSuperAdmin } = vi.hoisted(() => ({
     email: 'admin@ispdemo.com',
     name: 'Admin ISP Demo',
     role: 'admin',
+    // SHA-256 legacy hash for 'admin'
     passwordHash: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',
     createdAt: new Date(),
   },
@@ -27,6 +28,7 @@ vi.mock('@/db/client', () => {
     db: {
       select: vi.fn().mockReturnValue({
         from: vi.fn().mockReturnValue({
+          limit: vi.fn().mockResolvedValue([{ id: 'org_123' }]),
           where: vi.fn().mockImplementation(() => ({
             limit: vi.fn().mockResolvedValue([mockUser]),
           })),
@@ -55,11 +57,12 @@ describe('AuthService Login & SuperAdmin Tests', () => {
     vi.clearAllMocks();
   });
 
-  it('should hash passwords consistently with SHA-256', () => {
+  it('should generate secure scrypt password hash with salt', () => {
     const hash1 = AuthService.hashPassword('SuperAdmin123!');
     const hash2 = AuthService.hashPassword('SuperAdmin123!');
-    expect(hash1).toBe(hash2);
-    expect(hash1.length).toBe(64);
+    expect(hash1.startsWith('scrypt$')).toBe(true);
+    expect(hash2.startsWith('scrypt$')).toBe(true);
+    expect(hash1).not.toBe(hash2);
   });
 
   it('should authenticate registered users with valid credentials', async () => {

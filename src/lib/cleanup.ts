@@ -1,6 +1,7 @@
 import { db } from '@/db/client';
 import { processedWebhookEvents } from '@/db/schema/processed-events';
-import { sql } from 'drizzle-orm';
+import { sessions } from '@/db/schema/sessions';
+import { sql, lt } from 'drizzle-orm';
 
 /**
  * Purges processed_webhook_events older than the specified retention period.
@@ -16,6 +17,19 @@ export async function purgeExpiredWebhookEvents(retentionDays = 7): Promise<numb
     .delete(processedWebhookEvents)
     .where(sql`${processedWebhookEvents.receivedAt} < ${cutoff}`)
     .returning({ id: processedWebhookEvents.id });
+
+  return result.length;
+}
+
+/**
+ * Purges sessions that have passed their expiresAt timestamp.
+ */
+export async function purgeExpiredSessions(): Promise<number> {
+  const now = new Date();
+  const result = await db
+    .delete(sessions)
+    .where(lt(sessions.expiresAt, now))
+    .returning({ id: sessions.id });
 
   return result.length;
 }

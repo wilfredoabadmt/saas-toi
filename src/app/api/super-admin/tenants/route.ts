@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SubscriptionService } from '@/services/subscription.service';
 import { handleApiError } from '@/lib/api-errors';
+import { requireSuperAdmin } from '@/lib/auth';
 
 /**
  * GET /api/super-admin/tenants
  * Lists all registered tenant organizations for Super Admin.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    await requireSuperAdmin(request);
     const tenants = await SubscriptionService.listAllTenants();
     return NextResponse.json({ success: true, data: tenants });
   } catch (err) {
@@ -21,6 +23,7 @@ export async function GET() {
  */
 export async function PATCH(request: NextRequest) {
   try {
+    await requireSuperAdmin(request);
     const body = await request.json();
     const { organizationId, status } = body;
 
