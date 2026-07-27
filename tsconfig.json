@@ -39,6 +39,7 @@
   ],
   "exclude": [
     "node_modules",
-    "port-agente-isp"
+    "port-agente-isp",
+    "export-waba-module"
   ]
 }

@@ -50,6 +50,13 @@
       "when": 1784980000000,
       "tag": "0006_agent_ai_isp",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1785106478918,
+      "tag": "0007_loose_sabretooth",
+      "breakpoints": true
     }
   ]
 }
