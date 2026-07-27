@@ -166,13 +166,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
                 <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                   {filteredNav.slice(0, 7).map((item) => {
-                    const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+                    const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
                     return (
                       <Link
                         key={item.href}
                         href={item.href}
                         onClick={() => setSidebarOpen(false)}
-                        className={`sidebar-nav-item ${isActive ? 'active' : ''}`}
+                        className={`nav-item ${active ? 'active' : ''}`}
                       >
                         <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>
                         <span>{item.name}</span>
@@ -190,13 +190,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   </div>
                   <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                     {filteredNav.slice(7).map((item) => {
-                      const isActive = pathname === item.href;
+                      const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
                       return (
                         <Link
                           key={item.href}
                           href={item.href}
                           onClick={() => setSidebarOpen(false)}
-                          className={`sidebar-nav-item ${isActive ? 'active' : ''}`}
+                          className={`nav-item ${active ? 'active' : ''}`}
                         >
                           <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>
                           <span>{item.name}</span>
