@@ -1,8 +1,21 @@
 import { ApiError } from './api-errors';
 
-export type UserRole = 'admin' | 'billing' | 'technician';
+export type UserRole = 'admin' | 'billing' | 'technician' | 'super_admin';
 
 export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
+  super_admin: [
+    '/',
+    '/subscribers',
+    '/subscribers/import',
+    '/settings/plans',
+    '/tickets',
+    '/settings/routers',
+    '/settings/team',
+    '/whatsapp',
+    '/messaging',
+    '/chat',
+    '/super-admin',
+  ],
   admin: [
     '/subscribers',
     '/subscribers/import',
@@ -29,6 +42,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
  * Checks if a role has permission to access a target path.
  */
 export function hasPermission(role: UserRole, targetPath: string): boolean {
+  if (role === 'super_admin') return true;
+  if (targetPath.startsWith('/super-admin')) return false;
   if (role === 'admin') return true;
 
   const allowedRoutes = ROLE_PERMISSIONS[role] || [];
