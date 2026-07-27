@@ -1,8 +1,17 @@
+import { getWabaWorkspace, getWabaWebhookConfig } from '@/app/actions/waba.actions';
 import { WabaConnectionPanel } from '@/components/waba/WabaConnectionPanel';
 
 export const dynamic = 'force-dynamic';
 
 export default async function WhatsAppPage() {
+  const [workspace, webhookConfig] = await Promise.all([
+    getWabaWorkspace(10),
+    getWabaWebhookConfig(),
+  ]);
+
+  const connection = workspace.connection;
+  const healthy = Boolean(connection && connection.isActive && connection.connectionStatus === 'active');
+
   return (
     <div>
       <div style={{ marginBottom: '2rem' }}>
@@ -14,7 +23,19 @@ export default async function WhatsAppPage() {
         </p>
       </div>
 
-      <WabaConnectionPanel />
+      <WabaConnectionPanel
+        initialWabaId={connection?.wabaId}
+        initialPhoneNumberId={connection?.phoneNumberId}
+        initialDisplayPhone={connection?.displayPhone}
+        initialVerifiedName={connection?.verifiedName}
+        initialQualityRating={workspace.phoneProfile?.quality_rating}
+        initialVerificationStatus={connection?.connectionStatus}
+        initialIsConnected={healthy}
+        initialTemplates={workspace.templates}
+        callbackUrl={webhookConfig.callbackUrl}
+        verifyToken={webhookConfig.verifyToken}
+        hasAppSecret={webhookConfig.hasAppSecret}
+      />
     </div>
   );
 }
