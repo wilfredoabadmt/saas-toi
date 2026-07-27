@@ -14,6 +14,7 @@ interface UserSession {
   organizationId: string;
   organizationName: string;
   organizationStatus: string;
+  organizationLogoUrl?: string | null;
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -128,10 +129,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       {loadingUser ? 'Cargando...' : user?.userName || 'Usuario'}
                     </h2>
                     <img
-                      src="/logotoi.webp"
-                      alt="SaaS TOI Logo"
+                      src={user?.organizationLogoUrl || '/logotoi.webp'}
+                      alt="ISP Brand Logo"
                       className="logo-animated-glow"
-                      style={{ height: '22px', width: 'auto', objectFit: 'contain', flexShrink: 0 }}
+                      style={{ height: '24px', maxWidth: '80px', objectFit: 'contain', flexShrink: 0 }}
                     />
                   </div>
 

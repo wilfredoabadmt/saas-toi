@@ -22,6 +22,7 @@ export async function GET() {
         organizationId: session.organizationId,
         organizationName: session.organizationName,
         organizationStatus: session.organizationStatus,
+        organizationLogoUrl: session.organizationLogoUrl || null,
       },
     });
   } catch (error: unknown) {

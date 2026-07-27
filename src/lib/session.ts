@@ -15,6 +15,7 @@ export interface SessionData {
   userEmail: string;
   organizationName: string;
   organizationStatus: string;
+  organizationLogoUrl?: string | null;
 }
 
 /**
@@ -68,6 +69,7 @@ export async function resolveSession(cookieValue: string | undefined): Promise<S
       role: users.role,
       organizationName: organizations.name,
       organizationStatus: organizations.status,
+      organizationLogoUrl: organizations.logoUrl,
     })
     .from(sessions)
     .innerJoin(users, eq(sessions.userId, users.id))
@@ -85,6 +87,7 @@ export async function resolveSession(cookieValue: string | undefined): Promise<S
     userEmail: row.userEmail,
     organizationName: row.organizationName,
     organizationStatus: row.organizationStatus,
+    organizationLogoUrl: row.organizationLogoUrl || null,
   };
 }
 

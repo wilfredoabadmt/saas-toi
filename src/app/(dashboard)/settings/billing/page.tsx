@@ -16,24 +16,51 @@ export default function BillingPage() {
   const [subInfo, setSubInfo] = useState<SubscriptionInfo | null>(null);
   const [currency, setCurrency] = useState<string>('BOB');
   const [savingCurrency, setSavingCurrency] = useState(false);
+  const [logoUrlInput, setLogoUrlInput] = useState<string>('');
+  const [savingLogo, setSavingLogo] = useState(false);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToast();
 
   const fetchSubscription = async () => {
     try {
-      const [subRes, currRes] = await Promise.all([
+      const [subRes, currRes, logoRes] = await Promise.all([
         fetch('/api/subscriptions/current'),
         fetch('/api/organization/currency'),
+        fetch('/api/organization/logo'),
       ]);
       const subJson = await subRes.json();
       const currJson = await currRes.json();
+      const logoJson = await logoRes.json();
 
       if (subJson.success) setSubInfo(subJson.data);
       if (currJson.currency) setCurrency(currJson.currency);
+      if (logoJson.logoUrl) setLogoUrlInput(logoJson.logoUrl);
     } catch {
       addToast('Error al cargar datos de la suscripción', 'error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSaveLogo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavingLogo(true);
+    try {
+      const res = await fetch('/api/organization/logo', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ logoUrl: logoUrlInput }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        addToast('Logo personalizado del ISP guardado correctamente', 'success');
+      } else {
+        addToast(json.message || 'Error al guardar el logo', 'error');
+      }
+    } catch {
+      addToast('Error de conexión al guardar el logo', 'error');
+    } finally {
+      setSavingLogo(false);
     }
   };
 
@@ -134,6 +161,36 @@ export default function BillingPage() {
               </div>
             </div>
           </div>
+
+          {/* Custom Logo / Branding Card */}
+          <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem', borderLeft: '4px solid #818CF8' }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 0.35rem 0' }}>
+              🖼️ Logo Personalizado de la Empresa ISP
+            </h3>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0 0 1rem 0' }}>
+              Ingresa la URL pública de la imagen del logo de tu ISP para proyectar tu propia marca en el menú lateral y comprobantes.
+            </p>
+
+            <form onSubmit={handleSaveLogo} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <input
+                type="url"
+                placeholder="https://tu-isp.com/logo.png"
+                className="glass-input-dark"
+                value={logoUrlInput}
+                onChange={(e) => setLogoUrlInput(e.target.value)}
+                style={{ flex: 1, minWidth: '240px', padding: '0.65rem 1rem' }}
+              />
+              <button
+                type="submit"
+                disabled={savingLogo}
+                className="btn-primary"
+                style={{ padding: '0.65rem 1.25rem', whiteSpace: 'nowrap' }}
+              >
+                {savingLogo ? 'Guardando...' : 'Guardar Logo 💾'}
+              </button>
+            </form>
+          </div>
+
           {/* Main Card Usage */}
           <div className="glass-card" style={{ padding: '2rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
