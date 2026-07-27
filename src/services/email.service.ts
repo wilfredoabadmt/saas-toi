@@ -129,4 +129,48 @@ export class EmailService {
       html,
     });
   }
+
+  /**
+   * Dispatches 15-Day Trial Expiration Alert Email template.
+   */
+  static async sendTrialExpirationAlert(
+    adminEmail: string,
+    companyName: string,
+    daysRemaining: number,
+    billingUrl: string
+  ) {
+    const isExpired = daysRemaining <= 0;
+    const subject = isExpired
+      ? `🚨 Tu prueba de 15 días ha finalizado — ${companyName}`
+      : `⏳ Tu prueba gratuita de SaaS TOI vence en ${daysRemaining} día(s) — ${companyName}`;
+
+    const title = isExpired
+      ? `Tu Periodo de Prueba de 15 Días ha Finalizado`
+      : `Tu Prueba Gratuita vence en ${daysRemaining} día(s)`;
+
+    const textMsg = isExpired
+      ? `Tu periodo de prueba de 15 días para <strong>${companyName}</strong> ha expirado. Selecciona un plan comercial para reactivar tus automatizaciones de cobranza y MikroTik.`
+      : `Le quedan solo <strong>${daysRemaining} día(s)</strong> a la prueba gratuita de <strong>${companyName}</strong> en SaaS TOI ISP. Configura tu plan para evitar interrupciones en el servicio.`;
+
+    const html = `
+      <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #0f172a; background-color: #09090b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;">
+        <h2 style="color: ${isExpired ? '#f43f5e' : '#6366f1'}; font-size: 1.4rem; font-weight: 800; margin-top: 0;">${title}</h2>
+        <p style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.6;">${textMsg}</p>
+        <div style="margin: 30px 0; text-align: center;">
+          <a href="${billingUrl}" style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: #ffffff; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 800; display: inline-block; font-size: 1rem; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);">
+            ${isExpired ? 'Seleccionar Plan & Activar 🚀' : 'Ver Planes & Suscribirse 💳'}
+          </a>
+        </div>
+        <p style="font-size: 0.8rem; color: #64748b; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; margin-bottom: 0;">
+          SaaS TOI ISP — Plataforma de Gestión Automatizada para ISPs y Telecomunicaciones.
+        </p>
+      </div>
+    `;
+
+    return this.sendEmail({
+      to: adminEmail,
+      subject,
+      html,
+    });
+  }
 }

@@ -68,7 +68,11 @@ export class SubscriptionGuard {
     const subInfo = await this.getCurrentSubscription(organizationId);
 
     if (subInfo.status === 'suspended') {
-      throw new ApiError('FORBIDDEN', 'La suscripción del ISP se encuentra suspendida. Contacta a soporte para reactivar', 403);
+      throw new ApiError('FORBIDDEN', 'La suscripción del ISP se encuentra suspendida. Contacta a soporte para reactivar.', 403);
+    }
+
+    if (subInfo.status === 'expired') {
+      throw new ApiError('FORBIDDEN', 'Tu periodo de prueba de 15 días ha finalizado. Selecciona un plan en Suscripción SaaS para continuar.', 403);
     }
 
     if (subInfo.currentSubscribers + countToAdd > subInfo.maxSubscribers) {

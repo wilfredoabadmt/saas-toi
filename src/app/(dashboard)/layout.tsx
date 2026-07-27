@@ -334,6 +334,52 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </div>
             </header>
 
+            {/* Persistent Subscription Alert Banner when expired */}
+            {user?.organizationStatus === 'expired' && (
+              <div
+                style={{
+                  backgroundColor: 'rgba(244, 63, 94, 0.15)',
+                  border: '1px solid rgba(244, 63, 94, 0.35)',
+                  borderRadius: '16px',
+                  padding: '0.85rem 1.25rem',
+                  marginBottom: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '1rem',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <span style={{ fontSize: '1.2rem' }}>⌛</span>
+                  <div>
+                    <div style={{ fontWeight: 800, color: '#fb7185', fontSize: '0.88rem' }}>
+                      Tu período de prueba gratuita de 15 días ha finalizado
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                      Selecciona un plan activo para desbloquear las funciones de cobranza automatizada y MikroTik.
+                    </div>
+                  </div>
+                </div>
+
+                <Link
+                  href="/settings/billing"
+                  style={{
+                    backgroundColor: '#f43f5e',
+                    color: '#ffffff',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '10px',
+                    fontWeight: 800,
+                    fontSize: '0.82rem',
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Activar Plan 💳
+                </Link>
+              </div>
+            )}
+
             {/* Dynamic Page Viewport */}
             <main className="dashboard-content">
               {children}

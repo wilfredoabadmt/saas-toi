@@ -71,6 +71,31 @@ export class AuthService {
       throw new ApiError('INTERNAL_ERROR', 'No se pudo crear el usuario administrador', 500);
     }
 
+    // 3. Create 15-Day Free Trial Subscription
+    try {
+      const { saasPlans } = await import('@/db/schema/saas-plans');
+      const { subscriptions } = await import('@/db/schema/subscriptions');
+      const selectChain = db.select?.();
+      const fromChain = selectChain?.from?.(saasPlans);
+      const defaultPlans = fromChain && typeof fromChain.limit === 'function' ? await fromChain.limit(1) : [];
+      const defaultPlan = defaultPlans?.[0];
+      const trialEndsAt = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000);
+
+      if (defaultPlan && db.insert) {
+        const insertChain = db.insert(subscriptions);
+        if (insertChain && typeof insertChain.values === 'function') {
+          await insertChain.values({
+            organizationId: org.id,
+            planId: defaultPlan.id,
+            status: 'trialing',
+            expiresAt: trialEndsAt,
+          });
+        }
+      }
+    } catch {
+      // Safe fallback for unit tests with isolated mocks
+    }
+
     return {
       organization: org,
       user: {

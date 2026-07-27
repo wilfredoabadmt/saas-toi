@@ -91,7 +91,7 @@ export default function BillingPage() {
                 </p>
               </div>
 
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 <button
                   type="button"
                   disabled={savingCurrency}
@@ -99,7 +99,7 @@ export default function BillingPage() {
                   onClick={() => handleCurrencyChange('BOB')}
                   style={{ opacity: savingCurrency ? 0.6 : 1 }}
                 >
-                  🇧🇴 Bolivianos (Bs.)
+                  🇧🇴 Bs. (BOB)
                 </button>
 
                 <button
@@ -109,7 +109,27 @@ export default function BillingPage() {
                   onClick={() => handleCurrencyChange('USD')}
                   style={{ opacity: savingCurrency ? 0.6 : 1 }}
                 >
-                  💵 Dólares ($ USD)
+                  💵 $ (USD)
+                </button>
+
+                <button
+                  type="button"
+                  disabled={savingCurrency}
+                  className={currency === 'EUR' ? 'neu-btn-primary' : 'neu-btn'}
+                  onClick={() => handleCurrencyChange('EUR')}
+                  style={{ opacity: savingCurrency ? 0.6 : 1 }}
+                >
+                  🇪🇺 € (EUR)
+                </button>
+
+                <button
+                  type="button"
+                  disabled={savingCurrency}
+                  className={currency === 'CLP' ? 'neu-btn-primary' : 'neu-btn'}
+                  onClick={() => handleCurrencyChange('CLP')}
+                  style={{ opacity: savingCurrency ? 0.6 : 1 }}
+                >
+                  🇨🇱 $ (CLP)
                 </button>
               </div>
             </div>
