@@ -12,17 +12,7 @@ export async function seedDefaults(dbInstance?: any) {
   const defaultOrgId = '00000000-0000-0000-0000-000000000001';
   const defaultUserId = '00000000-0000-0000-0000-000000000002';
   const defaultPlanId = '00000000-0000-0000-0000-000000000010';
-
-  // Check if default organization already exists (seeded once)
-  const existingOrg = await db
-    .select({ id: organizations.id })
-    .from(organizations)
-    .where(eq(organizations.id, defaultOrgId))
-    .limit(1);
-
-  if (existingOrg.length > 0) {
-    return { defaultOrgId, defaultUserId };
-  }
+  const superAdminUserId = '00000000-0000-0000-0000-000000000099';
 
   // Seed Default Organization
   await db
@@ -63,7 +53,7 @@ export async function seedDefaults(dbInstance?: any) {
     ])
     .onConflictDoNothing();
 
-  // Seed Default Admin User
+  // Seed/Update Default Admin User
   await db
     .insert(users)
     .values({
@@ -74,10 +64,15 @@ export async function seedDefaults(dbInstance?: any) {
       role: 'admin',
       passwordHash: hashPassword('Admin123!'),
     })
-    .onConflictDoNothing();
+    .onConflictDoUpdate({
+      target: users.id,
+      set: {
+        passwordHash: hashPassword('Admin123!'),
+        updatedAt: new Date(),
+      },
+    });
 
-  // Seed Default Super Admin User
-  const superAdminUserId = '00000000-0000-0000-0000-000000000099';
+  // Seed/Update Default Super Admin User
   await db
     .insert(users)
     .values({
@@ -88,7 +83,13 @@ export async function seedDefaults(dbInstance?: any) {
       role: 'super_admin',
       passwordHash: hashPassword('SuperAdmin123!'),
     })
-    .onConflictDoNothing();
+    .onConflictDoUpdate({
+      target: users.id,
+      set: {
+        passwordHash: hashPassword('SuperAdmin123!'),
+        updatedAt: new Date(),
+      },
+    });
 
   // Seed Sample Service Plan with fixed ID
   await db
@@ -173,4 +174,3 @@ export async function seedDefaults(dbInstance?: any) {
 
   return { defaultOrgId, defaultUserId };
 }
-
