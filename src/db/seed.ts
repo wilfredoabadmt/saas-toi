@@ -1,4 +1,3 @@
-import { eq } from 'drizzle-orm';
 import { organizations } from './schema/organizations';
 import { users } from './schema/users';
 import { servicePlans } from './schema/service-plans';
