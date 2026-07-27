@@ -388,7 +388,7 @@ export function AppReviewConsole({
 
         {templates.length === 0 ? (
           <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', textAlign: 'center', padding: '2rem 0' }}>
-            No hay plantillas sincronizadas. Haz clic en "Sincronizar" o crea una nueva arriba.
+            No hay plantillas sincronizadas. Haz clic en &quot;Sincronizar&quot; o crea una nueva arriba.
           </p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
