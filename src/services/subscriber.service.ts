@@ -1,9 +1,8 @@
 import { db, ensureMigrationsRun } from '@/db/client';
 import { subscribers, NewSubscriber } from '@/db/schema/subscribers';
-import { seedDefaults } from '@/db/seed';
 import { assertTenantScope } from '@/lib/tenant';
 import { ApiError } from '@/lib/api-errors';
-import { eq, and, sql, count, desc } from 'drizzle-orm';
+import { eq, ne, and, sql, count, desc } from 'drizzle-orm';
 
 /**
  * Calculates payment status based on due date.
@@ -50,8 +49,10 @@ export class SubscriberService {
 
     const conditions = [eq(subscribers.organizationId, orgId)];
 
-    if (params.status) {
+    if (params.status && params.status !== 'all') {
       conditions.push(eq(subscribers.status, params.status));
+    } else if (!params.status) {
+      conditions.push(ne(subscribers.status, 'cancelled'));
     }
 
     if (params.paymentStatus) {
@@ -80,21 +81,8 @@ export class SubscriberService {
         .where(whereClause),
     ]);
 
-    let dataList = data;
-    let totalCount = totalResult?.[0]?.total ?? 0;
-
-    if (totalCount === 0 && !params.search && !params.status && !params.paymentStatus) {
-      await seedDefaults();
-      const reFetchedData = await db
-        .select()
-        .from(subscribers)
-        .where(whereClause)
-        .limit(limit)
-        .offset(offset)
-        .orderBy(desc(subscribers.createdAt));
-      dataList = reFetchedData;
-      totalCount = reFetchedData.length;
-    }
+    const dataList = data;
+    const totalCount = totalResult?.[0]?.total ?? 0;
 
     // Recalculate dynamic payment status for each subscriber
     const dataWithCalculatedStatus = (dataList || []).map((sub) => {

@@ -5,7 +5,13 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 009-workflow-automations-and-ai-chatbot
+## Active feature: 010-meta-compliance-legal-pages
+
+Plan técnico: [specs/010-meta-compliance-legal-pages/spec.md](specs/010-meta-compliance-legal-pages/spec.md)
+
+Páginas Públicas Institucionales Requeridas por Meta App Review (`/privacy`, `/terms`, `/data-deletion`) para SaaS Multi-Tenant de ISPs con estética Dark Glassmorphic.
+
+## Feature previa: 009-workflow-automations-and-ai-chatbot
 
 Plan técnico: [specs/009-workflow-automations-and-ai-chatbot/spec.md](specs/009-workflow-automations-and-ai-chatbot/spec.md)
 

@@ -1,54 +1,122 @@
 import React from 'react';
 import Link from 'next/link';
+import { LegalHeader } from '@/components/legal/LegalHeader';
+import { LegalFooter } from '@/components/legal/LegalFooter';
+
+export const metadata = {
+  title: 'Términos y Condiciones de Servicio | SaaS TOI',
+  description: 'Condiciones de uso, políticas de uso aceptable de WhatsApp Cloud API, responsabilidades del ISP e integración con Meta Platforms.',
+};
 
 export default function TermsOfServicePage() {
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '3rem 1.5rem', fontFamily: 'system-ui, sans-serif', color: 'var(--text-main)', lineHeight: 1.6 }}>
-      <header style={{ borderBottom: '2px solid #e2e8f0', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
-        <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary-accent)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          SaaS TOI ISP Platform
-        </div>
-        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, letterSpacing: '-0.03em', margin: '0.5rem 0' }}>
-          Términos y Condiciones de Servicio
-        </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Última actualización: 24 de Julio de 2026</p>
-      </header>
+    <div className="min-h-screen bg-[#060709] text-slate-200 font-sans selection:bg-blue-500/30 flex flex-col">
+      <LegalHeader />
 
-      <section style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>1. Aceptación de los Términos</h2>
-          <p style={{ color: 'var(--text-muted)' }}>
-            Al acceder o utilizar la plataforma SaaS TOI ISP, el Administrador y los usuarios autorizados del ISP aceptan quedar vinculados por los presentes Términos y Condiciones.
+      <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Top Hero Banner */}
+        <div className="mb-10 text-center sm:text-left">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-semibold uppercase tracking-wider mb-4">
+            <span>📜 Terms of Service & Commerce Policy</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
+            Términos y Condiciones del Servicio
+          </h1>
+          <p className="text-slate-400 text-sm sm:text-base max-w-2xl">
+            Acuerdo legal y condiciones de uso aplicables al uso del SaaS TOI ISP, la automatización de infraestructura y el canal de mensajería comercial WhatsApp Cloud API.
           </p>
+          <div className="mt-4 flex items-center gap-4 text-xs text-slate-500">
+            <span>Última actualización: 26 de Julio de 2026</span>
+            <span>•</span>
+            <span>SaaS ISP Terms v3.1</span>
+          </div>
         </div>
 
-        <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>2. Uso Autorizado & WhatsApp Cloud API</h2>
-          <p style={{ color: 'var(--text-muted)' }}>
-            La plataforma facilita el envío de recordatorios de cobranza de categoría Utility aprobados por Meta, el soporte técnico a abonados y la gestión de routers de red. El ISP es responsable de contar con el consentimiento de sus abonados para recibir notificaciones por WhatsApp.
-          </p>
-        </div>
+        {/* Legal Content Cards */}
+        <div className="space-y-8">
 
-        <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>3. Multi-Tenancy & Seguridad de Datos</h2>
-          <p style={{ color: 'var(--text-muted)' }}>
-            Garantizamos el aislamiento lógico de los datos de cada ISP a través de <code>organization_id</code> y el cifrado de credenciales de infraestructura (MikroTik) con AES-256-GCM.
-          </p>
-        </div>
+          {/* Section 1 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm">
+                01
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">1. Aceptación del Contrato & Objeto</h2>
+            </div>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              El presente contrato rige el acceso y uso de la plataforma SaaS TOI por parte del Proveedor de Servicios de Internet (en adelante, el &quot;ISP&quot; o &quot;Cliente&quot;). Al registrarse o utilizar el servicio, el ISP acepta íntegramente estas condiciones y declara contar con las facultades legales para contratar.
+            </p>
+          </section>
 
-        <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>4. Limitación de Responsabilidad</h2>
-          <p style={{ color: 'var(--text-muted)' }}>
-            SaaS TOI no se responsabiliza por interrupciones de servicio originadas por caídas globales de la red de Meta, la API de WhatsApp Cloud o fallas físicas en los enlaces de los proveedores de internet.
-          </p>
-        </div>
-      </section>
+          {/* Section 2 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4 border-l-4 border-l-purple-500">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm">
+                02
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">2. Uso Aceptable & Políticas de Meta Platforms</h2>
+            </div>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              El uso de la integración de <strong>WhatsApp Cloud API</strong> exige el cumplimiento obligatorio y estricto de las directrices fijadas por Meta Platforms, Inc., incluyendo la <em>WhatsApp Business Messaging Policy</em> y la <em>Meta Commerce Policy</em>:
+            </p>
+            <ul className="text-sm text-slate-300 space-y-2 list-disc list-inside pl-2">
+              <li><strong>Prohibición Absoluta de SPAM:</strong> Queda terminantemente prohibido el envío masivo no solicitado, mensajes promocionales fuera de ventana comercial o acoso en procesos de cobranza.</li>
+              <li><strong>Categoría UTILITY Obligatoria:</strong> Los avisos de facturación y recordatorios transaccionales deben enviarse exclusivamente bajo plantillas aprobadas en categoría Utility.</li>
+              <li><strong>Suspensión Inmediata por Infracción:</strong> Si Meta detecta degradación del <em>Quality Rating</em> de la WABA del ISP o violaciones de política, SaaS TOI se reserva el derecho de pausar el canal para proteger la reputación del dominio.</li>
+            </ul>
+          </section>
 
-      <footer style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid #e2e8f0', display: 'flex', gap: '1.5rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-        <Link href="/privacy" style={{ color: 'var(--text-muted)', textDecoration: 'underline' }}>Política de Privacidad</Link>
-        <Link href="/data-deletion" style={{ color: 'var(--text-muted)', textDecoration: 'underline' }}>Eliminación de Datos</Link>
-        <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'underline' }}>Ir al Panel</Link>
-      </footer>
+          {/* Section 3 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm">
+                03
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">3. Consentimiento (Opt-In) de los Abonados</h2>
+            </div>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              El ISP es el único y exclusivo responsable de haber recolectado y documentado la autorización previa, expresa e informada (<strong>Opt-In</strong>) de sus abonados para recibir notificaciones relativas a su servicio de internet, comprobantes y soporte mediante WhatsApp. SaaS TOI actúa únicamente como procesador de mensajería (Data Processor) bajo las instrucciones del ISP.
+            </p>
+          </section>
+
+          {/* Section 4 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm">
+                04
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">4. Niveles de Servicio (SLA) & Limitación de Responsabilidad</h2>
+            </div>
+            <div className="space-y-3 text-sm text-slate-300">
+              <p>
+                <strong>Garantía SLA de Plataforma:</strong> SaaS TOI se compromete a mantener una disponibilidad del 99.5% del sistema de gestión y motores de webhook de la plataforma.
+              </p>
+              <p>
+                <strong>Exención de Responsabilidad por Infraestructura de Terceros:</strong> SaaS TOI no responderá por interrupciones, latencia o fallas derivadas de caídas globales de la red de Meta Platforms (Graph API / WhatsApp), proveedores de servicios en la nube de terceros, o fallas en el suministro eléctrico o físico de la red del ISP.
+              </p>
+            </div>
+          </section>
+
+          {/* Section 5 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm">
+                05
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">5. Revocación del Servicio & Eliminación de Datos</h2>
+            </div>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              El ISP o sus usuarios pueden rescindir el servicio o solicitar la purga de sus credenciales WABA en cualquier momento. Para obtener información detallada sobre el procedimiento de revocación y borrado definitivo, consulte nuestras{' '}
+              <Link href="/data-deletion" className="text-purple-400 font-semibold hover:underline">
+                Instrucciones de Eliminación de Datos
+              </Link>.
+            </p>
+          </section>
+
+        </div>
+      </main>
+
+      <LegalFooter />
     </div>
   );
 }

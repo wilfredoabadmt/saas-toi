@@ -16,3 +16,4 @@ export * from './subscriptions';
 export * from './workflows';
 export * from './chatbot';
 export * from './leads';
+export * from './waba-webhook-deadletter';

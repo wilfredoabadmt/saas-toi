@@ -20,6 +20,11 @@ export const subscribers = pgTable(
     address: text('address'),
     notes: text('notes'),
     optedOutWhatsapp: boolean('opted_out_whatsapp').notNull().default(false),
+    // --- Opt-in WhatsApp (requerido por Meta App Review) ---
+    whatsappOptIn: boolean('whatsapp_opt_in').default(false),
+    whatsappOptInAt: timestamp('whatsapp_opt_in_at', { withTimezone: true }),
+    whatsappOptInSource: text('whatsapp_opt_in_source'),
+    whatsappPhoneE164: text('whatsapp_phone_e164'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
@@ -28,6 +33,7 @@ export const subscribers = pgTable(
     index('subscribers_org_payment_status_idx').on(table.organizationId, table.paymentStatus),
     index('subscribers_org_due_date_idx').on(table.organizationId, table.dueDate),
     unique('subscribers_phone_org_unique').on(table.phone, table.organizationId),
+    index('subscribers_whatsapp_phone_idx').on(table.whatsappPhoneE164),
   ]
 );
 

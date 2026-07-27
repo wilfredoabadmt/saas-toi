@@ -1,12 +1,8 @@
-import { WabaService } from '@/services/waba.service';
-import { WabaConnectButton } from '@/components/domain/waba-connect-button';
+import { WabaConnectionPanel } from '@/components/waba/WabaConnectionPanel';
 
 export const dynamic = 'force-dynamic';
 
 export default async function WhatsAppPage() {
-  const defaultOrgId = '00000000-0000-0000-0000-000000000001';
-  const status = await WabaService.getStatus(defaultOrgId);
-
   return (
     <div>
       <div style={{ marginBottom: '2rem' }}>
@@ -18,89 +14,7 @@ export default async function WhatsAppPage() {
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-        {/* Connection Status Card */}
-        <div className="glass-card" style={{ padding: '1.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Estado de la Integración
-            </span>
-            <span className={status.isConnected ? 'badge badge-success' : 'badge badge-warning'}>
-              {status.isConnected ? '● WABA Activo' : '● Desconectado'}
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-            <div
-              className="neu-card"
-              style={{
-                width: '54px',
-                height: '54px',
-                borderRadius: '16px',
-                backgroundColor: 'var(--bg-card)',
-                boxShadow: 'var(--shadow-card)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.8rem',
-                flexShrink: 0,
-              }}
-            >
-              💬
-            </div>
-            <div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
-                {status.isConnected ? status.displayPhone : 'Sin conexión WABA'}
-              </h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.2rem 0 0 0' }}>
-                {status.isConnected ? `WABA ID: ${status.wabaId}` : 'Requiere Embedded Signup de Meta'}
-              </p>
-            </div>
-          </div>
-
-          {!status.isConnected ? (
-            <div>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '1.5rem' }}>
-                Conecte su cuenta de WhatsApp Business para enviar avisos de pago categorizados como <strong>Utility</strong> con su propia marca oficial y sin riesgos de baneo.
-              </p>
-              <WabaConnectButton />
-            </div>
-          ) : (
-            <div style={{ backgroundColor: 'var(--bg-card)', padding: '1rem', borderRadius: '10px', boxShadow: 'var(--shadow-inset)' }}>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-success, #15803d)', fontWeight: 600, marginBottom: '0.25rem' }}>
-                ✅ Token System User cifrado AES-256-GCM
-              </div>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-                Conectado desde: {status.connectedAt ? new Date(status.connectedAt).toLocaleDateString('es-CL') : 'Hoy'}
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Security & Webhook Setup Information Card */}
-        <div className="glass-card" style={{ padding: '1.75rem' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', margin: '0 0 1rem 0' }}>
-            🔒 Parámetros de Cumplimiento & Webhook
-          </h3>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.88rem' }}>
-            <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', display: 'block', fontWeight: 600 }}>WEBHOOK CALLBACK URL</span>
-              <code style={{ fontSize: '0.82rem', color: 'var(--primary-accent)', fontWeight: 600 }}>/api/webhooks/whatsapp</code>
-            </div>
-
-            <div style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', display: 'block', fontWeight: 600 }}>SEGURIDAD DE FIRMA HMAC-SHA256</span>
-              <span style={{ color: 'var(--text-main)', fontWeight: 500 }}>Encabezado <code>X-Hub-Signature-256</code> verificado en raw body</span>
-            </div>
-
-            <div>
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', display: 'block', fontWeight: 600 }}>DEDUPLICACIÓN DE EVENTOS</span>
-              <span style={{ color: 'var(--text-main)', fontWeight: 500 }}>Tabla <code>processed_webhook_events</code> por <code>wamid</code></span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <WabaConnectionPanel />
     </div>
   );
 }

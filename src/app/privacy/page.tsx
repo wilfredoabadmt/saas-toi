@@ -1,66 +1,148 @@
 import React from 'react';
 import Link from 'next/link';
+import { LegalHeader } from '@/components/legal/LegalHeader';
+import { LegalFooter } from '@/components/legal/LegalFooter';
+
+export const metadata = {
+  title: 'Política de Privacidad | SaaS TOI - Meta WhatsApp Cloud API Compliance',
+  description: 'Política de privacidad y protección de datos personales para la plataforma SaaS TOI ISP y la integración de Meta WhatsApp Cloud API.',
+};
 
 export default function PrivacyPolicyPage() {
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '3rem 1.5rem', fontFamily: 'system-ui, sans-serif', color: 'var(--text-main)', lineHeight: 1.6 }}>
-      <header style={{ borderBottom: '2px solid #e2e8f0', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
-        <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary-accent)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          SaaS TOI ISP Platform
-        </div>
-        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, letterSpacing: '-0.03em', margin: '0.5rem 0' }}>
-          Política de Privacidad & Tratamiento de Datos
-        </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Última actualización: 24 de Julio de 2026</p>
-      </header>
+    <div className="min-h-screen bg-[#060709] text-slate-200 font-sans selection:bg-blue-500/30 flex flex-col">
+      <LegalHeader />
 
-      <section style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>1. Información General</h2>
-          <p style={{ color: 'var(--text-muted)' }}>
-            SaaS TOI es una plataforma multi-tenant de cobranza automatizada y atención al cliente mediante la API oficial de WhatsApp Cloud API (Meta Platforms, Inc.) diseñada para Proveedores de Servicios de Internet (ISPs). Nos comprometemos a proteger la privacidad y seguridad de la información personal procesada a través de nuestra plataforma.
+      <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Top Hero Banner */}
+        <div className="mb-10 text-center sm:text-left">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold uppercase tracking-wider mb-4">
+            <span>🔒 Meta Tech Provider Privacy Policy</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
+            Política de Privacidad & Tratamiento de Datos
+          </h1>
+          <p className="text-slate-400 text-sm sm:text-base max-w-2xl">
+            Esta política describe cómo SaaS TOI recopila, protege y utiliza la información procesada a través de la integración oficial de Meta WhatsApp Cloud API y el sistema de automatización para ISPs.
           </p>
+          <div className="mt-4 flex items-center gap-4 text-xs text-slate-500">
+            <span>Última actualización: 26 de Julio de 2026</span>
+            <span>•</span>
+            <span>Versión 2.4 - Meta Developer Compliance</span>
+          </div>
         </div>
 
-        <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>2. Datos Recopilados & Uso de WhatsApp Cloud API</h2>
-          <p style={{ color: 'var(--text-muted)' }}>
-            Procesamos únicamente la información indispensable para prestar el servicio de facturación, emisión de avisos de cobro e interacción de soporte:
-          </p>
-          <ul style={{ color: 'var(--text-muted)', paddingLeft: '1.25rem' }}>
-            <li><strong>Información del Abonado:</strong> Nombre, número de teléfono (WhatsApp), correo electrónico, plan de internet contratado y dirección física.</li>
-            <li><strong>Interacción por WhatsApp:</strong> Historial de mensajes de soporte, comprobantes de pago enviados por el usuario y notificaciones de estado de servicio.</li>
-            <li><strong>Credenciales de Red:</strong> Toda contraseña o token de routers de red (MikroTik) se almacena cifrada estricta en reposo utilizando el algoritmo de grado militar <strong>AES-256-GCM</strong>.</li>
-          </ul>
-        </div>
+        {/* Legal Content Cards Container */}
+        <div className="space-y-8">
+          
+          {/* Section 1 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm">
+                01
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">1. Información General & Alcance</h2>
+            </div>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              SaaS TOI es una solución integral multi-tenant de gestión de operaciones, cobranza automatizada y soporte técnico omnicanal para Proveedores de Servicios de Internet (ISPs). Operamos como <strong>Tech Provider autorizado</strong> interactuando con la API oficial de <strong>Meta WhatsApp Cloud API</strong> (Meta Platforms, Inc.). Nos comprometemos rigurosamente a la custodia, confidencialidad y aislamiento de la información.
+            </p>
+          </section>
 
-        <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>3. Protección & Cifrado de Datos</h2>
-          <p style={{ color: 'var(--text-muted)' }}>
-            Implementamos medidas de seguridad de alto nivel: aislamiento estricto por tenant (<code>organization_id</code>), verificación de firma HMAC-SHA256 en webhooks de Meta, cifrado en tránsito HTTPS/TLS 1.3 y almacenamiento de archivos comprobantes en Amazon S3 con URLs firmadas temporales (TTL de 15 minutos).
-          </p>
-        </div>
+          {/* Section 2 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm">
+                02
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">2. Datos Recopilados & Identificadores Meta</h2>
+            </div>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              Para prestar los servicios de cobranza recurrente y mensajería de utilidad (Utility), recopilamos estrictamente los datos indispensables:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                <h3 className="text-xs font-bold text-blue-400 uppercase tracking-wider">Identificadores Meta & WABA</h3>
+                <ul className="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
+                  <li>WhatsApp Business Account ID (WABA ID).</li>
+                  <li>Phone Number ID & Tokens de Acceso Meta.</li>
+                  <li>Identificadores de plantilla (Utility templates).</li>
+                  <li>Firma criptográfica HMAC-SHA256 de webhooks.</li>
+                </ul>
+              </div>
 
-        <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>4. Derechos del Usuario & Eliminación de Datos</h2>
-          <p style={{ color: 'var(--text-muted)' }}>
-            Los usuarios pueden solicitar el acceso, rectificación o borrado permanente de sus datos en cualquier momento siguiendo las instrucciones detalladas en nuestra página de <Link href="/data-deletion" style={{ color: 'var(--primary-accent)', fontWeight: 600 }}>Eliminación de Datos</Link>.
-          </p>
-        </div>
+              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Información de Abonados del ISP</h3>
+                <ul className="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
+                  <li>Nombre completo, teléfono de WhatsApp y correo.</li>
+                  <li>Estado de cuenta, plan de internet y saldo pendiente.</li>
+                  <li>Comprobantes de pago cargados voluntariamente.</li>
+                  <li>Historial de tickets y soporte en Inbox.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
 
-        <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>5. Contacto</h2>
-          <p style={{ color: 'var(--text-muted)' }}>
-            Para consultas relacionadas con la privacidad de datos, puede escribir a nuestro Oficial de Protección de Datos a <code>privacy@saas-toi.com</code>.
-          </p>
-        </div>
-      </section>
+          {/* Section 3 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm">
+                03
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">3. Uso de la Información & Operación de Webhooks</h2>
+            </div>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              La información procesada se destina exclusivamente a las siguientes finalidades operativas:
+            </p>
+            <ul className="text-sm text-slate-300 space-y-2 list-disc list-inside pl-2">
+              <li><strong>Notificaciones Transaccionales (Utility):</strong> Envío automatizado de avisos de vencimiento, facturación y confirmación de pago autorizados por Meta.</li>
+              <li><strong>Procesamiento de Webhooks Meta:</strong> Recepción síncrona idempotente de eventos de mensajes salientes/entrantes (`wamid`) para actualización de estado.</li>
+              <li><strong>Automatización MikroTik:</strong> Ejecución de órdenes de corte y reconexión automática de tráfico de red basadas en la acreditación de pagos.</li>
+              <li><strong>Soporte Omnicanal:</strong> Atención a consultas registradas por abonados a través del CRM Multi-Agente del ISP.</li>
+            </ul>
+          </section>
 
-      <footer style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid #e2e8f0', display: 'flex', gap: '1.5rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-        <Link href="/terms" style={{ color: 'var(--text-muted)', textDecoration: 'underline' }}>Términos de Servicio</Link>
-        <Link href="/data-deletion" style={{ color: 'var(--text-muted)', textDecoration: 'underline' }}>Eliminación de Datos</Link>
-        <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'underline' }}>Ir al Panel</Link>
-      </footer>
+          {/* Section 4 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4 border-l-4 border-l-blue-500">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm">
+                04
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">4. Seguridad, Cifrado AES-256 & Cero Venta de Datos</h2>
+            </div>
+            <div className="space-y-3 text-sm text-slate-300">
+              <p>
+                <strong>Cifrado en Reposo (AES-256-GCM):</strong> Todos los secretos de infraestructura, credenciales de routers MikroTik y tokens de acceso de Meta WABA son cifrados de forma estricta en la base de datos utilizando el algoritmo criptográfico de grado militar AES-256-GCM.
+              </p>
+              <p>
+                <strong>Aislamiento Multi-Tenant Estricto:</strong> Toda tabla de base de datos indexa obligatoriamente la clave <code>organization_id</code> para imposibilitar la fuga o cruce involuntario de información entre empresas clientes.
+              </p>
+              <p>
+                <strong>Cero Venta a Terceros:</strong> SaaS TOI no vende, comercializa, alquila ni transfiere datos de usuarios ni abonados a anunciantes, brokers de datos o terceros ajenos a la prestación del servicio.
+              </p>
+            </div>
+          </section>
+
+          {/* Section 5 */}
+          <section className="p-6 sm:p-8 rounded-3xl bg-[#0F1218]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm">
+                05
+              </span>
+              <h2 className="text-xl font-bold text-white tracking-tight">5. Derechos ARCO & Supresión de Datos</h2>
+            </div>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              Cualquier usuario o titular de datos personales puede ejercer sus derechos de Acceso, Rectificación, Cancelación y Oposición (ARCO) o solicitar la eliminación total de sus registros de la WABA visitando directamente la página pública de{' '}
+              <Link href="/data-deletion" className="text-blue-400 font-semibold hover:underline">
+                Eliminación de Datos Meta
+              </Link>{' '}
+              o contactando a nuestro Oficial de Privacidad en <code>privacy@saas-toi.com</code>.
+            </p>
+          </section>
+
+        </div>
+      </main>
+
+      <LegalFooter />
     </div>
   );
 }
