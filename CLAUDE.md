@@ -5,7 +5,13 @@
 > núcleo evergreen: consérvalas. Lo de **stack** y **feature activa** se rellena por
 > proyecto. Edita lo que esté entre `[corchetes]`.
 
-## Active feature: 010-meta-compliance-legal-pages
+## Active feature: 011-hardening-auth-multitenant
+
+Plan técnico: [specs/011-hardening-auth-multitenant/plan.md](specs/011-hardening-auth-multitenant/plan.md)
+
+Autenticación real con sesiones persistidas y revocables (`sessions`), middleware de perímetro, barrido de la organización demo hardcodeada en 23 archivos, cierre de la escalada a `super_admin` y hashing scrypt. Cierra la violación activa de los Principios I y II detectada en la auditoría del 2026-07-26. Bloqueante para la puesta en línea.
+
+## Feature previa: 010-meta-compliance-legal-pages
 
 Plan técnico: [specs/010-meta-compliance-legal-pages/spec.md](specs/010-meta-compliance-legal-pages/spec.md)
 
