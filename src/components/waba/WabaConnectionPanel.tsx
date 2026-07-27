@@ -3,169 +3,196 @@
  * ---------------------------------------------------------------------------
  * Server Component: panel de estado de la conexión de WhatsApp Business.
  *
- * Colócalo en la pantalla de Configuración → Integraciones de SaaS TOI.
- * Renderiza los cuatro estados posibles sin lanzar nunca:
- *
- *   1. Módulo sin configurar (faltan env vars)
- *   2. Sin número conectado           → CTA de Embedded Signup
- *   3. Conectado y sano               → métricas y calidad
- *   4. Conectado pero degradado       → motivo y acción de reparación
+ * Renderiza:
+ *   1. Estado de la conexión (Métricas / Embedded Signup)
+ *   2. Formulario manual de reconexión/credenciales (WABA ID, Phone Number ID, Access Token)
+ *   3. Configuración del Webhook de WhatsApp (Callback URL, Verify Token, firma HMAC)
  */
 
-import { getWabaWorkspace } from '@/app/actions/waba.actions';
+import { getWabaWorkspace, getWabaWebhookConfig } from '@/app/actions/waba.actions';
 
 import { EmbeddedSignupButton } from './EmbeddedSignupButton';
 import { WabaConnectionActions } from './WabaConnectionActions';
+import { WabaManualConnectionCard } from './WabaManualConnectionCard';
 
 export async function WabaConnectionPanel() {
-    const workspace = await getWabaWorkspace(10);
+    const [workspace, webhookConfig] = await Promise.all([
+        getWabaWorkspace(10),
+        getWabaWebhookConfig(),
+    ]);
 
-    /* --- 1. Módulo sin configurar ---------------------------------------- */
+    /* --- 1. Módulo sin configurar (faltan env vars) ---------------------- */
     if (workspace.unavailableReason?.startsWith('Módulo no configurado')) {
         return (
-            <Card>
-                <Header
-                    title="WhatsApp Business"
-                    badge={<Badge tone="neutral">No configurado</Badge>}
+            <div>
+                <Card>
+                    <Header
+                        title="WhatsApp Business"
+                        badge={<Badge tone="neutral">No configurado</Badge>}
+                    />
+                    <p style={{ marginTop: '0.5rem', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
+                        {workspace.unavailableReason}
+                    </p>
+                    <p style={{ marginTop: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                        Define las variables de entorno en Coolify y reinicia el contenedor.
+                    </p>
+                </Card>
+
+                <WabaManualConnectionCard
+                    callbackUrl={webhookConfig.callbackUrl}
+                    verifyToken={webhookConfig.verifyToken}
+                    hasAppSecret={webhookConfig.hasAppSecret}
                 />
-                <p style={{ marginTop: '0.5rem', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
-                    {workspace.unavailableReason}
-                </p>
-                <p style={{ marginTop: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    Define las variables de entorno en Coolify y reinicia el contenedor.
-                    Consulta <code style={{ fontFamily: 'monospace' }}>07-ENV-Y-META/env.waba.example</code>.
-                </p>
-            </Card>
+            </div>
         );
     }
 
     /* --- 2. Sin conexión -------------------------------------------------- */
     if (!workspace.connection) {
         return (
-            <Card>
-                <Header
-                    title="WhatsApp Business"
-                    badge={<Badge tone="neutral">Sin conectar</Badge>}
+            <div>
+                <Card>
+                    <Header
+                        title="WhatsApp Business"
+                        badge={<Badge tone="neutral">Sin conectar</Badge>}
+                    />
+                    <p style={{ marginTop: '0.5rem', maxWidth: '40rem', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
+                        Conecta el número de WhatsApp Business de tu empresa para enviar avisos de
+                        cobro, recordatorios de vencimiento y atender a tus abonados desde el Chat Inbox.
+                    </p>
+
+                    <div style={{ marginTop: '1.5rem' }}>
+                        <EmbeddedSignupButton />
+                    </div>
+
+                    <ul style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                        <li>· Necesitas ser administrador del Business Manager de tu empresa.</li>
+                        <li>· El número no puede estar activo en la app de WhatsApp Business.</li>
+                        <li>· El proceso se hace íntegro en la ventana de Meta; no salimos de aquí.</li>
+                    </ul>
+                </Card>
+
+                <WabaManualConnectionCard
+                    callbackUrl={webhookConfig.callbackUrl}
+                    verifyToken={webhookConfig.verifyToken}
+                    hasAppSecret={webhookConfig.hasAppSecret}
                 />
-                <p style={{ marginTop: '0.5rem', maxWidth: '40rem', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
-                    Conecta el número de WhatsApp Business de tu empresa para enviar avisos de
-                    cobro, recordatorios de vencimiento y atender a tus abonados desde el Chat Inbox.
-                </p>
-
-                <div style={{ marginTop: '1.5rem' }}>
-                    <EmbeddedSignupButton />
-                </div>
-
-                <ul style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    <li>· Necesitas ser administrador del Business Manager de tu empresa.</li>
-                    <li>· El número no puede estar activo en la app de WhatsApp Business.</li>
-                    <li>· El proceso se hace íntegro en la ventana de Meta; no salimos de aquí.</li>
-                </ul>
-            </Card>
+            </div>
         );
     }
 
-    /* --- 3 y 4. Conectado -------------------------------------------------- */
+    /* --- 3. Conectado ----------------------------------------------------- */
     const { connection, phoneProfile, templates, stats } = workspace;
     const healthy = connection.isActive && connection.connectionStatus === 'active';
     const approvedTemplates = templates.filter((t) => t.status?.toUpperCase() === 'APPROVED');
 
     return (
-        <Card>
-            <Header
-                title="WhatsApp Business"
-                badge={
-                    healthy ? (
-                        <Badge tone="success">Conectado</Badge>
-                    ) : (
-                        <Badge tone="danger">Requiere atención</Badge>
-                    )
-                }
-            />
+        <div>
+            <Card>
+                <Header
+                    title="WhatsApp Business"
+                    badge={
+                        healthy ? (
+                            <Badge tone="success">Conectado</Badge>
+                        ) : (
+                            <Badge tone="danger">Requiere atención</Badge>
+                        )
+                    }
+                />
 
-            {!healthy && connection.lastError && (
-                <div style={{
-                    marginTop: '1rem',
-                    padding: '0.75rem 1rem',
-                    borderRadius: 'var(--radius-lg)',
-                    border: '1px solid var(--status-danger-bg)',
-                    backgroundColor: 'var(--status-danger-bg)',
-                    fontSize: '0.88rem',
-                    color: 'var(--status-danger-text)',
-                }}>
-                    <strong style={{ display: 'block' }}>Meta rechazó las credenciales</strong>
-                    <span style={{ marginTop: '0.25rem', display: 'block', fontSize: '0.75rem', opacity: 0.9 }}>{connection.lastError}</span>
-                    <span style={{ marginTop: '0.5rem', display: 'block', fontSize: '0.75rem' }}>
-                        Vuelve a ejecutar la conexión para restablecer el servicio.
-                    </span>
+                {!healthy && connection.lastError && (
+                    <div style={{
+                        marginTop: '1rem',
+                        padding: '0.75rem 1rem',
+                        borderRadius: 'var(--radius-lg)',
+                        border: '1px solid var(--status-danger-bg)',
+                        backgroundColor: 'var(--status-danger-bg)',
+                        fontSize: '0.88rem',
+                        color: 'var(--status-danger-text)',
+                    }}>
+                        <strong style={{ display: 'block' }}>Meta rechazó las credenciales</strong>
+                        <span style={{ marginTop: '0.25rem', display: 'block', fontSize: '0.75rem', opacity: 0.9 }}>{connection.lastError}</span>
+                        <span style={{ marginTop: '0.5rem', display: 'block', fontSize: '0.75rem' }}>
+                            Vuelve a ejecutar la conexión para restablecer el servicio.
+                        </span>
+                    </div>
+                )}
+
+                <dl style={{ marginTop: '1.5rem', display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
+                    <Field label="Número" value={connection.displayPhone ?? '—'} />
+                    <Field label="Nombre verificado" value={connection.verifiedName ?? '—'} />
+                    <Field
+                        label="Calidad"
+                        value={phoneProfile?.quality_rating ?? 'No disponible'}
+                        tone={qualityTone(phoneProfile?.quality_rating)}
+                    />
+                    <Field
+                        label="Verificación"
+                        value={phoneProfile?.code_verification_status ?? 'No disponible'}
+                    />
+                </dl>
+
+                <div style={{ marginTop: '1.5rem', display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))' }}>
+                    <Metric label="Plantillas aprobadas" value={approvedTemplates.length} />
+                    <Metric label="Entregados (30 d)" value={stats.delivered ?? 0} />
+                    <Metric label="Leídos (30 d)" value={stats.read ?? 0} />
+                    <Metric
+                        label="Fallidos (30 d)"
+                        value={stats.failed ?? 0}
+                        tone={(stats.failed ?? 0) > 0 ? 'danger' : 'neutral'}
+                    />
                 </div>
-            )}
 
-            <dl style={{ marginTop: '1.5rem', display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
-                <Field label="Número" value={connection.displayPhone ?? '—'} />
-                <Field label="Nombre verificado" value={connection.verifiedName ?? '—'} />
-                <Field
-                    label="Calidad"
-                    value={phoneProfile?.quality_rating ?? 'No disponible'}
-                    tone={qualityTone(phoneProfile?.quality_rating)}
-                />
-                <Field
-                    label="Verificación"
-                    value={phoneProfile?.code_verification_status ?? 'No disponible'}
-                />
-            </dl>
+                {approvedTemplates.length === 0 && (
+                    <div style={{
+                        marginTop: '1.5rem',
+                        padding: '0.75rem 1rem',
+                        borderRadius: 'var(--radius-lg)',
+                        border: '1px solid rgba(245, 158, 11, 0.3)',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        fontSize: '0.88rem',
+                        color: '#d97706',
+                    }}>
+                        No hay ninguna plantilla aprobada todavía. Sin plantillas no se pueden iniciar
+                        conversaciones: crea al menos <code style={{ fontFamily: 'monospace' }}>recordatorio_pago</code> y
+                        espera la aprobación de Meta.
+                    </div>
+                )}
 
-            <div style={{ marginTop: '1.5rem', display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))' }}>
-                <Metric label="Plantillas aprobadas" value={approvedTemplates.length} />
-                <Metric label="Entregados (30 d)" value={stats.delivered ?? 0} />
-                <Metric label="Leídos (30 d)" value={stats.read ?? 0} />
-                <Metric
-                    label="Fallidos (30 d)"
-                    value={stats.failed ?? 0}
-                    tone={(stats.failed ?? 0) > 0 ? 'danger' : 'neutral'}
-                />
-            </div>
-
-            {approvedTemplates.length === 0 && (
+                {/* Acciones interactivas */}
                 <div style={{
                     marginTop: '1.5rem',
-                    padding: '0.75rem 1rem',
-                    borderRadius: 'var(--radius-lg)',
-                    border: '1px solid rgba(245, 158, 11, 0.3)',
-                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                    fontSize: '0.88rem',
-                    color: '#d97706',
+                    paddingTop: '1.5rem',
+                    borderTop: '1px solid var(--border-color)',
                 }}>
-                    No hay ninguna plantilla aprobada todavía. Sin plantillas no se pueden iniciar
-                    conversaciones: crea al menos <code style={{ fontFamily: 'monospace' }}>recordatorio_pago</code> y
-                    espera la aprobación de Meta.
+                    <WabaConnectionActions
+                        connectionId={connection.id}
+                        connectedNumber={connection.displayPhone}
+                    />
                 </div>
-            )}
 
-            {/* Acciones interactivas → Client Component */}
-            <div style={{
-                marginTop: '1.5rem',
-                paddingTop: '1.5rem',
-                borderTop: '1px solid var(--border-color)',
-            }}>
-                <WabaConnectionActions
-                    connectionId={connection.id}
-                    connectedNumber={connection.displayPhone}
-                />
-            </div>
+                <p style={{ marginTop: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                    Última sincronización con Meta:{' '}
+                    {connection.lastSyncedAt
+                        ? new Date(connection.lastSyncedAt).toLocaleString('es-BO')
+                        : 'nunca'}
+                </p>
+            </Card>
 
-            <p style={{ marginTop: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                Última sincronización con Meta:{' '}
-                {connection.lastSyncedAt
-                    ? new Date(connection.lastSyncedAt).toLocaleString('es-BO')
-                    : 'nunca'}
-            </p>
-        </Card>
+            {/* Formulario manual de credenciales & Webhook (idéntico a la captura de pantalla) */}
+            <WabaManualConnectionCard
+                initialWabaId={connection.wabaId}
+                initialPhoneNumberId={connection.phoneNumberId}
+                callbackUrl={webhookConfig.callbackUrl}
+                verifyToken={webhookConfig.verifyToken}
+                hasAppSecret={webhookConfig.hasAppSecret}
+            />
+        </div>
     );
 }
 
 /* ==========================================================================
- * Primitivas de presentación — alineadas al design system Dark Glassmorphism
+ * Primitivas de presentación
  * ========================================================================== */
 
 function Card({ children }: { children: React.ReactNode }) {

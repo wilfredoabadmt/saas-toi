@@ -42,6 +42,7 @@ import {
   markConnectionInactive,
   toPublicConnection,
   touchConnectionSync,
+  upsertConnection,
   upsertMessageEvent,
   type PublicWabaConnection,
   type WabaConnection,
@@ -484,3 +485,109 @@ export async function sendTextAction(input: {
     return toErrorResult(error, 'No se pudo enviar el mensaje.');
   }
 }
+
+/* ==========================================================================
+ * Conexión Manual y Webhook Config
+ * ========================================================================== */
+
+export async function saveManualConnectionAction(input: {
+  wabaId: string;
+  phoneNumberId: string;
+  accessToken: string;
+}): Promise<ActionResult<{ displayPhone?: string; verifiedName?: string }>> {
+  try {
+    const { organizationId } = await assertCanManageWaba();
+
+    const wabaId = input.wabaId?.trim();
+    const phoneNumberId = input.phoneNumberId?.trim();
+    const accessToken = input.accessToken?.trim();
+
+    if (!wabaId || !phoneNumberId || !accessToken) {
+      return {
+        ok: false,
+        error: 'Debes proporcionar WABA ID, Phone Number ID y Token de acceso.',
+      };
+    }
+
+    let profile: WhatsAppPhoneProfile;
+    try {
+      profile = await fetchPhoneProfile(phoneNumberId, accessToken);
+    } catch (error) {
+      return {
+        ok: false,
+        error: `Meta no pudo validar las credenciales: ${error instanceof Error ? error.message : 'Token o IDs inválidos.'}`,
+      };
+    }
+
+    await upsertConnection({
+      organizationId,
+      wabaId,
+      phoneNumberId,
+      accessToken,
+      displayPhone: profile.display_phone_number ?? '',
+      verifiedName: profile.verified_name ?? null,
+    });
+
+    try {
+      await subscribeAppToWaba(wabaId, accessToken);
+    } catch (err) {
+      console.warn('[WABA] Suscripción automática al webhook falló:', err);
+    }
+
+    revalidatePath('/dashboard');
+    revalidatePath('/settings/integrations');
+    revalidatePath('/whatsapp');
+
+    return {
+      ok: true,
+      displayPhone: profile.display_phone_number,
+      verifiedName: profile.verified_name,
+    };
+  } catch (error) {
+    return toErrorResult(error, 'No se pudo guardar la conexión.');
+  }
+}
+
+export async function testConnectionCredentialsAction(input: {
+  wabaId: string;
+  phoneNumberId: string;
+  accessToken: string;
+}): Promise<ActionResult<{ displayPhone?: string; verifiedName?: string }>> {
+  try {
+    await assertCanManageWaba();
+
+    const phoneNumberId = input.phoneNumberId?.trim();
+    const accessToken = input.accessToken?.trim();
+
+    if (!phoneNumberId || !accessToken) {
+      return {
+        ok: false,
+        error: 'Introduce Phone Number ID y Token de acceso para probar.',
+      };
+    }
+
+    const profile = await fetchPhoneProfile(phoneNumberId, accessToken);
+    return {
+      ok: true,
+      displayPhone: profile.display_phone_number,
+      verifiedName: profile.verified_name,
+    };
+  } catch (error) {
+    return toErrorResult(error, 'Error al probar credenciales contra Meta.');
+  }
+}
+
+export async function getWabaWebhookConfig() {
+  const verifyToken = process.env.WEBHOOK_VERIFY_TOKEN || 'eea720671b55edab0876f7a41b7a5be72c122cb45ee4308d96640187e503d00e';
+  const baseUrl = process.env.COOLIFY_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://crmtoi.clientify.click';
+  const cleanBaseUrl = baseUrl.startsWith('http') ? baseUrl : `https://${baseUrl}`;
+  const callbackUrl = `${cleanBaseUrl}/api/webhooks/wa/${verifyToken}`;
+  const hasAppSecret = Boolean(process.env.META_APP_SECRET);
+
+  return {
+    callbackUrl,
+    verifyToken,
+    hasAppSecret,
+  };
+}
+
