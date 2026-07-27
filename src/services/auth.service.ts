@@ -2,15 +2,15 @@ import { db, ensureMigrationsRun } from '@/db/client';
 import { organizations } from '@/db/schema/organizations';
 import { users } from '@/db/schema/users';
 import { ApiError } from '@/lib/api-errors';
+import { hashPassword, verifyPassword, needsRehash } from '@/lib/password';
 import { eq } from 'drizzle-orm';
-import crypto from 'crypto';
 
 export class AuthService {
   /**
-   * Hashes user password with SHA-256 for secure storage.
+   * Hashes user password using scrypt with random salt.
    */
   static hashPassword(password: string): string {
-    return crypto.createHash('sha256').update(password).digest('hex');
+    return hashPassword(password);
   }
 
   /**
@@ -63,7 +63,7 @@ export class AuthService {
         email: normalizedEmail,
         name: input.adminName.trim(),
         role: 'admin',
-        passwordHash: this.hashPassword(input.password),
+        passwordHash: hashPassword(input.password),
       })
       .returning();
 
@@ -90,7 +90,6 @@ export class AuthService {
     await ensureMigrationsRun();
 
     const normalizedEmail = input.email.trim().toLowerCase();
-    const hash = this.hashPassword(input.password);
 
     // 1. Find user by email
     const [user] = await db
@@ -103,12 +102,18 @@ export class AuthService {
       throw new ApiError('UNAUTHORIZED', 'Credenciales inválidas. Correo o contraseña incorrectos.', 401);
     }
 
-    // 2. Validate password hash
-    if (user.passwordHash !== hash) {
+    // 2. Validate password hash with timing-safe comparison
+    if (!verifyPassword(input.password, user.passwordHash)) {
       throw new ApiError('UNAUTHORIZED', 'Credenciales inválidas. Correo o contraseña incorrectos.', 401);
     }
 
-    // 3. Determine redirect URL based on role
+    // 3. Transparently upgrade legacy SHA-256 password hash to scrypt
+    if (needsRehash(user.passwordHash)) {
+      const newHash = hashPassword(input.password);
+      await db.update(users).set({ passwordHash: newHash }).where(eq(users.id, user.id));
+    }
+
+    // 4. Determine redirect URL based on role
     const redirectUrl = user.role === 'super_admin' ? '/super-admin/tenants' : '/subscribers';
 
     return {
@@ -149,7 +154,7 @@ export class AuthService {
         .update(users)
         .set({
           role: 'super_admin',
-          passwordHash: this.hashPassword(input.password),
+          passwordHash: hashPassword(input.password),
           updatedAt: new Date(),
         })
         .where(eq(users.id, existing.id))
@@ -170,7 +175,7 @@ export class AuthService {
         name: input.name.trim(),
         email: normalizedEmail,
         role: 'super_admin',
-        passwordHash: this.hashPassword(input.password),
+        passwordHash: hashPassword(input.password),
       })
       .returning();
 
