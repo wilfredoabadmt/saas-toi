@@ -1178,12 +1178,20 @@ html, body {
     top: 0;
     left: 0;
     bottom: 0;
-    width: 280px;
-    min-width: 280px;
+    height: 100vh;
+    height: 100dvh;
+    width: 290px;
+    min-width: 290px;
     border-radius: 0 24px 24px 0;
     transform: translateX(-100%);
     box-shadow: 10px 0 40px rgba(0,0,0,0.8);
     z-index: 1001;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1.25rem 1rem 6.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .dashboard-sidebar.open {

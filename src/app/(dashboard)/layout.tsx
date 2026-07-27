@@ -101,12 +101,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
           <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
             <div>
-              {/* User Avatar + Admin Name + Brand Logo Side-by-Side */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--border-color)' }}>
+              {/* User Avatar + Admin Name + Brand Logo + Mobile Close Button */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)', position: 'relative' }}>
                 <div
                   style={{
-                    width: '42px',
-                    height: '42px',
+                    width: '40px',
+                    height: '40px',
                     borderRadius: '50%',
                     backgroundColor: '#818CF8',
                     color: '#18181B',
@@ -114,7 +114,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontWeight: 900,
-                    fontSize: '1.05rem',
+                    fontSize: '1rem',
                     flexShrink: 0,
                     boxShadow: '0 4px 12px rgba(129, 140, 248, 0.3)',
                   }}
@@ -123,22 +123,48 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
 
                 <div style={{ overflow: 'hidden', flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
-                    <h2 style={{ fontSize: '0.92rem', fontWeight: 800, margin: 0, color: 'var(--text-main)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.4rem' }}>
+                    <h2 style={{ fontSize: '0.88rem', fontWeight: 800, margin: 0, color: 'var(--text-main)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                       {loadingUser ? 'Cargando...' : user?.userName || 'Usuario'}
                     </h2>
                     <img
                       src="/logotoi.webp"
                       alt="SaaS TOI Logo"
                       className="logo-animated-glow"
-                      style={{ height: '26px', width: 'auto', objectFit: 'contain', flexShrink: 0 }}
+                      style={{ height: '22px', width: 'auto', objectFit: 'contain', flexShrink: 0 }}
                     />
                   </div>
 
-                  <div style={{ marginTop: '0.2rem', fontSize: '0.72rem', color: '#818CF8', fontWeight: 700, textTransform: 'uppercase' }}>
+                  <div style={{ marginTop: '0.15rem', fontSize: '0.7rem', color: '#818CF8', fontWeight: 700, textTransform: 'uppercase' }}>
                     {loadingUser ? '...' : getRoleBadge(user?.role)}
                   </div>
                 </div>
+
+                {/* Mobile Explicit Close Button (✕) */}
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="show-on-mobile-only"
+                  aria-label="Cerrar Menú"
+                  title="Cerrar menú lateral"
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    color: '#94A3B8',
+                    borderRadius: '10px',
+                    width: '32px',
+                    height: '32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.95rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    flexShrink: 0,
+                    padding: 0,
+                  }}
+                >
+                  ✕
+                </button>
               </div>
 
               {/* Search input in sidebar */}
