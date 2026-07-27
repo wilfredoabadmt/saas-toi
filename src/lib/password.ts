@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 
 const COST_N = 16384;
 const BLOCK_SIZE_R = 8;
@@ -56,14 +57,7 @@ export function verifyPassword(plain: string, stored: string): boolean {
 
     // 2. Bcrypt format ($2a$, $2b$, $2y$)
     if (stored.startsWith('$2a$') || stored.startsWith('$2b$') || stored.startsWith('$2y$')) {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        const bcrypt = require('bcryptjs');
-        return bcrypt.compareSync(plain, stored);
-      } catch {
-        console.warn('[AUTH WARNING] Bcrypt hash format detected but bcryptjs package is not installed.');
-        return false;
-      }
+      return bcrypt.compareSync(plain, stored);
     }
 
     // 3. Legacy SHA-256 fallback (hex comparison)
