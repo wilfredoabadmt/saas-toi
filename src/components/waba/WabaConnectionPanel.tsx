@@ -1,327 +1,164 @@
 /**
  * src/components/waba/WabaConnectionPanel.tsx
  * ---------------------------------------------------------------------------
- * Server Component: panel de estado de la conexión de WhatsApp Business.
+ * Server Component: Vista de Conexión WABA e Integraciones Meta.
  *
- * Renderiza:
- *   1. Estado de la conexión (Métricas / Embedded Signup)
- *   2. Formulario manual de reconexión/credenciales (WABA ID, Phone Number ID, Access Token)
- *   3. Configuración del Webhook de WhatsApp (Callback URL, Verify Token, firma HMAC)
+ * Muestra los 3 Paneles Glassmorphic (.glass-card-dark):
+ *   1. PANEL 1: Estado de Conexión Meta 1-Clic (WhatsApp Cloud API + Facebook & Instagram Direct)
+ *   2. PANEL 2: Consola de WhatsApp App Review & Pruebas Live (Plantillas + Mensaje de Prueba)
+ *   3. PANEL 3: Datos de Webhook de Meta (URL Callback + Verify Token e inputs con copiado 1-Clic)
  */
 
 import { getWabaWorkspace, getWabaWebhookConfig } from '@/app/actions/waba.actions';
-
 import { EmbeddedSignupButton } from './EmbeddedSignupButton';
 import { WabaConnectionActions } from './WabaConnectionActions';
-import { WabaManualConnectionCard } from './WabaManualConnectionCard';
 import { MetaChannelsPanel } from './MetaChannelsPanel';
+import { AppReviewConsole } from './AppReviewConsole';
+import { WebhookInfoCard } from './WebhookInfoCard';
 
 export async function WabaConnectionPanel() {
-    const [workspace, webhookConfig] = await Promise.all([
-        getWabaWorkspace(10),
-        getWabaWebhookConfig(),
-    ]);
+  const [workspace, webhookConfig] = await Promise.all([
+    getWabaWorkspace(10),
+    getWabaWebhookConfig(),
+  ]);
 
-    /* --- 1. Módulo sin configurar (faltan env vars) ---------------------- */
-    if (workspace.unavailableReason?.startsWith('Módulo no configurado')) {
-        return (
-            <div>
-                <Card>
-                    <Header
-                        title="WhatsApp Business"
-                        badge={<Badge tone="neutral">No configurado</Badge>}
-                    />
-                    <p style={{ marginTop: '0.5rem', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
-                        {workspace.unavailableReason}
-                    </p>
-                    <p style={{ marginTop: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                        Define las variables de entorno en Coolify y reinicia el contenedor.
-                    </p>
-                </Card>
+  const { connection, phoneProfile, templates } = workspace;
+  const healthy = Boolean(connection && connection.isActive && connection.connectionStatus === 'active');
+  const approvedTemplates = templates.filter((t) => t.status?.toUpperCase() === 'APPROVED');
 
-                <WabaManualConnectionCard
-                    callbackUrl={webhookConfig.callbackUrl}
-                    verifyToken={webhookConfig.verifyToken}
-                    hasAppSecret={webhookConfig.hasAppSecret}
-                />
-            </div>
-        );
-    }
-
-    /* --- 2. Sin conexión -------------------------------------------------- */
-    if (!workspace.connection) {
-        return (
-            <div>
-                <Card>
-                    <Header
-                        title="WhatsApp Business"
-                        badge={<Badge tone="neutral">Sin conectar</Badge>}
-                    />
-                    <p style={{ marginTop: '0.5rem', maxWidth: '40rem', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
-                        Conecta el número de WhatsApp Business de tu empresa para enviar avisos de
-                        cobro, recordatorios de vencimiento y atender a tus abonados desde el Chat Inbox.
-                    </p>
-
-                    <div style={{ marginTop: '1.5rem' }}>
-                        <EmbeddedSignupButton />
-                    </div>
-
-                    <ul style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                        <li>· Necesitas ser administrador del Business Manager de tu empresa.</li>
-                        <li>· El número no puede estar activo en la app de WhatsApp Business.</li>
-                        <li>· El proceso se hace íntegro en la ventana de Meta; no salimos de aquí.</li>
-                    </ul>
-                </Card>
-
-                <MetaChannelsPanel />
-
-                <WabaManualConnectionCard
-                    callbackUrl={webhookConfig.callbackUrl}
-                    verifyToken={webhookConfig.verifyToken}
-                    hasAppSecret={webhookConfig.hasAppSecret}
-                />
-            </div>
-        );
-    }
-
-    /* --- 3. Conectado ----------------------------------------------------- */
-    const { connection, phoneProfile, templates, stats } = workspace;
-    const healthy = connection.isActive && connection.connectionStatus === 'active';
-    const approvedTemplates = templates.filter((t) => t.status?.toUpperCase() === 'APPROVED');
-
-    return (
-        <div>
-            <Card>
-                <Header
-                    title="WhatsApp Business"
-                    badge={
-                        healthy ? (
-                            <Badge tone="success">Conectado</Badge>
-                        ) : (
-                            <Badge tone="danger">Requiere atención</Badge>
-                        )
-                    }
-                />
-
-                {!healthy && connection.lastError && (
-                    <div style={{
-                        marginTop: '1rem',
-                        padding: '0.75rem 1rem',
-                        borderRadius: 'var(--radius-lg)',
-                        border: '1px solid var(--status-danger-bg)',
-                        backgroundColor: 'var(--status-danger-bg)',
-                        fontSize: '0.88rem',
-                        color: 'var(--status-danger-text)',
-                    }}>
-                        <strong style={{ display: 'block' }}>Meta rechazó las credenciales</strong>
-                        <span style={{ marginTop: '0.25rem', display: 'block', fontSize: '0.75rem', opacity: 0.9 }}>{connection.lastError}</span>
-                        <span style={{ marginTop: '0.5rem', display: 'block', fontSize: '0.75rem' }}>
-                            Vuelve a ejecutar la conexión para restablecer el servicio.
-                        </span>
-                    </div>
-                )}
-
-                <dl style={{ marginTop: '1.5rem', display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
-                    <Field label="Número" value={connection.displayPhone ?? '—'} />
-                    <Field label="Nombre verificado" value={connection.verifiedName ?? '—'} />
-                    <Field
-                        label="Calidad"
-                        value={phoneProfile?.quality_rating ?? 'No disponible'}
-                        tone={qualityTone(phoneProfile?.quality_rating)}
-                    />
-                    <Field
-                        label="Verificación"
-                        value={phoneProfile?.code_verification_status ?? 'No disponible'}
-                    />
-                </dl>
-
-                <div style={{ marginTop: '1.5rem', display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))' }}>
-                    <Metric label="Plantillas aprobadas" value={approvedTemplates.length} />
-                    <Metric label="Entregados (30 d)" value={stats.delivered ?? 0} />
-                    <Metric label="Leídos (30 d)" value={stats.read ?? 0} />
-                    <Metric
-                        label="Fallidos (30 d)"
-                        value={stats.failed ?? 0}
-                        tone={(stats.failed ?? 0) > 0 ? 'danger' : 'neutral'}
-                    />
-                </div>
-
-                {approvedTemplates.length === 0 && (
-                    <div style={{
-                        marginTop: '1.5rem',
-                        padding: '0.75rem 1rem',
-                        borderRadius: 'var(--radius-lg)',
-                        border: '1px solid rgba(245, 158, 11, 0.3)',
-                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                        fontSize: '0.88rem',
-                        color: '#d97706',
-                    }}>
-                        No hay ninguna plantilla aprobada todavía. Sin plantillas no se pueden iniciar
-                        conversaciones: crea al menos <code style={{ fontFamily: 'monospace' }}>recordatorio_pago</code> y
-                        espera la aprobación de Meta.
-                    </div>
-                )}
-
-                {/* Acciones interactivas */}
-                <div style={{
-                    marginTop: '1.5rem',
-                    paddingTop: '1.5rem',
-                    borderTop: '1px solid var(--border-color)',
-                }}>
-                    <WabaConnectionActions
-                        connectionId={connection.id}
-                        connectedNumber={connection.displayPhone}
-                    />
-                </div>
-
-                <p style={{ marginTop: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    Última sincronización con Meta:{' '}
-                    {connection.lastSyncedAt
-                        ? new Date(connection.lastSyncedAt).toLocaleString('es-BO')
-                        : 'nunca'}
-                </p>
-                </Card>
-
-                <MetaChannelsPanel />
-
-                <WabaManualConnectionCard
-                    initialWabaId={connection.wabaId}
-                    initialPhoneNumberId={connection.phoneNumberId}
-                    callbackUrl={webhookConfig.callbackUrl}
-                    verifyToken={webhookConfig.verifyToken}
-                    hasAppSecret={webhookConfig.hasAppSecret}
-                />
-        </div>
-    );
-}
-
-/* ==========================================================================
- * Primitivas de presentación
- * ========================================================================== */
-
-function Card({ children }: { children: React.ReactNode }) {
-    return (
-        <section style={{
-            borderRadius: 'var(--radius-2xl)',
-            border: '1px solid var(--border-color)',
-            backgroundColor: 'var(--bg-card)',
-            boxShadow: 'var(--shadow-card)',
-            padding: '1.5rem',
-        }}>
-            {children}
-        </section>
-    );
-}
-
-function Header({ title, badge }: { title: string; badge: React.ReactNode }) {
-    return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
-            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>{title}</h2>
-            {badge}
-        </div>
-    );
-}
-
-function Badge({
-    tone,
-    children,
-}: {
-    tone: 'success' | 'danger' | 'neutral';
-    children: React.ReactNode;
-}) {
-    const tones: Record<'success' | 'danger' | 'neutral', { bg: string; text: string; border: string }> = {
-        success: {
-            bg: 'var(--status-success-bg)',
-            text: 'var(--status-success-text)',
-            border: 'var(--status-success-bg)',
-        },
-        danger: {
-            bg: 'var(--status-danger-bg)',
-            text: 'var(--status-danger-text)',
-            border: 'var(--status-danger-bg)',
-        },
-        neutral: {
-            bg: 'var(--bg-card-accent)',
-            text: 'var(--text-muted)',
-            border: 'var(--border-color)',
-        },
-    };
-    const t = tones[tone] ?? tones.neutral;
-
-    return (
-        <span style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            padding: '0.25rem 0.75rem',
-            borderRadius: 'var(--radius-full)',
-            border: `1px solid ${t.border}`,
-            backgroundColor: t.bg,
-            color: t.text,
-            fontSize: '0.75rem',
-            fontWeight: 600,
-        }}>
-            {children}
-        </span>
-    );
-}
-
-function Field({
-    label,
-    value,
-    tone,
-}: {
-    label: string;
-    value: string;
-    tone?: 'success' | 'danger' | 'neutral';
-}) {
-    const color =
-        tone === 'success'
-            ? 'var(--status-success-text)'
-            : tone === 'danger'
-              ? 'var(--status-danger-text)'
-              : 'var(--text-main)';
-
-    return (
-        <div>
-            <dt style={{ fontSize: '0.75rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)' }}>{label}</dt>
-            <dd style={{ marginTop: '0.25rem', fontSize: '0.88rem', fontWeight: 500, color }}>{value}</dd>
-        </div>
-    );
-}
-
-function Metric({
-    label,
-    value,
-    tone = 'neutral',
-}: {
-    label: string;
-    value: number;
-    tone?: 'danger' | 'neutral';
-}) {
-    return (
-        <div style={{
-            padding: '0.75rem 1rem',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--border-color)',
-            backgroundColor: 'var(--bg-card)',
-        }}>
-            <p style={{ fontSize: '0.75rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', margin: 0 }}>{label}</p>
-            <p style={{
-                marginTop: '0.25rem',
-                fontSize: '1.5rem',
-                fontWeight: 700,
-                color: tone === 'danger' ? 'var(--status-danger-text)' : 'var(--text-main)',
-                margin: 0,
-            }}>
-                {value}
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', paddingBottom: '3rem' }}>
+      {/* ------------------------------------------------------------------- */}
+      {/* PANEL 1: Estado de Conexión Meta 1-Clic                             */}
+      {/* ------------------------------------------------------------------- */}
+      <section
+        style={{
+          borderRadius: 'var(--radius-2xl, 20px)',
+          border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
+          backgroundColor: 'var(--bg-card, rgba(18, 20, 26, 0.65))',
+          boxShadow: 'var(--shadow-card, 0 20px 50px rgba(0,0,0,0.5))',
+          padding: '1.75rem',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main, #F8FAFC)', margin: 0, letterSpacing: '-0.02em' }}>
+              WhatsApp Cloud API (Conexión 1-Clic Meta)
+            </h2>
+            <p style={{ color: 'var(--text-muted, #94A3B8)', fontSize: '0.88rem', margin: '0.35rem 0 0 0' }}>
+              Conecta el número oficial de tu empresa en segundos mediante Embedded Signup sin ingresar IDs ni tokens manualmente.
             </p>
+          </div>
+
+          <span
+            style={{
+              padding: '0.3rem 0.85rem',
+              borderRadius: '9999px',
+              backgroundColor: healthy ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.06)',
+              border: `1px solid ${healthy ? '#10b981' : 'var(--border-color)'}`,
+              color: healthy ? '#34D399' : 'var(--text-muted)',
+              fontSize: '0.8rem',
+              fontWeight: 700,
+            }}
+          >
+            {healthy ? '✓ Conectado' : 'Sin conectar'}
+          </span>
         </div>
-    );
+
+        {!healthy || !connection ? (
+          <div style={{ marginTop: '1.5rem' }}>
+            <p style={{ maxWidth: '40rem', fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+              Haz clic en el botón principal para iniciar sesión con tu cuenta comercial de Meta y Vincular tu número de WhatsApp Business.
+            </p>
+            <EmbeddedSignupButton />
+          </div>
+        ) : (
+          <div style={{ marginTop: '1.5rem' }}>
+            {connection.lastError && (
+              <div
+                style={{
+                  marginBottom: '1.25rem',
+                  padding: '0.85rem 1rem',
+                  borderRadius: 'var(--radius-xl, 14px)',
+                  border: '1px solid #f43f5e',
+                  backgroundColor: 'rgba(244,63,94,0.15)',
+                  color: '#FB7185',
+                  fontSize: '0.88rem',
+                }}
+              >
+                <strong style={{ display: 'block' }}>Aviso de Meta:</strong>
+                <span>{connection.lastError}</span>
+              </div>
+            )}
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
+              <InfoBox label="Número Vinculado" value={connection.displayPhone ?? '—'} />
+              <InfoBox label="Nombre Verificado" value={connection.verifiedName ?? '—'} />
+              <InfoBox label="Calidad de Línea" value={phoneProfile?.quality_rating ?? 'GREEN'} highlight />
+              <InfoBox label="Plantillas Aprobadas" value={approvedTemplates.length} />
+            </div>
+
+            <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
+              <WabaConnectionActions
+                connectionId={connection.id}
+                connectedNumber={connection.displayPhone}
+              />
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* Sub-tarjeta para Canales Sociales (Facebook Pages & Instagram Direct) */}
+      <MetaChannelsPanel />
+
+      {/* ------------------------------------------------------------------- */}
+      {/* PANEL 2: Consola de WhatsApp App Review & Pruebas Live              */}
+      {/* ------------------------------------------------------------------- */}
+      <AppReviewConsole
+        wabaId={connection?.wabaId}
+        phoneNumberId={connection?.phoneNumberId}
+        displayPhone={connection?.displayPhone}
+        isConnected={healthy}
+        initialTemplates={templates}
+      />
+
+      {/* ------------------------------------------------------------------- */}
+      {/* PANEL 3: Datos de Webhook (Informativo para el Admin)               */}
+      {/* ------------------------------------------------------------------- */}
+      <WebhookInfoCard
+        callbackUrl={webhookConfig.callbackUrl}
+        verifyToken={webhookConfig.verifyToken}
+        hasAppSecret={webhookConfig.hasAppSecret}
+      />
+    </div>
+  );
 }
 
-function qualityTone(rating?: string): 'success' | 'danger' | 'neutral' {
-    const normalized = rating?.toUpperCase();
-    if (normalized === 'GREEN') return 'success';
-    if (normalized === 'RED') return 'danger';
-    return 'neutral';
+function InfoBox({ label, value, highlight = false }: { label: string; value: string | number; highlight?: boolean }) {
+  return (
+    <div
+      style={{
+        padding: '0.85rem 1rem',
+        borderRadius: 'var(--radius-xl, 14px)',
+        border: '1px solid var(--border-color, rgba(255,255,255,0.08))',
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+      }}
+    >
+      <span style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+        {label}
+      </span>
+      <span
+        style={{
+          display: 'block',
+          marginTop: '0.25rem',
+          fontSize: '1rem',
+          fontWeight: 700,
+          color: highlight ? '#34D399' : 'var(--text-main)',
+          fontFamily: typeof value === 'string' && value.startsWith('+') ? 'monospace' : 'inherit',
+        }}
+      >
+        {value}
+      </span>
+    </div>
+  );
 }
