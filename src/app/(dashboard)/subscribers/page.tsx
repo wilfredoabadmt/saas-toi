@@ -4,19 +4,21 @@ import { SubscriberService } from '@/services/subscriber.service';
 import { db } from '@/db/client';
 import { organizations } from '@/db/schema/organizations';
 import { formatCurrency } from '@/lib/currency';
+import { requireSession } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SubscribersPage() {
-  const defaultOrgId = '00000000-0000-0000-0000-000000000001';
-  const result = await SubscriberService.list({ organizationId: defaultOrgId, limit: 100 });
+  const session = await requireSession();
+  const organizationId = session.organizationId;
+  const result = await SubscriberService.list({ organizationId, limit: 100 });
   const allSubscribers = (result.data || []) as SubscriberItem[];
 
   const [org] = await db
     .select({ currency: organizations.currency })
     .from(organizations)
-    .where(eq(organizations.id, defaultOrgId))
+    .where(eq(organizations.id, organizationId))
     .limit(1);
 
   const currency = org?.currency || 'BOB';

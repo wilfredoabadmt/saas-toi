@@ -2,16 +2,17 @@ import { NextResponse } from 'next/server';
 import { db } from '@/db/client';
 import { organizations } from '@/db/schema/organizations';
 import { ApiError, handleApiError } from '@/lib/api-errors';
+import { getSessionContext } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
-const defaultOrgId = '00000000-0000-0000-0000-000000000001';
-
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const { organizationId } = await getSessionContext(req);
+
     const [org] = await db
       .select({ currency: organizations.currency })
       .from(organizations)
-      .where(eq(organizations.id, defaultOrgId))
+      .where(eq(organizations.id, organizationId))
       .limit(1);
 
     return NextResponse.json({ currency: org?.currency || 'BOB' });
@@ -22,6 +23,7 @@ export async function GET() {
 
 export async function PATCH(req: Request) {
   try {
+    const { organizationId } = await getSessionContext(req);
     const body = await req.json();
     const { currency } = body;
 
@@ -32,7 +34,7 @@ export async function PATCH(req: Request) {
     const [updated] = await db
       .update(organizations)
       .set({ currency, updatedAt: new Date() })
-      .where(eq(organizations.id, defaultOrgId))
+      .where(eq(organizations.id, organizationId))
       .returning();
 
     return NextResponse.json({ success: true, currency: updated?.currency || currency });

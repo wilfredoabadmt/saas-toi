@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { TeamService } from '@/services/team.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 /**
  * PATCH /api/team/[id]
@@ -13,11 +12,12 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const { id } = await params;
     const body = await request.json();
     const { role, isActive } = body;
 
-    const updated = await TeamService.updateMember(DEFAULT_ORG_ID, id, {
+    const updated = await TeamService.updateMember(organizationId, id, {
       role,
       isActive,
     });
@@ -33,8 +33,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const { id } = await params;
-    const deleted = await TeamService.deleteMember(DEFAULT_ORG_ID, id);
+    const deleted = await TeamService.deleteMember(organizationId, id);
     return NextResponse.json({ success: true, data: deleted });
   } catch (err) {
     return handleApiError(err);

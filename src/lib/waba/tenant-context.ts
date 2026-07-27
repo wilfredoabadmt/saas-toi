@@ -60,32 +60,16 @@ export type { TenantContext };
  * En desarrollo, si no hay headers, usa el fallback de `getSessionContext()`.
  */
 export async function getTenantContext(request?: NextRequest): Promise<TenantContext> {
-    // Si hay un NextRequest, usar el auth del proyecto directamente
-    if (request) {
-        const ctx = await getSessionContext(request);
-        if (!ctx.organizationId) {
-            throw new UnauthorizedError();
-        }
-        return ctx;
-    }
-
-    // Para Server Actions: construir un NextRequest desde headers()
     try {
-        const h = await headers();
-        const orgId = h.get('x-organization-id');
-        const userId = h.get('x-user-id');
-        const role = h.get('x-user-role');
-
-        if (orgId && userId) {
-            return {
-                organizationId: orgId,
-                userId,
-                role: role || 'admin',
-            };
+        if (request) {
+            const ctx = await getSessionContext(request);
+            if (!ctx.organizationId) {
+                throw new UnauthorizedError();
+            }
+            return ctx;
         }
 
-        // Fallback: usar el mismo mecanismo que getSessionContext
-        // Esto maneja el caso de desarrollo donde no hay headers
+        const h = await headers();
         const fakeRequest = new NextRequest('http://localhost', {
             headers: Object.fromEntries(h.entries()),
         });

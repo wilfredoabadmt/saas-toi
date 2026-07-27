@@ -140,7 +140,23 @@ export class AuthService {
     await ensureMigrationsRun();
 
     const normalizedEmail = input.email.trim().toLowerCase();
-    const defaultOrgId = '00000000-0000-0000-0000-000000000001';
+    let targetOrgId = input.organizationId;
+    if (!targetOrgId) {
+      const [firstOrg] = await db.select({ id: organizations.id }).from(organizations).limit(1);
+      if (firstOrg) {
+        targetOrgId = firstOrg.id;
+      } else {
+        const [newOrg] = await db
+          .insert(organizations)
+          .values({ name: 'System Super Admin Org', slug: 'system-superadmin-org' })
+          .returning();
+        targetOrgId = newOrg?.id;
+      }
+    }
+
+    if (!targetOrgId) {
+      throw new ApiError('INTERNAL_ERROR', 'No se pudo vincular la organización del super usuario', 500);
+    }
 
     const [existing] = await db
       .select()
@@ -171,7 +187,7 @@ export class AuthService {
     const [created] = await db
       .insert(users)
       .values({
-        organizationId: input.organizationId || defaultOrgId,
+        organizationId: targetOrgId,
         name: input.name.trim(),
         email: normalizedEmail,
         role: 'super_admin',

@@ -4,6 +4,7 @@ import { users } from './schema/users';
 import { servicePlans } from './schema/service-plans';
 import { subscribers } from './schema/subscribers';
 import { saasPlans } from './schema/saas-plans';
+import { hashPassword } from '../lib/password';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function seedDefaults(dbInstance?: any) {
@@ -62,9 +63,6 @@ export async function seedDefaults(dbInstance?: any) {
     ])
     .onConflictDoNothing();
 
-  const crypto = await import('crypto');
-  const hashPass = (p: string) => crypto.createHash('sha256').update(p).digest('hex');
-
   // Seed Default Admin User
   await db
     .insert(users)
@@ -74,7 +72,7 @@ export async function seedDefaults(dbInstance?: any) {
       email: 'admin@ispdemo.com',
       name: 'Admin ISP Demo',
       role: 'admin',
-      passwordHash: hashPass('Admin123!'),
+      passwordHash: hashPassword('Admin123!'),
     })
     .onConflictDoNothing();
 
@@ -88,7 +86,7 @@ export async function seedDefaults(dbInstance?: any) {
       email: 'superadmin@saas-toi.com',
       name: 'Super Admin SaaS',
       role: 'super_admin',
-      passwordHash: hashPass('SuperAdmin123!'),
+      passwordHash: hashPassword('SuperAdmin123!'),
     })
     .onConflictDoNothing();
 

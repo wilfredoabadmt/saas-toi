@@ -1,11 +1,12 @@
 import { ServicePlanService } from '@/services/service-plan.service';
 import { PlanManagerForm } from '@/components/domain/plan-manager-form';
+import { requireSession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export default async function PlansPage() {
-  const defaultOrgId = '00000000-0000-0000-0000-000000000001';
-  const plans = await ServicePlanService.list(defaultOrgId);
+  const session = await requireSession();
+  const plans = await ServicePlanService.list(session.organizationId);
 
   return (
     <div>

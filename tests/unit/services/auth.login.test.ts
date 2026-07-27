@@ -28,6 +28,7 @@ vi.mock('@/db/client', () => {
     db: {
       select: vi.fn().mockReturnValue({
         from: vi.fn().mockReturnValue({
+          limit: vi.fn().mockResolvedValue([{ id: 'org_123' }]),
           where: vi.fn().mockImplementation(() => ({
             limit: vi.fn().mockResolvedValue([mockUser]),
           })),

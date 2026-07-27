@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { RouterService } from '@/services/router.service';
 import { handleApiError } from '@/lib/api-errors';
-
-const DEFAULT_ORG_ID = '00000000-0000-0000-0000-000000000001';
+import { getSessionContext } from '@/lib/auth';
 
 /**
  * GET /api/routers
  * Lists configured routers for tenant.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const routers = await RouterService.list(DEFAULT_ORG_ID);
+    const { organizationId } = await getSessionContext(request);
+    const routers = await RouterService.list(organizationId);
     return NextResponse.json({ success: true, data: routers });
   } catch (err) {
     return handleApiError(err);
@@ -23,6 +23,7 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
+    const { organizationId } = await getSessionContext(request);
     const body = await request.json();
     const { name, host, apiPort, username, password } = body;
 
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'BAD_REQUEST', message: 'Nombre, Host, Usuario y Contraseña son requeridos' }, { status: 400 });
     }
 
-    const created = await RouterService.create(DEFAULT_ORG_ID, {
+    const created = await RouterService.create(organizationId, {
       name,
       host,
       apiPort: apiPort ? Number(apiPort) : 443,
