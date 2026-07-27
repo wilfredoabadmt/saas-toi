@@ -215,8 +215,8 @@ export default function LandingPage() {
                 <span style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#FFFFFF' }}>SaaS TOI</span>
               </Link>
 
-              {/* Center Navigation Menu */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+              {/* Center Navigation Menu (Desktop Only) */}
+              <div className="hide-on-mobile" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
                 <a href="#features" style={{ color: '#E2E8F0', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.2s' }}>Módulos</a>
                 <a href="#pricing" style={{ color: '#E2E8F0', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.2s' }}>Planes</a>
                 <a href="#faq" style={{ color: '#E2E8F0', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.2s' }}>FAQ</a>

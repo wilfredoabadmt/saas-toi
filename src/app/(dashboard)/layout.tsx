@@ -339,6 +339,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               {children}
             </main>
           </div>
+
+          {/* Floating Bottom Navigation Bar (< 1024px) */}
+          <nav className="bottom-nav-bar">
+            <Link href="/subscribers" className={`bottom-nav-item ${isActive('/subscribers') ? 'active' : ''}`}>
+              <span style={{ fontSize: '1.1rem' }}>📋</span>
+              <span>Abonados</span>
+            </Link>
+            <Link href="/messaging" className={`bottom-nav-item ${isActive('/messaging') ? 'active' : ''}`}>
+              <span style={{ fontSize: '1.1rem' }}>📣</span>
+              <span>Avisos</span>
+            </Link>
+            <Link href="/tickets" className={`bottom-nav-item ${isActive('/tickets') ? 'active' : ''}`}>
+              <span style={{ fontSize: '1.1rem' }}>🎫</span>
+              <span>Tickets</span>
+            </Link>
+            <Link href="/settings/plans" className={`bottom-nav-item ${isActive('/settings') ? 'active' : ''}`}>
+              <span style={{ fontSize: '1.1rem' }}>⚙️</span>
+              <span>Ajustes</span>
+            </Link>
+          </nav>
         </div>
       </ToastProvider>
     </ThemeProvider>

@@ -327,78 +327,162 @@ export function SubscriberTable({ subscribers: initialSubscribers, isLoading: in
             <p style={{ fontWeight: 500 }}>No se encontraron abonados con los filtros seleccionados.</p>
           </div>
         ) : (
-          <div className="table-responsive" style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600 }}>
-                  <th style={{ padding: '12px 16px' }}>Abonado</th>
-                  <th style={{ padding: '12px 16px' }}>Teléfono WhatsApp</th>
-                  <th style={{ padding: '12px 16px' }}>Monto Mensual</th>
-                  <th style={{ padding: '12px 16px' }}>Fecha Vencimiento</th>
-                  <th style={{ padding: '12px 16px' }}>Estado Cobranza</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'right' }}>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredSubscribers.map((sub) => (
-                  <tr key={sub.id} style={{ borderBottom: '1px solid var(--border-color)', transition: 'background-color 0.15s ease' }}>
-                    <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--text-main)' }}>{sub.name}</td>
-                    <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{sub.phone}</td>
-                    <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--text-main)' }}>{formatCurrency(sub.monthlyAmount, currency)}</td>
-                    <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{sub.dueDate}</td>
-                    <td style={{ padding: '14px 16px' }}>{getStatusBadge(sub.paymentStatus)}</td>
-                    <td style={{ padding: '14px 16px', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-                      <Link
-                        href={`/subscribers/${sub.id}`}
-                        style={{
-                          backgroundColor: 'var(--bg-main)',
-                          color: 'var(--primary-accent)',
-                          padding: '0.35rem 0.6rem',
-                          borderRadius: '6px',
-                          textDecoration: 'none',
-                          fontSize: '0.8rem',
-                          fontWeight: 600,
-                          border: '1px solid var(--border-color)',
-                        }}
-                      >
-                        Expediente
-                      </Link>
-                      <button
-                        onClick={() => openEditModal(sub)}
-                        style={{
-                          backgroundColor: '#e0f2fe',
-                          color: '#0369a1',
-                          padding: '0.35rem 0.6rem',
-                          borderRadius: '6px',
-                          border: 'none',
-                          fontSize: '0.8rem',
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => handleDelete(sub.id)}
-                        style={{
-                          backgroundColor: '#fee2e2',
-                          color: '#b91c1c',
-                          padding: '0.35rem 0.6rem',
-                          borderRadius: '6px',
-                          border: 'none',
-                          fontSize: '0.8rem',
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Eliminar
-                      </button>
-                    </td>
+          <>
+            {/* Desktop Tabular View (≥ 768px) */}
+            <div className="table-responsive hide-on-mobile" style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontWeight: 600 }}>
+                    <th style={{ padding: '12px 16px' }}>Abonado</th>
+                    <th style={{ padding: '12px 16px' }}>Teléfono WhatsApp</th>
+                    <th style={{ padding: '12px 16px' }}>Monto Mensual</th>
+                    <th style={{ padding: '12px 16px' }}>Fecha Vencimiento</th>
+                    <th style={{ padding: '12px 16px' }}>Estado Cobranza</th>
+                    <th style={{ padding: '12px 16px', textAlign: 'right' }}>Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {filteredSubscribers.map((sub) => (
+                    <tr key={sub.id} style={{ borderBottom: '1px solid var(--border-color)', transition: 'background-color 0.15s ease' }}>
+                      <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--text-main)' }}>{sub.name}</td>
+                      <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{sub.phone}</td>
+                      <td style={{ padding: '14px 16px', fontWeight: 600, color: 'var(--text-main)' }}>{formatCurrency(sub.monthlyAmount, currency)}</td>
+                      <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>{sub.dueDate}</td>
+                      <td style={{ padding: '14px 16px' }}>{getStatusBadge(sub.paymentStatus)}</td>
+                      <td style={{ padding: '14px 16px', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                        <Link
+                          href={`/subscribers/${sub.id}`}
+                          style={{
+                            backgroundColor: 'var(--bg-main)',
+                            color: 'var(--primary-accent)',
+                            padding: '0.35rem 0.6rem',
+                            borderRadius: '6px',
+                            textDecoration: 'none',
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                            border: '1px solid var(--border-color)',
+                          }}
+                        >
+                          Expediente
+                        </Link>
+                        <button
+                          onClick={() => openEditModal(sub)}
+                          style={{
+                            backgroundColor: '#e0f2fe',
+                            color: '#0369a1',
+                            padding: '0.35rem 0.6rem',
+                            borderRadius: '6px',
+                            border: 'none',
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDelete(sub.id)}
+                          style={{
+                            backgroundColor: '#fee2e2',
+                            color: '#b91c1c',
+                            padding: '0.35rem 0.6rem',
+                            borderRadius: '6px',
+                            border: 'none',
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          Eliminar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Cards View (< 768px) */}
+            <div className="show-on-mobile-only" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              {filteredSubscribers.map((sub) => (
+                <div
+                  key={sub.id}
+                  className="glass-card-dark"
+                  style={{
+                    padding: '1rem',
+                    borderRadius: '16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.75rem',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div>
+                      <div style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--text-main)' }}>{sub.name}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>📱 {sub.phone}</div>
+                    </div>
+                    <div>{getStatusBadge(sub.paymentStatus)}</div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.2)', padding: '0.5rem 0.75rem', borderRadius: '10px' }}>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Vence: {sub.dueDate}</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-main)' }}>{formatCurrency(sub.monthlyAmount, currency)}</span>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem', marginTop: '0.25rem' }}>
+                    <Link
+                      href={`/subscribers/${sub.id}`}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: '44px',
+                        backgroundColor: 'rgba(129, 140, 248, 0.15)',
+                        color: '#818CF8',
+                        borderRadius: '10px',
+                        textDecoration: 'none',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        border: '1px solid rgba(129, 140, 248, 0.3)',
+                      }}
+                    >
+                      📁 Ver
+                    </Link>
+                    <button
+                      onClick={() => openEditModal(sub)}
+                      style={{
+                        minHeight: '44px',
+                        backgroundColor: 'rgba(56, 189, 248, 0.15)',
+                        color: '#38BDF8',
+                        borderRadius: '10px',
+                        border: '1px solid rgba(56, 189, 248, 0.3)',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      ✏️ Editar
+                    </button>
+                    <button
+                      onClick={() => handleDelete(sub.id)}
+                      style={{
+                        minHeight: '44px',
+                        backgroundColor: 'rgba(248, 113, 113, 0.15)',
+                        color: '#F87171',
+                        borderRadius: '10px',
+                        border: '1px solid rgba(248, 113, 113, 0.3)',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      🗑️ Borrar
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

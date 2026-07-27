@@ -80,7 +80,7 @@ export function WabaConnectionPanel({
       {/* ------------------------------------------------------------------- */}
       {/* LAYOUT DE 2 COLUMNAS: STEP 1 (LEFT) & CURRENT CONNECTION (RIGHT)    */}
       {/* ------------------------------------------------------------------- */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '1.25rem', alignItems: 'stretch' }}>
         {/* Columna Izquierda */}
         <ConnectBusinessLeftCard onSuccess={handleConnectSuccess} />
 

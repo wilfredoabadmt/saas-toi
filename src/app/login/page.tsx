@@ -55,13 +55,15 @@ export default function LoginPage() {
         justifyContent: 'center',
         backgroundColor: '#09090b',
         backgroundImage: 'radial-gradient(ellipse 80% 80% at 50% -20%, rgba(99, 102, 241, 0.15), rgba(255, 255, 255, 0))',
-        padding: '1.5rem',
+        padding: '1rem',
         fontFamily: 'Inter, system-ui, sans-serif',
+        boxSizing: 'border-box',
+        overflowX: 'hidden',
       }}
     >
-      <div style={{ width: '100%', maxWidth: '440px' }}>
+      <div style={{ width: '100%', maxWidth: '440px', boxSizing: 'border-box' }}>
         {/* Logo & Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
           <Link href="/" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}>
             <div
               style={{
@@ -80,15 +82,15 @@ export default function LoginPage() {
             >
               ST
             </div>
-            <span style={{ fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.03em', color: '#ffffff' }}>
+            <span style={{ fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.03em', color: '#ffffff' }}>
               SaaS TOI <span style={{ color: '#a855f7' }}>ISP</span>
             </span>
           </Link>
 
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#f4f4f5', margin: '1.25rem 0 0.35rem 0', letterSpacing: '-0.02em' }}>
+          <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#f4f4f5', margin: '1rem 0 0.25rem 0', letterSpacing: '-0.02em' }}>
             Iniciar Sesión
           </h1>
-          <p style={{ fontSize: '0.88rem', color: '#a1a1aa', margin: 0 }}>
+          <p style={{ fontSize: '0.85rem', color: '#a1a1aa', margin: 0 }}>
             Ingresa a tu panel de gestión de ISP o Administración SaaS
           </p>
         </div>
@@ -100,8 +102,10 @@ export default function LoginPage() {
             backdropFilter: 'blur(16px)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
             borderRadius: '20px',
-            padding: '2rem',
+            padding: '1.25rem 1.25rem 1.5rem 1.25rem',
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6)',
+            boxSizing: 'border-box',
+            width: '100%',
           }}
         >
           {errorMsg && (
@@ -135,12 +139,13 @@ export default function LoginPage() {
                 placeholder="admin@tu-isp.com"
                 style={{
                   width: '100%',
+                  minHeight: '48px',
                   padding: '0.75rem 1rem',
                   backgroundColor: '#18181b',
                   border: '1px solid #27272a',
                   borderRadius: '10px',
                   color: '#ffffff',
-                  fontSize: '0.9rem',
+                  fontSize: '1rem',
                   outline: 'none',
                   boxSizing: 'border-box',
                 }}
@@ -149,7 +154,7 @@ export default function LoginPage() {
 
             {/* Password Input */}
             <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.25rem' }}>
                 <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#d4d4d8' }}>
                   Contraseña
                 </label>
@@ -170,12 +175,13 @@ export default function LoginPage() {
                   placeholder="••••••••••••"
                   style={{
                     width: '100%',
+                    minHeight: '48px',
                     padding: '0.75rem 2.75rem 0.75rem 1rem',
                     backgroundColor: '#18181b',
                     border: '1px solid #27272a',
                     borderRadius: '10px',
                     color: '#ffffff',
-                    fontSize: '0.9rem',
+                    fontSize: '1rem',
                     outline: 'none',
                     boxSizing: 'border-box',
                   }}
@@ -192,7 +198,12 @@ export default function LoginPage() {
                     border: 'none',
                     color: '#a1a1aa',
                     cursor: 'pointer',
-                    fontSize: '1rem',
+                    fontSize: '1.1rem',
+                    minHeight: '44px',
+                    minWidth: '44px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   {showPassword ? '👁️' : '🙈'}
@@ -206,6 +217,7 @@ export default function LoginPage() {
               disabled={isLoading}
               style={{
                 width: '100%',
+                minHeight: '48px',
                 padding: '0.85rem',
                 background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
                 color: '#ffffff',
@@ -226,12 +238,12 @@ export default function LoginPage() {
           {/* Quick Demo Credentials Assistant */}
           <div
             style={{
-              marginTop: '1.75rem',
-              paddingTop: '1.25rem',
+              marginTop: '1.5rem',
+              paddingTop: '1rem',
               borderTop: '1px solid #27272a',
             }}
           >
-            <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#a1a1aa', textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#a1a1aa', textTransform: 'uppercase', marginBottom: '0.65rem', letterSpacing: '0.05em' }}>
               ⚡ Credenciales de Demostración Rápida:
             </div>
 
@@ -243,41 +255,47 @@ export default function LoginPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '0.6rem 0.85rem',
+                  gap: '0.5rem',
+                  padding: '0.65rem 0.85rem',
                   backgroundColor: 'rgba(168, 85, 247, 0.1)',
                   border: '1px solid rgba(168, 85, 247, 0.25)',
                   borderRadius: '8px',
                   color: '#e9d5ff',
                   fontSize: '0.8rem',
-                  fontWeight: 600,
                   cursor: 'pointer',
-                  textAlign: 'left',
+                  minHeight: '48px',
                 }}
               >
-                <span>🛡️ <strong>Super Admin SaaS:</strong> superadmin@saas-toi.com</span>
-                <span style={{ fontSize: '0.75rem', color: '#c084fc' }}>Usar →</span>
+                <div style={{ overflow: 'hidden', textAlign: 'left' }}>
+                  <div style={{ fontWeight: 700 }}>🗣️ Super Admin SaaS</div>
+                  <div style={{ fontSize: '0.72rem', opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>superadmin@saas-toi.com</div>
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#c084fc', flexShrink: 0 }}>Usar →</span>
               </button>
 
               <button
                 type="button"
-                onClick={() => fillDemo('admin@ispdemo.com', 'Admin123!')}
+                onClick={() => fillDemo('admin@ispdemo.com', 'AdminISP123!')}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '0.6rem 0.85rem',
+                  gap: '0.5rem',
+                  padding: '0.65rem 0.85rem',
                   backgroundColor: 'rgba(99, 102, 241, 0.1)',
                   border: '1px solid rgba(99, 102, 241, 0.25)',
                   borderRadius: '8px',
                   color: '#c7d2fe',
                   fontSize: '0.8rem',
-                  fontWeight: 600,
                   cursor: 'pointer',
-                  textAlign: 'left',
+                  minHeight: '48px',
                 }}
               >
-                <span>🏢 <strong>Admin ISP Demo:</strong> admin@ispdemo.com</span>
-                <span style={{ fontSize: '0.75rem', color: '#818cf8' }}>Usar →</span>
+                <div style={{ overflow: 'hidden', textAlign: 'left' }}>
+                  <div style={{ fontWeight: 700 }}>🏢 Admin ISP Demo</div>
+                  <div style={{ fontSize: '0.72rem', opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>admin@ispdemo.com</div>
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#818cf8', flexShrink: 0 }}>Usar →</span>
               </button>
             </div>
           </div>
