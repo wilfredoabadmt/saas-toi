@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { handleApiError } from '@/lib/api-errors';
-import { db } from '@/db';
+import { db } from '@/db/client';
 import { eq } from 'drizzle-orm';
 import { users, organizations } from '@/db/schema';
 
