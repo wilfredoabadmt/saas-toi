@@ -7,6 +7,13 @@ import { ErrorFallback } from '@/components/ui/error-fallback';
 async function getTenants() {
   await requireRole('super_admin');
   const tenants = await db.query.organizations.findMany({
+    with: {
+      subscription: {
+        with: {
+          plan: true,
+        },
+      },
+    },
     orderBy: (orgs, { desc }) => [desc(orgs.createdAt)],
   });
   return tenants;
