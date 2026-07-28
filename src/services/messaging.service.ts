@@ -115,8 +115,8 @@ export class MessagingService {
    * List message logs for tenant.
    */
   static async listLogs(params: { organizationId: string; page?: number; limit?: number; subscriberId?: string }) {
-    await ensureMigrationsRun();
     const orgId = assertTenantScope(params.organizationId);
+    await ensureMigrationsRun();
     const page = params.page || 1;
     const limit = params.limit || 50;
     const offset = (page - 1) * limit;

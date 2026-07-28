@@ -79,8 +79,8 @@ export class WabaService {
    * NEVER returns encryptedToken or decrypted token to caller.
    */
   static async getStatus(organizationId: string) {
-    await ensureMigrationsRun();
     const orgId = assertTenantScope(organizationId);
+    await ensureMigrationsRun();
 
     const [config] = await db
       .select()

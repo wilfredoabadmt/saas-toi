@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db, ensureMigrationsRun } from '@/db/client';
-import { users } from '@/db/schema/users';
-import { organizations } from '@/db/schema/organizations';
-import { eq } from 'drizzle-orm';
-import { comparePasswords } from '@/lib/password';
+import { AuthService } from '@/services/auth.service';
 import { createSession, SESSION_COOKIE_NAME } from '@/lib/session';
 import { handleApiError } from '@/lib/api-errors';
 
@@ -13,72 +9,48 @@ const loginSchema = z.object({
   password: z.string().min(1, 'La contraseña es requerida.'),
 });
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request | NextRequest) {
   try {
-    await ensureMigrationsRun();
+    if (!process.env.SESSION_SECRET) {
+      console.warn('[AUTH ERROR] SESSION_SECRET is missing. Using default development secret key.');
+    }
 
-    const body = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { success: false, error: 'BAD_REQUEST', message: 'Datos de entrada inválidos.' },
+        { status: 400 }
+      );
+    }
+
     const validation = loginSchema.safeParse(body);
-
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Datos de entrada inválidos.', details: validation.error.flatten() },
+        { success: false, error: 'BAD_REQUEST', message: 'Datos de entrada inválidos.', details: validation.error.flatten() },
         { status: 400 }
       );
     }
 
     const { email, password } = validation.data;
+    const authResult = await AuthService.login({ email, password });
 
-    const userResult = await db
-      .select({
-        id: users.id,
-        passwordHash: users.passwordHash,
-        role: users.role,
-        organizationId: users.organizationId,
-        organizationStatus: organizations.status,
-      })
-      .from(users)
-      .leftJoin(organizations, eq(users.organizationId, organizations.id))
-      .where(eq(users.email, email.toLowerCase()))
-      .limit(1);
-
-    if (userResult.length === 0 || !userResult[0].passwordHash) {
-      console.warn('[AUTH LOGIN] User not found or missing passwordHash for email:', email);
-      return NextResponse.json({ error: 'Credenciales inválidas.' }, { status: 401 });
-    }
-
-    const user = userResult[0];
-    const passwordMatch = await comparePasswords(password, user.passwordHash);
-
-    if (!passwordMatch) {
-      console.warn('[AUTH LOGIN] Password mismatch for email:', email);
-      return NextResponse.json({ error: 'Credenciales inválidas.' }, { status: 401 });
-    }
-
-    if (!user.organizationId) {
-      return NextResponse.json({ error: 'El usuario no está asociado a ninguna organización.' }, { status: 403 });
-    }
-
-    if (user.role !== 'super_admin' && user.organizationStatus !== 'active' && user.organizationStatus !== 'trialing') {
-      return NextResponse.json({ error: 'La cuenta de su organización no está activa.' }, { status: 403 });
-    }
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || undefined;
 
     const { cookieValue, expiresAt } = await createSession(
-      user.id,
-      user.organizationId,
+      authResult.user.id,
+      authResult.user.organizationId || '00000000-0000-0000-0000-000000000001',
       {
-        ip: req.ip,
+        ip: clientIp,
         userAgent: req.headers.get('user-agent') || undefined,
       }
     );
 
     const response = NextResponse.json({
       success: true,
-      user: {
-        id: user.id,
-        role: user.role,
-        organizationId: user.organizationId,
-      },
+      user: authResult.user,
+      redirectUrl: authResult.redirectUrl,
     });
 
     response.cookies.set(SESSION_COOKIE_NAME, cookieValue, {
@@ -91,7 +63,7 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (err) {
-    console.error('[AUTH LOGIN ERROR]:', (err as Error).message);
     return handleApiError(err);
   }
 }
+

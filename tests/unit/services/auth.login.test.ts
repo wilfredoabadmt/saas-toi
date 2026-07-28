@@ -1,26 +1,29 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import bcrypt from 'bcryptjs';
 
-const { mockUser, mockSuperAdmin } = vi.hoisted(() => ({
-  mockUser: {
-    id: 'usr_admin',
-    organizationId: 'org_123',
-    email: 'admin@ispdemo.com',
-    name: 'Admin ISP Demo',
-    role: 'admin',
-    // SHA-256 legacy hash for 'admin'
-    passwordHash: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',
-    createdAt: new Date(),
-  },
-  mockSuperAdmin: {
-    id: 'usr_super',
-    organizationId: 'org_123',
-    email: 'superadmin@saas-toi.com',
-    name: 'Super Admin',
-    role: 'super_admin',
-    passwordHash: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',
-    createdAt: new Date(),
-  },
-}));
+const { mockUser, mockSuperAdmin } = vi.hoisted(() => {
+  const bcrypt = require('bcryptjs');
+  return {
+    mockUser: {
+      id: 'usr_admin',
+      organizationId: 'org_123',
+      email: 'admin@ispdemo.com',
+      name: 'Admin ISP Demo',
+      role: 'admin',
+      passwordHash: bcrypt.hashSync('admin', 10),
+      createdAt: new Date(),
+    },
+    mockSuperAdmin: {
+      id: 'usr_super',
+      organizationId: 'org_123',
+      email: 'superadmin@saas-toi.com',
+      name: 'Super Admin',
+      role: 'super_admin',
+      passwordHash: bcrypt.hashSync('SuperAdmin123!', 10),
+      createdAt: new Date(),
+    },
+  };
+});
 
 vi.mock('@/db/client', () => {
   return {
@@ -28,10 +31,10 @@ vi.mock('@/db/client', () => {
     db: {
       select: vi.fn().mockReturnValue({
         from: vi.fn().mockReturnValue({
-          limit: vi.fn().mockResolvedValue([{ id: 'org_123' }]),
-          where: vi.fn().mockImplementation(() => ({
-            limit: vi.fn().mockResolvedValue([mockUser]),
-          })),
+          where: vi.fn().mockReturnValue({
+            limit: vi.fn().mockImplementation(() => Promise.resolve([mockUser])),
+          }),
+          limit: vi.fn().mockResolvedValue([{ id: 'org_123', status: 'active' }]),
         }),
       }),
       insert: vi.fn().mockReturnValue({
@@ -57,11 +60,11 @@ describe('AuthService Login & SuperAdmin Tests', () => {
     vi.clearAllMocks();
   });
 
-  it('should generate secure scrypt password hash with salt', () => {
+  it('should generate secure bcrypt password hash with salt', () => {
     const hash1 = AuthService.hashPassword('SuperAdmin123!');
     const hash2 = AuthService.hashPassword('SuperAdmin123!');
-    expect(hash1.startsWith('scrypt$')).toBe(true);
-    expect(hash2.startsWith('scrypt$')).toBe(true);
+    expect(hash1.startsWith('$2')).toBe(true);
+    expect(hash2.startsWith('$2')).toBe(true);
     expect(hash1).not.toBe(hash2);
   });
 
@@ -92,3 +95,4 @@ describe('AuthService Login & SuperAdmin Tests', () => {
     expect(created.role).toBe('super_admin');
   });
 });
+

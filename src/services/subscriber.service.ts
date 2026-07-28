@@ -41,8 +41,8 @@ export class SubscriberService {
     status?: string;
     paymentStatus?: string;
   }) {
-    await ensureMigrationsRun();
     const orgId = assertTenantScope(params.organizationId);
+    await ensureMigrationsRun();
     const page = params.page || 1;
     const limit = params.limit || 50;
     const offset = (page - 1) * limit;
@@ -147,8 +147,8 @@ export class SubscriberService {
    * Get single subscriber by ID, verified against organizationId.
    */
   static async getById(organizationId: string, id: string) {
-    await ensureMigrationsRun();
     const orgId = assertTenantScope(organizationId);
+    await ensureMigrationsRun();
 
     const [subscriber] = await db
       .select()

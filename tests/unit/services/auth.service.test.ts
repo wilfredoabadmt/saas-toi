@@ -38,10 +38,10 @@ describe('AuthService Unit Tests', () => {
     vi.clearAllMocks();
   });
 
-  it('hashPassword should generate scrypt formatted hash with salt', () => {
+  it('hashPassword should generate bcrypt formatted hash with salt', () => {
     const hash = AuthService.hashPassword('SecretPassword123');
     expect(hash).toBeDefined();
-    expect(hash.startsWith('scrypt$')).toBe(true);
+    expect(hash.startsWith('$2')).toBe(true);
   });
 
   it('registerOrganization should create organization and admin user', async () => {
