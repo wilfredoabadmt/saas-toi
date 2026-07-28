@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const userResult = await db
       .select({
         id: users.id,
-        password: users.password,
+        passwordHash: users.passwordHash,
         role: users.role,
         organizationId: users.organizationId,
         organizationStatus: organizations.status,
@@ -40,12 +40,12 @@ export async function POST(req: NextRequest) {
       .where(eq(users.email, email.toLowerCase()))
       .limit(1);
 
-    if (userResult.length === 0 || !userResult[0].password) {
+    if (userResult.length === 0 || !userResult[0].passwordHash) {
       return NextResponse.json({ error: 'Credenciales inválidas.' }, { status: 401 });
     }
 
     const user = userResult[0];
-    const passwordMatch = await comparePasswords(password, user.password);
+    const passwordMatch = await comparePasswords(password, user.passwordHash);
 
     if (!passwordMatch) {
       return NextResponse.json({ error: 'Credenciales inválidas.' }, { status: 401 });
