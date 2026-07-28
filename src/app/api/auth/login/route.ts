@@ -1,61 +1,82 @@
-import { NextResponse } from 'next/server';
-import { AuthService } from '@/services/auth.service';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { db } from '@/db/client';
+import { users } from '@/db/schema/users';
+import { organizations } from '@/db/schema/organizations';
+import { eq } from 'drizzle-orm';
+import { comparePasswords } from '@/lib/password';
 import { createSession, SESSION_COOKIE_NAME } from '@/lib/session';
 import { handleApiError } from '@/lib/api-errors';
 
-export async function POST(req: Request) {
-  try {
-    // 1. Validate SESSION_SECRET configuration
-    if (!process.env.SESSION_SECRET) {
-      console.warn('[AUTH ERROR] SESSION_SECRET is missing in environment variables.');
-    }
+const loginSchema = z.object({
+  email: z.string().email('Email inválido.'),
+  password: z.string().min(1, 'La contraseña es requerida.'),
+});
 
-    const body = await req.json().catch(() => null);
-    if (!body || !body.email || !body.password) {
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const validation = loginSchema.safeParse(body);
+
+    if (!validation.success) {
       return NextResponse.json(
-        { success: false, error: 'BAD_REQUEST', message: 'Se requiere correo electrónico y contraseña.' },
+        { error: 'Datos de entrada inválidos.', details: validation.error.flatten() },
         { status: 400 }
       );
     }
 
-    const { email, password } = body;
+    const { email, password } = validation.data;
 
-    // 2. Perform login authentication
-    const result = await AuthService.login({ email, password });
+    const userResult = await db
+      .select({
+        id: users.id,
+        password: users.password,
+        role: users.role,
+        organizationId: users.organizationId,
+        organizationStatus: organizations.status,
+      })
+      .from(users)
+      .leftJoin(organizations, eq(users.organizationId, organizations.id))
+      .where(eq(users.email, email.toLowerCase()))
+      .limit(1);
 
-    // Legacy demo seeds created the super admin without an organization. Keep
-    // that account usable while newer seeds associate it with the demo org.
-    const organizationId = result.user.organizationId || (
-      result.user.role === 'super_admin'
-        ? '00000000-0000-0000-0000-000000000001'
-        : null
-    );
-
-    // Ensure non-super-admin users have an organization before creating a session
-    if (!organizationId) {
-      return NextResponse.json(
-        { success: false, error: 'FORBIDDEN', message: 'El usuario no está asociado a ninguna organización.' },
-        { status: 403 }
-      );
+    if (userResult.length === 0 || !userResult[0].password) {
+      return NextResponse.json({ error: 'Credenciales inválidas.' }, { status: 401 });
     }
 
-    // 3. Create authenticated session in DB and sign token
+    const user = userResult[0];
+    const passwordMatch = await comparePasswords(password, user.password);
+
+    if (!passwordMatch) {
+      return NextResponse.json({ error: 'Credenciales inválidas.' }, { status: 401 });
+    }
+
+    if (!user.organizationId) {
+      return NextResponse.json({ error: 'El usuario no está asociado a ninguna organización.' }, { status: 403 });
+    }
+
+    if (user.role !== 'super_admin' && user.organizationStatus !== 'active' && user.organizationStatus !== 'trialing') {
+      return NextResponse.json({ error: 'La cuenta de su organización no está activa.' }, { status: 403 });
+    }
+
     const { cookieValue, expiresAt } = await createSession(
-      result.user.id,
-      organizationId,
+      user.id,
+      user.organizationId,
       {
-        ip: req.headers.get('x-forwarded-for') || undefined,
+        ip: req.ip,
         userAgent: req.headers.get('user-agent') || undefined,
       }
     );
 
     const response = NextResponse.json({
       success: true,
-      user: result.user,
-      redirectUrl: result.redirectUrl,
+      user: {
+        id: user.id,
+        role: user.role,
+        organizationId: user.organizationId,
+      },
     });
 
-    // 4. Set signed HTTP-Only session cookie
     response.cookies.set(SESSION_COOKIE_NAME, cookieValue, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
