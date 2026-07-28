@@ -18,3 +18,5 @@ export * from './chatbot';
 export * from './leads';
 export * from './waba-webhook-deadletter';
 export * from './sessions';
+export * from './relations';
+

@@ -1,22 +1,32 @@
 import { db } from '@/db/client';
 import { requireSuperAdmin } from '@/lib/auth';
 import { ErrorFallback } from '@/components/ui/error-fallback';
-// Asumiendo que tienes un componente cliente para renderizar la tabla
-// import { TenantsClientPage } from './_components/tenants-client-page';
+import { organizations, subscriptions, saasPlans } from '@/db/schema';
+import { desc, eq } from 'drizzle-orm';
 
 async function getTenants() {
   await requireSuperAdmin();
-  const tenants = await db.query.organizations.findMany({
-    with: {
-      subscription: {
-        with: {
-          plan: true,
-        },
-      },
-    },
-    orderBy: (orgs, { desc }) => [desc(orgs.createdAt)],
-  });
-  return tenants;
+
+  const rows = await db
+    .select({
+      organization: organizations,
+      subscription: subscriptions,
+      plan: saasPlans,
+    })
+    .from(organizations)
+    .leftJoin(subscriptions, eq(organizations.id, subscriptions.organizationId))
+    .leftJoin(saasPlans, eq(subscriptions.planId, saasPlans.id))
+    .orderBy(desc(organizations.createdAt));
+
+  return rows.map(({ organization, subscription, plan }) => ({
+    ...organization,
+    subscription: subscription
+      ? {
+          ...subscription,
+          plan: plan || null,
+        }
+      : null,
+  }));
 }
 
 export default async function SuperAdminTenantsPage() {
@@ -27,14 +37,52 @@ export default async function SuperAdminTenantsPage() {
       return <div className="text-center p-8 bg-white dark:bg-gray-800 rounded-lg">No hay tenants registrados aún.</div>;
     }
 
-    // Aquí renderizarías la tabla de tenants, probablemente en un componente cliente
-    // return <TenantsClientPage tenants={tenants} />;
-    return <div><h1>Tenants</h1><pre>{JSON.stringify(tenants, null, 2)}</pre></div>
-
+    return (
+      <div className="p-6 max-w-7xl mx-auto space-y-6">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Administración de Tenants (ISPs)</h1>
+        <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-4 overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead>
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Organización</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Slug</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Estado</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Plan SaaS</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Fecha Registro</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+              {tenants.map((t) => (
+                <tr key={t.id}>
+                  <td className="px-4 py-3 font-semibold text-gray-900 dark:text-white">{t.name}</td>
+                  <td className="px-4 py-3 text-gray-500 dark:text-gray-400">{t.slug}</td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      t.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {t.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
+                    {t.subscription?.plan?.name || 'Sin Plan'}
+                  </td>
+                  <td className="px-4 py-3 text-gray-500 dark:text-gray-400">
+                    {new Date(t.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
   } catch (error) {
     console.error('[PAGE_TENANTS_ERROR]', error);
     return (
-      <ErrorFallback title="Error al cargar Tenants" message="No se pudo establecer la conexión con la base de datos. Por favor, inténtalo de nuevo más tarde." />
+      <ErrorFallback
+        title="Error al cargar Tenants"
+        message="No se pudo consultar la lista de organizaciones. Por favor, intente nuevamente."
+      />
     );
   }
-}
+}
