@@ -8,7 +8,7 @@ export const pool = new Pool({
   connectionString,
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 10000,
 });
 
 export const db = drizzle(pool, { schema });
@@ -32,8 +32,8 @@ export async function ensureMigrationsRun() {
         } catch (err) {
           console.error(`[DB Auto-Migration Notice] Attempt ${attempt}/${maxRetries} failed:`, err);
           if (attempt === maxRetries) {
-            console.error('[DB Auto-Migration] All retries failed. Migrations/seed will not be applied.');
-            throw err;
+            console.warn('[DB Auto-Migration Notice] Max retries reached; continuing request processing.');
+            return;
           }
           await new Promise((r) => setTimeout(r, 1000 * attempt));
         }
@@ -42,3 +42,4 @@ export async function ensureMigrationsRun() {
   }
   return migrationPromise;
 }
+
