@@ -20,7 +20,6 @@ export async function GET(request: Request) {
         maxSubscribers: saasPlans.maxSubscribers,
         maxRouters: saasPlans.maxRouters,
         priceMonthlyUSD: saasPlans.priceMonthlyUSD,
-        isActive: saasPlans.isActive,
       })
       .from(saasPlans)
       .orderBy(saasPlans.priceMonthlyUSD);
