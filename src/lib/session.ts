@@ -26,28 +26,33 @@ export async function createSession(
   organizationId: string,
   meta?: { ip?: string; userAgent?: string }
 ): Promise<{ cookieValue: string; expiresAt: Date }> {
-  const randomBytes = new Uint8Array(32);
-  crypto.getRandomValues(randomBytes);
-  const token = Array.from(randomBytes)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+  try {
+    const randomBytes = new Uint8Array(32);
+    crypto.getRandomValues(randomBytes);
+    const token = Array.from(randomBytes)
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
 
-  const cookieValue = await signToken(token);
-  const tokenHash = await hashToken(token);
+    const cookieValue = await signToken(token);
+    const tokenHash = await hashToken(token);
 
-  // 7 days expiration
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    // 7 days expiration
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-  await db.insert(sessions).values({
-    tokenHash,
-    userId,
-    organizationId,
-    expiresAt,
-    ip: meta?.ip,
-    userAgent: meta?.userAgent,
-  });
+    await db.insert(sessions).values({
+      tokenHash,
+      userId,
+      organizationId,
+      expiresAt,
+      ip: meta?.ip,
+      userAgent: meta?.userAgent,
+    });
 
-  return { cookieValue, expiresAt };
+    return { cookieValue, expiresAt };
+  } catch (error) {
+    console.error('[CREATE_SESSION_ERROR]: Error al crear la sesión en la DB:', error);
+    throw error; // Re-lanzar para que el handler de login lo capture
+  }
 }
 
 /**
