@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '@/db/client';
+import { db, ensureMigrationsRun } from '@/db/client';
 import { users } from '@/db/schema/users';
 import { organizations } from '@/db/schema/organizations';
 import { eq } from 'drizzle-orm';
@@ -15,6 +15,8 @@ const loginSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    await ensureMigrationsRun();
+
     const body = await req.json();
     const validation = loginSchema.safeParse(body);
 
