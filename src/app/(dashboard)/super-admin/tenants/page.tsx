@@ -47,7 +47,7 @@ export default function SuperAdminTenantsPage() {
     try {
       const [tenantsRes, plansRes] = await Promise.all([
         fetch('/api/super-admin/tenants'),
-        fetch('/api/plans'),
+        fetch('/api/saas-plans'),
       ]);
 
       const tenantsJson = await tenantsRes.json();

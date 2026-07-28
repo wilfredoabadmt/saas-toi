@@ -1,12 +1,14 @@
+import { ApiError } from './api-errors';
+
 export interface TenantContext {
   organizationId: string;
   userId: string;
   role: string;
 }
 
-export class MissingTenantContextError extends Error {
+export class MissingTenantContextError extends ApiError {
   constructor(message = 'Scope de tenant requerido (organization_id) ausente') {
-    super(message);
+    super('UNAUTHORIZED', message, 401);
     this.name = 'MissingTenantContextError';
   }
 }

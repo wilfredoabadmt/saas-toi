@@ -109,8 +109,13 @@ export async function getServerSession(): Promise<SessionData | null> {
   try {
     const cookieStore = await cookies();
     const cookieValue = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!cookieValue) {
+      console.warn('[AUTH] No session cookie found');
+      return null;
+    }
     return await resolveSession(cookieValue);
-  } catch {
+  } catch (err) {
+    console.error('[AUTH] getServerSession error:', err);
     return null;
   }
 }
