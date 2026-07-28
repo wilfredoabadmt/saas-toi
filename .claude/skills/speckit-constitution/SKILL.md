@@ -1,8 +1,8 @@
 ---
 name: "speckit-constitution"
-description: "Create or update the project constitution from interactive or provided principle inputs, ensuring all dependent templates stay in sync."
-argument-hint: "Principles or values for the project constitution"
-compatibility: "Requires spec-kit project structure with .specify/ directory"
+description: "Crea o actualiza la constitución del proyecto a partir de entradas de principios interactivas o proporcionadas, asegurando que todas las plantillas dependientes se mantengan sincronizadas."
+argument-hint: "Principios o valores para la constitución del proyecto"
+compatibility: "Requiere la estructura de proyecto spec-kit con el directorio .specify/"
 metadata:
   author: "github-spec-kit"
   source: "templates/commands/constitution.md"
@@ -11,7 +11,7 @@ disable-model-invocation: false
 ---
 
 
-## User Input
+## Entrada del Usuario
 
 ```text
 $ARGUMENTS

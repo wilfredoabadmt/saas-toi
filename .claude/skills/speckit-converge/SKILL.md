@@ -1,7 +1,7 @@
 ---
 name: "speckit-converge"
-description: "Assess the current codebase against the feature's spec, plan, and tasks, then append any remaining unbuilt work as new tasks to tasks.md so implement can complete it."
-compatibility: "Requires spec-kit project structure with .specify/ directory"
+description: "Evalúa el código base actual contra la especificación, el plan y las tareas de la funcionalidad, y luego anexa cualquier trabajo no construido restante como nuevas tareas a tasks.md para que implement pueda completarlo."
+compatibility: "Requiere la estructura de proyecto spec-kit con el directorio .specify/"
 metadata:
   author: "github-spec-kit"
   source: "templates/commands/converge.md"
@@ -10,7 +10,7 @@ disable-model-invocation: false
 ---
 
 
-## User Input
+## Entrada del Usuario
 
 ```text
 $ARGUMENTS

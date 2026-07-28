@@ -1,8 +1,8 @@
 ---
 name: "speckit-clarify"
-description: "Identify underspecified areas in the current feature spec by asking up to 5 highly targeted clarification questions and encoding answers back into the spec."
-argument-hint: "Optional areas to clarify in the spec"
-compatibility: "Requires spec-kit project structure with .specify/ directory"
+description: "Identifica áreas sub-especificadas en la especificación de la funcionalidad actual haciendo hasta 5 preguntas de clarificación muy específicas y codificando las respuestas de vuelta en la especificación."
+argument-hint: "Áreas opcionales a clarificar en la especificación"
+compatibility: "Requiere la estructura de proyecto spec-kit con el directorio .specify/"
 metadata:
   author: "github-spec-kit"
   source: "templates/commands/clarify.md"
@@ -11,7 +11,7 @@ disable-model-invocation: false
 ---
 
 
-## User Input
+## Entrada del Usuario
 
 ```text
 $ARGUMENTS
