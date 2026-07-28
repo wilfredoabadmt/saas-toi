@@ -275,7 +275,7 @@ export default function LoginPage() {
 
               <button
                 type="button"
-                onClick={() => fillDemo('admin@ispdemo.com', 'AdminISP123!')}
+                onClick={() => fillDemo('admin@ispdemo.com', 'Admin123!')}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
