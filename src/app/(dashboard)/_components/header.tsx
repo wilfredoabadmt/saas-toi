@@ -18,11 +18,11 @@ export function Header({ user, organization }: { user?: HeaderUser | null; organ
     try {
       setLoggingOut(true);
       await fetch('/api/auth/logout', { method: 'POST' });
-      router.push('/login');
-      router.refresh();
+      // Redirect to the landing page (sales landing at /)
+      window.location.href = '/';
     } catch (err) {
       console.error('Error logging out:', err);
-      router.push('/login');
+      window.location.href = '/';
     }
   };
 
@@ -59,7 +59,7 @@ export function Header({ user, organization }: { user?: HeaderUser | null; organ
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-semibold border border-red-500/20 transition-all duration-150 active:scale-95 disabled:opacity-50"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-semibold border border-red-500/20 transition-all duration-150 active:scale-95 disabled:opacity-50 cursor-pointer"
         >
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
