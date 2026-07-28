@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { handleApiError } from '@/lib/api-errors';
-import { db } from '@/lib/db';
-import { users, organizations } from '@/lib/db/schema';
+import { db } from '@/db';
 import { eq } from 'drizzle-orm';
+import { users, organizations } from '@/db/schema';
 
 export async function GET(request: Request) {
   try {
