@@ -128,7 +128,7 @@ export class AuthService {
     }
 
     // 2. Validate password hash with timing-safe comparison
-    if (!verifyPassword(input.password, user.passwordHash)) {
+    if (!(await verifyPassword(input.password, user.passwordHash))) {
       throw new ApiError('UNAUTHORIZED', 'Credenciales inválidas. Correo o contraseña incorrectos.', 401);
     }
 
