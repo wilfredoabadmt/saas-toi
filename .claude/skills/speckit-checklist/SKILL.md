@@ -1,8 +1,8 @@
 ---
 name: "speckit-checklist"
-description: "Genera una lista de verificación personalizada para la funcionalidad actual basada en los requisitos del usuario."
-argument-hint: "Dominio o área de enfoque para la lista de verificación"
-compatibility: "Requiere la estructura de proyecto spec-kit con el directorio .specify/"
+description: "Generate a custom checklist for the current feature based on user requirements."
+argument-hint: "Domain or focus area for the checklist"
+compatibility: "Requires spec-kit project structure with .specify/ directory"
 metadata:
   author: "github-spec-kit"
   source: "templates/commands/checklist.md"
@@ -11,28 +11,28 @@ disable-model-invocation: false
 ---
 
 
-## Propósito de la Lista de Verificación: "Pruebas Unitarias para el Lenguaje Natural"
+## Checklist Purpose: "Unit Tests for English"
 
-**CONCEPTO CRÍTICO**: Las listas de verificación son **PRUEBAS UNITARIAS PARA LA REDACCIÓN DE REQUISITOS** - validan la calidad, claridad e integridad de los requisitos en un dominio dado.
+**CRITICAL CONCEPT**: Checklists are **UNIT TESTS FOR REQUIREMENTS WRITING** - they validate the quality, clarity, and completeness of requirements in a given domain.
 
-**NO para verificación/pruebas**:
+**NOT for verification/testing**:
 
-- ❌ NO "Verificar que el botón funciona correctamente al hacer clic"
-- ❌ NO "Probar que el manejo de errores funciona"
-- ❌ NO "Confirmar que la API devuelve 200"
-- ❌ NO verificar si el código/implementación coincide con la especificación
+- ❌ NOT "Verify the button clicks correctly"
+- ❌ NOT "Test error handling works"
+- ❌ NOT "Confirm the API returns 200"
+- ❌ NOT checking if code/implementation matches the spec
 
-**PARA validación de calidad de requisitos**:
+**FOR requirements quality validation**:
 
-- ✅ "¿Están definidos los requisitos de jerarquía visual para todos los tipos de tarjetas?" (integridad)
-- ✅ "¿Se cuantifica la 'visualización prominente' con un tamaño/posición específicos?" (claridad)
-- ✅ "¿Son consistentes los requisitos del estado 'hover' en todos los elementos interactivos?" (consistencia)
-- ✅ "¿Están definidos los requisitos de accesibilidad para la navegación con teclado?" (cobertura)
-- ✅ "¿Define la especificación qué sucede cuando la imagen del logo no se carga?" (casos extremos)
+- ✅ "Are visual hierarchy requirements defined for all card types?" (completeness)
+- ✅ "Is 'prominent display' quantified with specific sizing/positioning?" (clarity)
+- ✅ "Are hover state requirements consistent across all interactive elements?" (consistency)
+- ✅ "Are accessibility requirements defined for keyboard navigation?" (coverage)
+- ✅ "Does the spec define what happens when logo image fails to load?" (edge cases)
 
-**Metáfora**: Si tu especificación es código escrito en lenguaje natural, la lista de verificación es su suite de pruebas unitarias. Estás probando si los requisitos están bien escritos, completos, sin ambigüedades y listos para la implementación, NO si la implementación funciona.
+**Metaphor**: If your spec is code written in English, the checklist is its unit test suite. You're testing whether the requirements are well-written, complete, unambiguous, and ready for implementation - NOT whether the implementation works.
 
-## Entrada del Usuario
+## User Input
 
 ```text
 $ARGUMENTS

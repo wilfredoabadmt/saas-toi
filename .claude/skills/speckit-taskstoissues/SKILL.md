@@ -1,8 +1,8 @@
 ---
 name: "speckit-taskstoissues"
-description: "Convierte las tareas existentes en issues de GitHub accionables y ordenados por dependencia para la funcionalidad, basándose en los artefactos de diseño disponibles."
-argument-hint: "Filtro o etiqueta opcional para los issues de GitHub"
-compatibility: "Requiere la estructura de proyecto spec-kit con el directorio .specify/"
+description: "Convert existing tasks into actionable, dependency-ordered GitHub issues for the feature based on available design artifacts."
+argument-hint: "Optional filter or label for GitHub issues"
+compatibility: "Requires spec-kit project structure with .specify/ directory"
 metadata:
   author: "github-spec-kit"
   source: "templates/commands/taskstoissues.md"
@@ -11,7 +11,7 @@ disable-model-invocation: false
 ---
 
 
-## Entrada del Usuario
+## User Input
 
 ```text
 $ARGUMENTS
