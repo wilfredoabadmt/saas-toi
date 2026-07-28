@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
       .limit(1);
 
     if (userResult.length === 0 || !userResult[0].passwordHash) {
+      console.warn('[AUTH LOGIN] User not found or missing passwordHash for email:', email);
       return NextResponse.json({ error: 'Credenciales inválidas.' }, { status: 401 });
     }
 
@@ -50,6 +51,7 @@ export async function POST(req: NextRequest) {
     const passwordMatch = await comparePasswords(password, user.passwordHash);
 
     if (!passwordMatch) {
+      console.warn('[AUTH LOGIN] Password mismatch for email:', email);
       return NextResponse.json({ error: 'Credenciales inválidas.' }, { status: 401 });
     }
 
