@@ -1,4 +1,4 @@
-export function Sidebar({ user }) {
+export function Sidebar({ user }: { user: any }) {
   return (
     <div className="flex flex-col w-64 h-screen px-4 py-8 bg-white border-r dark:bg-gray-800 dark:border-gray-600">
       <h2 className="text-3xl font-semibold text-gray-800 dark:text-white">Brand</h2>

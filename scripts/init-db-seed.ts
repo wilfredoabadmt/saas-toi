@@ -60,13 +60,16 @@ const main = async () => {
     // 3. Crear Organización Demo
     console.log('Creating demo organization "FiberSpeed ISP"...');
     const [demoOrg] = await db
-        .insert(schema.organizations)
-        .values({
+    .insert(schema.organizations)
+    .values({
       name: 'FiberSpeed ISP',
       slug: 'fiberspeed-isp',
       status: 'active',
     })
-        .returning();
+    .returning();
+  if (!demoOrg) {
+    throw new Error('Demo organization not found after seeding.');
+  }
     console.log('✅ Demo organization created.');
 
     // 4. Asignar Plan Pro a la Organización Demo
@@ -75,11 +78,11 @@ const main = async () => {
     trialEndDate.setDate(trialEndDate.getDate() + 30); // 30-day trial
 
     await db.insert(schema.subscriptions).values({
-        organizationId: demoOrg.id,
-        planId: proPlan.id,
-        status: 'active',
-        trialEndsAt: trialEndDate,
-    });
+    organizationId: demoOrg.id,
+    planId: proPlan.id,
+    status: 'active',
+    expiresAt: trialEndDate,
+  });
     console.log('✅ Pro plan assigned.');
 
     // 5. Crear Usuarios (Super Admin y Admin Demo) con contraseñas Bcrypt
@@ -88,20 +91,20 @@ const main = async () => {
     const hashedPasswordDemoAdmin = await hash('demopassword', 12);
 
     await db.insert(schema.users).values([
-        {
-            email: 'superadmin@saas-toi.com',
-            name: 'Super Admin',
-            passwordHash: hashedPasswordSuperAdmin,
-            role: 'super_admin',
-            // Super Admin no pertenece a ninguna organización
-        },
-        {
-            email: 'admin@ispdemo.com',
-            name: 'Demo Admin',
-            passwordHash: hashedPasswordDemoAdmin,
-            role: 'admin',
-            organizationId: demoOrg.id,
-        },
+      {
+        email: 'superadmin@saas-toi.com',
+        name: 'Super Admin',
+        passwordHash: hashedPasswordSuperAdmin,
+        role: 'super_admin',
+        organizationId: null,
+      },
+      {
+        email: 'admin@ispdemo.com',
+        name: 'Demo Admin',
+        passwordHash: hashedPasswordDemoAdmin,
+        role: 'admin',
+        organizationId: demoOrg.id,
+      },
     ]);
     console.log('✅ Users created.');
 

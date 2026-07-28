@@ -6,7 +6,6 @@ export const users = pgTable(
   {
     id: uuid('id').defaultRandom().primaryKey(),
     organizationId: uuid('organization_id')
-      .notNull()
       .references(() => organizations.id, { onDelete: 'cascade' }),
     email: text('email').notNull(),
     name: text('name').notNull(),

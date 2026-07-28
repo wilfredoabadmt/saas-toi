@@ -1,4 +1,4 @@
-export function Header({ user, organization }) {
+export function Header({ user, organization }: { user: any, organization: any }) {
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-white border-b-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div className="flex items-center">
