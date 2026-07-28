@@ -23,8 +23,16 @@ export async function POST(req: Request) {
     // 2. Perform login authentication
     const result = await AuthService.login({ email, password });
 
-    // Ensure user has an organization before creating a session
-    if (!result.user.organizationId) {
+    // Legacy demo seeds created the super admin without an organization. Keep
+    // that account usable while newer seeds associate it with the demo org.
+    const organizationId = result.user.organizationId || (
+      result.user.role === 'super_admin'
+        ? '00000000-0000-0000-0000-000000000001'
+        : null
+    );
+
+    // Ensure non-super-admin users have an organization before creating a session
+    if (!organizationId) {
       return NextResponse.json(
         { success: false, error: 'FORBIDDEN', message: 'El usuario no está asociado a ninguna organización.' },
         { status: 403 }
@@ -34,7 +42,7 @@ export async function POST(req: Request) {
     // 3. Create authenticated session in DB and sign token
     const { cookieValue, expiresAt } = await createSession(
       result.user.id,
-      result.user.organizationId,
+      organizationId,
       {
         ip: req.headers.get('x-forwarded-for') || undefined,
         userAgent: req.headers.get('user-agent') || undefined,

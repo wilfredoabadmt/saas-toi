@@ -4,6 +4,7 @@ import { servicePlans } from './schema/service-plans';
 import { subscribers } from './schema/subscribers';
 import { saasPlans } from './schema/saas-plans';
 import { hashPassword } from '../lib/password';
+import { eq } from 'drizzle-orm';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function seedDefaults(dbInstance?: any) {
@@ -52,43 +53,37 @@ export async function seedDefaults(dbInstance?: any) {
     ])
     .onConflictDoNothing();
 
-  // Seed/Update Default Admin User
-  await db
-    .insert(users)
-    .values({
-      id: defaultUserId,
-      organizationId: defaultOrgId,
-      email: 'admin@ispdemo.com',
-      name: 'Admin ISP Demo',
-      role: 'admin',
-      passwordHash: hashPassword('Admin123!'),
-    })
-    .onConflictDoUpdate({
-      target: users.id,
-      set: {
-        passwordHash: hashPassword('Admin123!'),
-        updatedAt: new Date(),
-      },
-    });
+  // Update every pre-existing demo account by email. Older deployments used
+  // generated IDs and different passwords, so an ID-only upsert can leave the
+  // account selected at login with stale credentials.
+  const seedDemoUser = async (
+    id: string,
+    email: string,
+    name: string,
+    role: 'admin' | 'super_admin',
+    password: string
+  ) => {
+    const passwordHash = hashPassword(password);
+    const updated = await db
+      .update(users)
+      .set({ name, role, passwordHash, updatedAt: new Date() })
+      .where(eq(users.email, email))
+      .returning({ id: users.id });
 
-  // Seed/Update Default Super Admin User
-  await db
-    .insert(users)
-    .values({
-      id: superAdminUserId,
-      organizationId: defaultOrgId,
-      email: 'superadmin@saas-toi.com',
-      name: 'Super Admin SaaS',
-      role: 'super_admin',
-      passwordHash: hashPassword('SuperAdmin123!'),
-    })
-    .onConflictDoUpdate({
-      target: users.id,
-      set: {
-        passwordHash: hashPassword('SuperAdmin123!'),
-        updatedAt: new Date(),
-      },
-    });
+    if (updated.length === 0) {
+      await db.insert(users).values({
+        id,
+        organizationId: defaultOrgId,
+        email,
+        name,
+        role,
+        passwordHash,
+      });
+    }
+  };
+
+  await seedDemoUser(defaultUserId, 'admin@ispdemo.com', 'Admin ISP Demo', 'admin', 'Admin123!');
+  await seedDemoUser(superAdminUserId, 'superadmin@saas-toi.com', 'Super Admin SaaS', 'super_admin', 'SuperAdmin123!');
 
   // Seed Sample Service Plan with fixed ID
   await db
