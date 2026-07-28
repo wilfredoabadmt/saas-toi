@@ -1,35 +1,26 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth'; // Asumiendo que esta función ya existe y funciona
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const session = await getServerSession();
 
     if (!session) {
-      return NextResponse.json(
-        { success: false, error: 'UNAUTHORIZED', message: 'No hay sesión activa.' },
-        { status: 401 }
-      );
+      // Aunque el middleware debería bloquear esto, es una doble verificación.
+      return NextResponse.json({ error: 'No autenticado' }, { status: 401 });
     }
 
+    // Retornamos los datos completos del usuario y su organización
     return NextResponse.json({
-      success: true,
-      user: {
-        userId: session.userId,
-        userName: session.userName,
-        userEmail: session.userEmail,
-        role: session.role,
-        organizationId: session.organizationId,
-        organizationName: session.organizationName,
-        organizationStatus: session.organizationStatus,
-        organizationLogoUrl: session.organizationLogoUrl || null,
-      },
+      id: session.user.id,
+      name: session.user.name,
+      email: session.user.email,
+      role: session.user.role,
+      organizationId: session.organization.id,
+      organizationName: session.organization.name,
     });
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Error al obtener la sesión.';
-    return NextResponse.json(
-      { success: false, error: 'SERVER_ERROR', message: errorMessage },
-      { status: 500 }
-    );
+  } catch (error) {
+    console.error('[API_ME_ERROR]', error);
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
   }
 }

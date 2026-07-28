@@ -1,39 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { SubscriptionService } from '@/services/subscription.service';
-import { handleApiError } from '@/lib/api-errors';
-import { requireSuperAdmin } from '@/lib/auth';
+import { NextResponse } from 'next/server';
+import { db } from '@/db';
+import { requireRole } from '@/lib/auth';
 
-/**
- * GET /api/super-admin/tenants
- * Lists all registered tenant organizations for Super Admin.
- */
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
-    await requireSuperAdmin(request);
-    const tenants = await SubscriptionService.listAllTenants();
-    return NextResponse.json({ success: true, data: tenants });
-  } catch (err) {
-    return handleApiError(err);
-  }
-}
+    await requireRole('super_admin');
 
-/**
- * PATCH /api/super-admin/tenants
- * Updates subscription status of a tenant.
- */
-export async function PATCH(request: NextRequest) {
-  try {
-    await requireSuperAdmin(request);
-    const body = await request.json();
-    const { organizationId, status } = body;
+    const tenants = await db.query.organizations.findMany({
+      // Opcional: incluir datos relacionados como el plan actual
+      with: {
+        subscription: {
+          with: {
+            plan: true,
+          },
+        },
+      },
+      orderBy: (orgs, { desc }) => [desc(orgs.createdAt)],
+    });
 
-    if (!organizationId || !status) {
-      return NextResponse.json({ error: 'BAD_REQUEST', message: 'organizationId y status son requeridos' }, { status: 400 });
-    }
-
-    const updated = await SubscriptionService.updateTenantStatus(organizationId, status);
-    return NextResponse.json({ success: true, data: updated });
-  } catch (err) {
-    return handleApiError(err);
+    return NextResponse.json(tenants);
+  } catch (error: any) {
+    console.error('[API_SUPER_ADMIN_TENANTS_ERROR]', error);
+    return NextResponse.json({ error: 'No se pudieron cargar los tenants.' }, { status: 500 });
   }
 }
