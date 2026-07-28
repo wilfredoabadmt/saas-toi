@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { db } from '@/db';
 import { requireRole } from '@/lib/auth';
 import { ErrorFallback } from '@/components/ui/error-fallback';
 // Asumiendo que tienes un componente cliente para renderizar la tabla
