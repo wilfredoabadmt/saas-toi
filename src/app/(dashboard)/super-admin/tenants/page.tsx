@@ -4,6 +4,7 @@ import { requireSuperAdmin } from '@/lib/auth';
 import { ErrorFallback } from '@/components/ui/error-fallback';
 import { organizations, subscriptions, saasPlans } from '@/db/schema';
 import { desc, eq } from 'drizzle-orm';
+import { TenantManagerTable } from './_components/tenant-manager-table';
 
 async function getTenants() {
   await requireSuperAdmin();
@@ -83,83 +84,8 @@ export default async function SuperAdminTenantsPage() {
           </div>
         </div>
 
-        {/* Tenants Table */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-            <h2 className="font-bold text-slate-900 dark:text-white text-base">Organizaciones Registradas</h2>
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700/50 px-2.5 py-1 rounded-full">
-              {tenants.length} empresas
-            </span>
-          </div>
-
-          {tenants.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 dark:text-slate-400">
-              No se han registrado empresas ISP aún.
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-5 py-3.5">Organización</th>
-                    <th className="px-5 py-3.5">Identificador / Slug</th>
-                    <th className="px-5 py-3.5">Estado</th>
-                    <th className="px-5 py-3.5">Plan SaaS</th>
-                    <th className="px-5 py-3.5">Moneda</th>
-                    <th className="px-5 py-3.5">Fecha Registro</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700/60 font-medium text-slate-800 dark:text-slate-200">
-                  {tenants.map((t) => (
-                    <tr key={t.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition-colors">
-                      <td className="px-5 py-4 font-bold text-slate-900 dark:text-white">
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-sm shrink-0 border border-indigo-500/20">
-                            {t.name.slice(0, 2).toUpperCase()}
-                          </div>
-                          <div>
-                            <div className="text-slate-900 dark:text-white font-bold">{t.name}</div>
-                            <div className="text-xs text-slate-400 font-normal">ID: {t.id.slice(0, 8)}...</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-5 py-4">
-                        <code className="text-xs font-mono bg-slate-100 dark:bg-slate-900 text-indigo-600 dark:text-indigo-300 px-2 py-1 rounded">
-                          {t.slug}
-                        </code>
-                      </td>
-                      <td className="px-5 py-4">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-full ${
-                          t.status === 'active'
-                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                            : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
-                        }`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${t.status === 'active' ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
-                          {t.status === 'active' ? 'Activo' : t.status}
-                        </span>
-                      </td>
-                      <td className="px-5 py-4">
-                        <span className="font-semibold text-slate-700 dark:text-slate-300">
-                          {t.subscription?.plan?.name || 'Starter (Demo)'}
-                        </span>
-                      </td>
-                      <td className="px-5 py-4 text-xs font-bold text-slate-500 dark:text-slate-400">
-                        {t.currency || 'BOB'}
-                      </td>
-                      <td className="px-5 py-4 text-xs text-slate-500 dark:text-slate-400">
-                        {new Date(t.createdAt).toLocaleDateString('es-ES', {
-                          day: '2-digit',
-                          month: 'short',
-                          year: 'numeric',
-                        })}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+        {/* Tenants Management Interactive Table */}
+        <TenantManagerTable initialTenants={tenants} />
       </div>
     );
   } catch (error) {
