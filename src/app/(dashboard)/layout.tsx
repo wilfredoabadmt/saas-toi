@@ -1,7 +1,7 @@
 import React from 'react';
 import { getServerSession, requireSession } from '@/lib/auth';
 import { Sidebar } from './_components/sidebar';
-import { Header } from './_components/header';
+import { Header } from '@/app/(dashboard)/_components/header';
 
 export default async function DashboardLayout({
   children,
