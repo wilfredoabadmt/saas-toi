@@ -23,6 +23,14 @@ export async function POST(req: Request) {
     // 2. Perform login authentication
     const result = await AuthService.login({ email, password });
 
+    // Ensure user has an organization before creating a session
+    if (!result.user.organizationId) {
+      return NextResponse.json(
+        { success: false, error: 'FORBIDDEN', message: 'El usuario no está asociado a ninguna organización.' },
+        { status: 403 }
+      );
+    }
+
     // 3. Create authenticated session in DB and sign token
     const { cookieValue, expiresAt } = await createSession(
       result.user.id,
