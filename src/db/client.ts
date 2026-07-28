@@ -18,17 +18,25 @@ let migrationPromise: Promise<void> | null = null;
 export async function ensureMigrationsRun() {
   if (!migrationPromise) {
     migrationPromise = (async () => {
-      try {
-        const path = await import('path');
-        const { migrate } = await import('drizzle-orm/node-postgres/migrator');
-        const migrationsFolder = path.join(process.cwd(), 'src/db/migrations');
-        await migrate(db, { migrationsFolder });
+      const maxRetries = 3;
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const path = await import('path');
+          const { migrate } = await import('drizzle-orm/node-postgres/migrator');
+          const migrationsFolder = path.join(process.cwd(), 'src/db/migrations');
+          await migrate(db, { migrationsFolder });
 
-        const { seedDefaults } = await import('./seed');
-        await seedDefaults(db);
-      } catch (err) {
-        migrationPromise = null;
-        console.warn('[DB Auto-Migration Notice]:', (err as Error).message);
+          const { seedDefaults } = await import('./seed');
+          await seedDefaults(db);
+          return;
+        } catch (err) {
+          console.error(`[DB Auto-Migration Notice] Attempt ${attempt}/${maxRetries} failed:`, err);
+          if (attempt === maxRetries) {
+            console.error('[DB Auto-Migration] All retries failed. Migrations/seed will not be applied.');
+            throw err;
+          }
+          await new Promise((r) => setTimeout(r, 1000 * attempt));
+        }
       }
     })();
   }
