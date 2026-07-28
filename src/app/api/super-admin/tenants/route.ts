@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/db';
-import { requireRole } from '@/lib/auth';
+import { db } from '@/db/client';
+import { requireSuperAdmin } from '@/lib/auth';
 
 export async function GET(request: Request) {
   try {
-    await requireRole('super_admin');
+    await requireSuperAdmin();
 
     const tenants = await db.query.organizations.findMany({
       // Opcional: incluir datos relacionados como el plan actual

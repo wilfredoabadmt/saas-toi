@@ -1,11 +1,11 @@
-import { db } from '@/db';
-import { requireRole } from '@/lib/auth';
+import { db } from '@/db/client';
+import { requireSuperAdmin } from '@/lib/auth';
 import { ErrorFallback } from '@/components/ui/error-fallback';
 // Asumiendo que tienes un componente cliente para renderizar la tabla
 // import { TenantsClientPage } from './_components/tenants-client-page';
 
 async function getTenants() {
-  await requireRole('super_admin');
+  await requireSuperAdmin();
   const tenants = await db.query.organizations.findMany({
     with: {
       subscription: {

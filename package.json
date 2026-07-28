@@ -37,6 +37,7 @@
     "drizzle-kit": "^0.30.4",
     "eslint": "^9.20.1",
     "eslint-config-next": "15.1.7",
+    "postgres": "^3.4.9",
     "typescript": "^5.7.3",
     "vitest": "^3.0.6"
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getServerSession, requireSession } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { Sidebar } from './_components/sidebar';
 import { Header } from './_components/header';
 

@@ -28,30 +28,28 @@ const main = async () => {
     const plans = await db
         .insert(schema.saasPlans)
         .values([
-            {
-                name: 'Starter',
-                price: 29,
-                features: ['500 Subscribers', '1 User', 'Basic Support'],
-                isDefault: true,
-            },
-            {
-                name: 'Pro',
-                price: 79,
-                features: [
-                    '5000 Subscribers',
-                    '10 Users',
-                    'MikroTik Automation',
-                    'Priority Support',
-                ],
-                isDefault: false,
-            },
-            {
-                name: 'Enterprise',
-                price: 199,
-                features: ['Unlimited Subscribers', 'Unlimited Users', 'AI Chatbot', 'Dedicated Support'],
-                isDefault: false,
-            },
-        ])
+      {
+        name: 'Starter',
+        slug: 'starter',
+        maxSubscribers: 500,
+        maxRouters: 1,
+        priceMonthlyUSD: '29.00',
+      },
+      {
+        name: 'Pro',
+        slug: 'pro',
+        maxSubscribers: 5000,
+        maxRouters: 10,
+        priceMonthlyUSD: '79.00',
+      },
+      {
+        name: 'Enterprise',
+        slug: 'enterprise',
+        maxSubscribers: -1, // Unlimited
+        maxRouters: -1, // Unlimited
+        priceMonthlyUSD: '199.00',
+      },
+    ])
         .returning();
     const proPlan = plans.find((p) => p.name === 'Pro');
     if (!proPlan) {
@@ -64,9 +62,10 @@ const main = async () => {
     const [demoOrg] = await db
         .insert(schema.organizations)
         .values({
-            name: 'FiberSpeed ISP',
-            status: 'active',
-        })
+      name: 'FiberSpeed ISP',
+      slug: 'fiberspeed-isp',
+      status: 'active',
+    })
         .returning();
     console.log('✅ Demo organization created.');
 
